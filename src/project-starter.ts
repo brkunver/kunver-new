@@ -1,19 +1,28 @@
-export const projects = ["react-ts","next-ts","wxt-react","wxt-svelte"]
+import { createReactProject } from "./project/create-react"
+
+export const projects = ["react-ts-tw","next-ts","wxt-react","wxt-svelte"]
 export const packageManagers = ["pnpm","npm","bun"]
 
-export default function projectStarter(projectName: typeof projects[number], packageManager: typeof packageManagers[number]) {
-    switch (projectName) {
-        case "react-ts":
-            console.log("react-ts", packageManager)
+
+type options = {
+    projectType: typeof projects[number],
+    packageManager: typeof packageManagers[number]
+    name: string
+} 
+
+export default function projectStarter(options: options) {
+    switch (options.projectType) {
+        case "react-ts-tw":
+            createReactProject({ name: options.name, packageManager: options.packageManager })
             break;
         case "next-ts":
-            console.log("next-ts", packageManager)
+            console.log("next-ts", options.packageManager, options.name)
             break;
         case "wxt-react":
-            console.log("wxt-react", packageManager)
+            console.log("wxt-react", options.packageManager, options.name)
             break;
         case "wxt-svelte":
-            console.log("wxt-svelte", packageManager)
+            console.log("wxt-svelte", options.packageManager, options.name)
             break;
     }
 }

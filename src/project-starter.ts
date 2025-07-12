@@ -1,4 +1,4 @@
-import { createReactProject } from "./project/create-react"
+import { createReactProject } from "./helpers/create-react"
 
 export const projects = ["react-ts-tw","next-ts","wxt-react","wxt-svelte"]
 export const packageManagers = ["pnpm","npm","bun"]

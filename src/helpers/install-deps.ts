@@ -1,5 +1,3 @@
-// src/helpers/install-deps.ts
-
 import { spawn } from "node:child_process"
 
 export function installDependencies(packageManager: string, name: string): Promise<boolean> {

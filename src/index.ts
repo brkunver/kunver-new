@@ -4,6 +4,7 @@ import projectStarter, { projects, packageManagers } from "./project-starter"
 const packageManager : typeof packageManagers[number] = await select({
     message: "Select a package manager",
     choices: packageManagers,
+    default: "pnpm",
 })
 
 // select project type

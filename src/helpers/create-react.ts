@@ -1,11 +1,14 @@
 import { spawn } from "node:child_process"
+import { installDependencies } from "./install-deps"       
 
 type projectOptions = {
     name: string,
     packageManager: string
 }
 
-export function createReactProject(options: projectOptions) {
+
+// create react-ts project
+export async function createReactProject(options: projectOptions) {
     const { name, packageManager } = options
     let command : string
     switch (packageManager){
@@ -24,9 +27,11 @@ export function createReactProject(options: projectOptions) {
     const child = spawn(command, { shell: true })
     child.stdout.pipe(process.stdout)
     child.stderr.pipe(process.stderr)
-    child.on("close", (code) => {
-        if (code === 0) {
+    child.on("close", async (code) => {
+        if (code == 0) {
             console.log(`Created React project at ${name}`)
+            // install dependencies
+            const dependencyInstallSuccess = await installDependencies(packageManager, name)
         } else {
             console.error(`Failed to create React project at ${name}`)
         }

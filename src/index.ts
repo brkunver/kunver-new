@@ -1,28 +1,30 @@
 import { input, select } from "@inquirer/prompts"
 import projectStarter, { projects, packageManagers } from "./project-starter"
-
-const packageManager : typeof packageManagers[number] = await select({
-    message: "Select a package manager",
-    choices: packageManagers,
-    default: "pnpm",
-})
-
-// select project type
-const projectType : typeof projects[number] = await select({
-    message: "Select a project type",
-    choices: projects,
-})
+import chalk from "chalk"
 
 // select project name
 const projectName = await input({
-    message: "Enter a project name",
-    validate: (value) => value.length > 0,
+  message: chalk.bold.blue("Enter a project name"),
+  default: chalk.gray("my-project"),
+  validate: value => value.length > 0,
+})
+
+const packageManager: (typeof packageManagers)[number] = await select({
+  message: "Select a package manager",
+  choices: packageManagers,
+  default: "pnpm",
+})
+
+// select project type
+const projectType: (typeof projects)[number] = await select({
+  message: "Select a project type",
+  choices: projects,
 })
 
 // create project
 const options = {
-    projectType,
-    packageManager,
-    name: projectName,
+  projectType,
+  packageManager,
+  name: projectName,
 }
 projectStarter(options)

@@ -10,14 +10,15 @@ const projectName = await input({
 })
 
 const packageManager: (typeof packageManagers)[number] = await select({
-  message: "Select a package manager",
+  message: chalk.bold.green("Select a package manager"),
   choices: packageManagers,
   default: "pnpm",
 })
 
 // select project type
 const projectType: (typeof projects)[number] = await select({
-  message: "Select a project type",
+  message: chalk.bold.yellow("Select a project type"),
+  default: "react-ts-tw",
   choices: projects,
 })
 

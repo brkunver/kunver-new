@@ -1,11 +1,16 @@
 import { select } from "@inquirer/prompts"
-import projectStarter, { projects } from "./project-starter"
+import projectStarter, { projects, packageManagers } from "./project-starter"
+
+const packageManager : typeof packageManagers[number] = await select({
+    message: "Select a package manager",
+    choices: packageManagers,
+})
 
 // select project type
-const answer : typeof projects[number] = await select({
+const projectType : typeof projects[number] = await select({
     message: "Select a project type",
     choices: projects,
 }) 
 
 // create project
-projectStarter(answer)
+projectStarter(projectType, packageManager)

@@ -1,0 +1,30 @@
+{
+  "name": "@kunver/new",
+  "version": "1.0.0",
+  "description": "Opiniated project starter",
+  "type": "module",
+  "bin": "dist/index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "start": "pnpm run build && node dist/index.js",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [],
+  "author": "Burak Unver <burakhanunver@gmail.com> (https://kunver.dev)",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.4",
+  "devDependencies": {
+    "tsup": "^8.2.2",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.6.0"
+  }
+}

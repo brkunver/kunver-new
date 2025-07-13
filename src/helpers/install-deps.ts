@@ -1,5 +1,7 @@
 import { spawn } from "node:child_process"
+import chalk from "chalk"
 import ora from "ora"
+
 export function installDependencies(packageManager: string, name: string): Promise<boolean> {
   return new Promise(resolve => {
     let command: string
@@ -19,7 +21,7 @@ export function installDependencies(packageManager: string, name: string): Promi
     }
 
     const child = spawn(command, { shell: true, cwd: process.cwd() })
-    const spinner = ora("Installing dependencies...")
+    const spinner = ora("Installing dependencies with" + chalk.bold.blue(packageManager) + "...")
     spinner.color = "white"
     spinner.start()
 

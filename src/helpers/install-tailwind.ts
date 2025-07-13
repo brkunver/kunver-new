@@ -1,6 +1,7 @@
 // install tailwind helper
 import { readFileSync, writeFileSync } from "fs"
 import { spawn } from "node:child_process"
+import ora from "ora"
 
 function editViteConfig() {
   const path = "vite.config.ts"
@@ -14,8 +15,12 @@ export function installTailwind(packageManager: string): Promise<boolean> {
   return new Promise(resolve => {
     const command = packageManager + " install tailwindcss @tailwindcss/vite"
     const child = spawn(command, { shell: true, cwd: process.cwd() })
-    child.stdout.pipe(process.stdout)
-    child.stderr.pipe(process.stderr)
+    // child.stdout.pipe(process.stdout)
+    // child.stderr.pipe(process.stderr)
+    const spinner = ora("Installing Tailwind...")
+    spinner.color = "blue"
+    spinner.start()
+
     child.on("close", code => {
       if (code === 0) {
         console.log("✅ Installed tailwind")
@@ -24,6 +29,7 @@ export function installTailwind(packageManager: string): Promise<boolean> {
         console.error("❌ Failed to install tailwind")
         resolve(false)
       }
+      spinner.stop()
     })
   })
 }

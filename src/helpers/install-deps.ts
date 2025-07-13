@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process"
-
+import ora from "ora"
 export function installDependencies(packageManager: string, name: string): Promise<boolean> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     let command: string
 
     switch (packageManager) {
@@ -19,13 +19,16 @@ export function installDependencies(packageManager: string, name: string): Promi
     }
 
     const child = spawn(command, { shell: true, cwd: process.cwd() })
-    console.log(`Installing dependencies, path: ${process.cwd()}`)
+    const spinner = ora("Installing dependencies...")
+    spinner.color = "white"
+    spinner.start()
 
-    child.stdout.pipe(process.stdout)
-    child.stderr.pipe(process.stderr)
+    // child.stdout.pipe(process.stdout)
+    // child.stderr.pipe(process.stderr)
 
-    child.on("close", (code) => {
-      if (code === 0) {
+    child.on("close", code => {
+      spinner.stop()
+      if (code == 0) {
         console.log(`✅ Installed dependencies for ${name}`)
         resolve(true)
       } else {

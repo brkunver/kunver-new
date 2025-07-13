@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process"
 import { installDependencies } from "../helpers/install-deps"
 import { approveBuilds } from "../helpers/pnpm-approve"
+import ora from "ora"
 
 type projectOptions = {
   name: string
@@ -25,14 +26,19 @@ export async function createReactProject(options: projectOptions) {
       command = `pnpm create vite ${name} --template react-swc-ts`
   }
   const child = spawn(command, { shell: true })
-  child.stdout.pipe(process.stdout)
-  child.stderr.pipe(process.stderr)
+  // child.stdout.pipe(process.stdout)
+  // child.stderr.pipe(process.stderr)
+  const spinner = ora("Creating React project...")
+  spinner.color = "blue"
+  spinner.start()
+
   child.on("close", async code => {
+    spinner.stop()
     if (code == 0) {
       console.log(`Created React project at ${name}`)
       // install dependencies
       const dependencyInstallSuccess = await installDependencies(packageManager, name)
-      if (dependencyInstallSuccess && packageManager === "pnpm") {
+      if (dependencyInstallSuccess && packageManager == "pnpm") {
         approveBuilds()
       }
     } else {

@@ -22,6 +22,7 @@ export function installTailwind(packageManager: string): Promise<boolean> {
     spinner.start()
 
     child.on("close", code => {
+      spinner.stop()
       if (code === 0) {
         console.log("✅ Installed tailwind")
         resolve(true)
@@ -29,7 +30,6 @@ export function installTailwind(packageManager: string): Promise<boolean> {
         console.error("❌ Failed to install tailwind")
         resolve(false)
       }
-      spinner.stop()
     })
   })
 }

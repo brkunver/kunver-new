@@ -1,12 +1,27 @@
 import { input, select } from "@inquirer/prompts"
 import projectStarter, { projects, packageManagers } from "./project-starter"
 import chalk from "chalk"
+import fs from "node:fs"
+import path from "node:path"
 
-// select project name
 const projectName = await input({
   message: chalk.bold.blue("Enter a project name"),
   default: chalk.gray("my-project"),
-  validate: value => value.length > 0,
+  validate: value => {
+    if (!value || value.trim().length < 2) {
+      return chalk.red("Project name must be at least 2 characters")
+    }
+
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(value)) {
+      return chalk.red("Only lowercase letters, numbers, and single hyphens allowed. No spaces or special characters.")
+    }
+
+    if (fs.existsSync(path.resolve(process.cwd(), value))) {
+      return chalk.red("A folder with that name already exists")
+    }
+
+    return true
+  }
 })
 
 const packageManager: (typeof packageManagers)[number] = await select({

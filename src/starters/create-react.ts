@@ -1,10 +1,12 @@
 import { spawn } from "node:child_process"
+
+import ora from "ora"
+import chalk from "chalk"
+
 import { installDependencies } from "../helpers/install-deps"
 import { installTailwind } from "../helpers/install-tailwind"
 import { copyConfigFiles } from "../helpers/copy-config-files"
 import { approveBuilds } from "../helpers/pnpm-approve"
-import ora from "ora"
-import chalk from "chalk"
 
 type projectOptions = {
   name: string
@@ -29,8 +31,6 @@ export async function createReactProject(options: projectOptions) {
       command = `pnpm create vite ${name} --template react-swc-ts`
   }
   const child = spawn(command, { shell: true })
-  // child.stdout.pipe(process.stdout)
-  // child.stderr.pipe(process.stderr)
   const spinner = ora("Creating React project...")
   spinner.color = "blue"
   spinner.start()

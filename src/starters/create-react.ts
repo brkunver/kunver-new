@@ -1,7 +1,10 @@
 import { spawn } from "node:child_process"
 import { installDependencies } from "../helpers/install-deps"
+import { installTailwind } from "../helpers/install-tailwind"
+import { copyConfigFiles } from "../helpers/copy-config-files"
 import { approveBuilds } from "../helpers/pnpm-approve"
 import ora from "ora"
+import chalk from "chalk"
 
 type projectOptions = {
   name: string
@@ -35,7 +38,7 @@ export async function createReactProject(options: projectOptions) {
   child.on("close", async code => {
     spinner.stop()
     if (code == 0) {
-      console.log(`Created React project at ${name}`)
+      console.log(chalk.green("Created React Project At " + chalk.bold.blue(name)))
       // install dependencies
       const dependencyInstallSuccess = await installDependencies(packageManager, name)
       if (dependencyInstallSuccess && packageManager == "pnpm") {

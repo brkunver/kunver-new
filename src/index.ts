@@ -28,4 +28,5 @@ const options = {
   packageManager,
   name: projectName,
 }
+
 projectStarter(options)

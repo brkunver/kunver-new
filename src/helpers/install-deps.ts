@@ -21,20 +21,19 @@ export function installDependencies(packageManager: string, name: string): Promi
     }
 
     const child = spawn(command, { shell: true, cwd: process.cwd() })
-    const spinner = ora("Installing dependencies with" + chalk.bold.blue(packageManager) + "...")
+    const spinner = ora("Installing dependencies with " + chalk.bold.blue(packageManager) + " ...")
     spinner.color = "white"
     spinner.start()
-
-    // child.stdout.pipe(process.stdout)
-    // child.stderr.pipe(process.stderr)
+    
+    child.stderr.pipe(process.stderr)
 
     child.on("close", code => {
       spinner.stop()
       if (code == 0) {
-        console.log(`✅ Installed dependencies for ${name}`)
+        console.log(chalk.green("✅ Installed dependencies for " + chalk.bold.blue(name)))
         resolve(true)
       } else {
-        console.error(`❌ Failed to install dependencies for ${name}`)
+        console.error(chalk.red("❌ Failed to install dependencies for " + chalk.bold.blue(name)))
         resolve(false)
       }
     })

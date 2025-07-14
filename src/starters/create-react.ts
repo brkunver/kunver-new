@@ -41,9 +41,16 @@ export async function createReactProject(options: projectOptions) {
       console.log(chalk.green("Created React Project At " + chalk.bold.blue(name)))
       // install dependencies
       const dependencyInstallSuccess = await installDependencies(packageManager, name)
+      if (!dependencyInstallSuccess) {
+        console.log(chalk.red("❌ Failed to install dependencies for " + chalk.bold.blue(name)))
+        console.log(chalk.red("Please install dependencies manually, tool will continue"))
+      }
       if (dependencyInstallSuccess && packageManager == "pnpm") {
         approveBuilds()
       }
+
+      // copy config files
+      copyConfigFiles(name)
     } else {
       console.error(`Failed to create React project at ${name}`)
     }

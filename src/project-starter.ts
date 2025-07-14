@@ -1,7 +1,7 @@
 import { createReactProject } from "./starters/create-react"
 
-export const projects = ["react-ts-tw", "next-ts", "wxt-react", "wxt-svelte"]
-export const packageManagers = ["pnpm", "npm", "bun"]
+export const projects = ["react-ts-tw", "next-ts", "wxt-react", "wxt-svelte"] as const
+export const packageManagers = ["pnpm", "npm", "bun"] as const
 
 type options = {
   projectType: (typeof projects)[number]
@@ -22,6 +22,9 @@ export default function projectStarter(options: options) {
       break
     case "wxt-svelte":
       console.log("wxt-svelte", options.packageManager, options.name)
+      break
+    default:
+      console.log("Invalid project type", options.projectType)
       break
   }
 }

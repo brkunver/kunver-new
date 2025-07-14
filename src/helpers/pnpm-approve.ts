@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process"
+import chalk from "chalk"
 
 export function approveBuilds() {
   const child = spawn("pnpm approve-builds", { shell: true })
@@ -10,9 +11,9 @@ export function approveBuilds() {
 
   child.on("close", code => {
     if (code === 0) {
-      console.log("✅ Builds approved.")
+      console.log(chalk.green("✅ Builds approved."))
     } else {
-      console.error("❌ Failed to approve builds.")
+      console.error(chalk.red("❌ Failed to approve builds."))
     }
   })
 }

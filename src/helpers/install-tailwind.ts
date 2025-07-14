@@ -15,8 +15,6 @@ export function installTailwind(packageManager: string): Promise<boolean> {
   return new Promise(resolve => {
     const command = packageManager + " install tailwindcss @tailwindcss/vite"
     const child = spawn(command, { shell: true, cwd: process.cwd() })
-    // child.stdout.pipe(process.stdout)
-    // child.stderr.pipe(process.stderr)
     const spinner = ora("Installing Tailwind...")
     spinner.color = "blue"
     spinner.start()

@@ -17,7 +17,6 @@
     "build": "tsup",
     "start": "pnpm run build && node dist/index.js",
     "prepublishOnly": "pnpm run build",
-    "publish": "pnpm run build && npm publish",
     "local": "pnpm link --global"
   },
   "keywords": [],

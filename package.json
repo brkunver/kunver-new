@@ -21,7 +21,7 @@
   },
   "keywords": [],
   "author": "Burak Unver <burakhanunver@gmail.com> (https://kunver.dev)",
-  "license": "ISC",
+  "license": "MIT",
   "packageManager": "pnpm@10.13.1",
   "devDependencies": {
     "@types/node": "^24.0.13",

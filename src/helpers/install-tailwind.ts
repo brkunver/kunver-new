@@ -6,9 +6,13 @@ import ora from "ora"
 function editViteConfig() {
   const path = "vite.config.ts"
   // open vite.config.ts file
+  const spinner = ora("Editing vite.config.ts...")
+  spinner.color = "blue"
+  spinner.start()
   let viteConfig = readFileSync(path, "utf-8")
   viteConfig = 'import tailwindcss from "@tailwindcss/vite"\n' + viteConfig
   writeFileSync(path, viteConfig)
+  spinner.stop()
 }
 
 export function installTailwind(packageManager: string): Promise<boolean> {
@@ -23,6 +27,7 @@ export function installTailwind(packageManager: string): Promise<boolean> {
       spinner.stop()
       if (code === 0) {
         console.log("✅ Installed tailwind")
+        editViteConfig()
         resolve(true)
       } else {
         console.error("❌ Failed to install tailwind")

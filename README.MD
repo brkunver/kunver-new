@@ -12,7 +12,11 @@ pnpx | npx | bun @kunver/new
 
 ### Ready to use
 
-✅ React + TypeScript + Tailwind + Prettierconfig
+✅ 
+
+### Work in progress
+
+🟡 React + TypeScript + Tailwind + Prettierconfig 
 
 ### Will be added
 

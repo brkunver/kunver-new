@@ -39,7 +39,7 @@ function editViteConfig(projectName: string) {
 
 export function installTailwind(packageManager: string, projectName: string): Promise<boolean> {
   return new Promise(resolve => {
-    const command = packageManager + " install tailwindcss @tailwindcss/vite"
+    const command = "cd " + projectName + " && " + packageManager + " install tailwindcss @tailwindcss/vite"
     const child = spawn(command, { shell: true, cwd: process.cwd() })
     const spinner = ora("Installing Tailwind...")
     spinner.color = "blue"
@@ -49,9 +49,6 @@ export function installTailwind(packageManager: string, projectName: string): Pr
       spinner.stop()
       if (code === 0) {
         console.log("✅ Installed tailwind")
-        if (packageManager == "pnpm") {
-          approveBuilds() 
-        }
         editViteConfig(projectName)
         resolve(true)
       } else {

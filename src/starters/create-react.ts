@@ -51,6 +51,12 @@ export async function createReactProject(options: projectOptions) {
 
       // copy config files
       copyConfigFiles(name)
+      // install tailwind
+      const tailwindInstallSuccess = await installTailwind(packageManager, name)
+      if (!tailwindInstallSuccess) {
+        console.log(chalk.red("❌ Failed to install tailwind for " + chalk.bold.blue(name)))
+        console.log(chalk.red("Please install tailwind manually, tool will continue"))
+      } 
     } else {
       console.error(`Failed to create React project at ${name}`)
     }

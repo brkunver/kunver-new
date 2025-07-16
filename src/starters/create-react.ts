@@ -45,6 +45,7 @@ export async function createReactProject(options: projectOptions) {
         console.log(chalk.red("❌ Failed to install dependencies for " + chalk.bold.blue(name)))
         console.log(chalk.red("Please install dependencies manually, tool will continue"))
       }
+
       if (dependencyInstallSuccess && packageManager == "pnpm") {
         approveBuilds()
       }
@@ -56,6 +57,12 @@ export async function createReactProject(options: projectOptions) {
       if (!tailwindInstallSuccess) {
         console.log(chalk.red("❌ Failed to install tailwind for " + chalk.bold.blue(name)))
         console.log(chalk.red("Please install tailwind manually, tool will continue"))
+      }
+      else {
+        console.log(chalk.green("✅ Installed tailwind for " + chalk.bold.blue(name)))
+        if (packageManager == "pnpm") {
+          approveBuilds() 
+        }
       } 
     } else {
       console.error(`Failed to create React project at ${name}`)

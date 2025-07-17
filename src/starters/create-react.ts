@@ -3,6 +3,7 @@ import { installTailwind } from "../react-starter/install-tailwind"
 import { copyConfigFiles } from "../helpers/copy-config-files"
 import { installReact } from "../react-starter/install-react"
 import { approveBuilds } from "../helpers/pnpm-approve"
+import { postInstallReact } from "../react-starter/post-install-react"
 
 type projectOptions = {
   name: string
@@ -28,5 +29,8 @@ export async function createReactProject(options: projectOptions) {
     if (packageManager === "pnpm") {
       await approveBuilds(name)
     }
+
+    // post install react
+    await postInstallReact(name, packageManager)
   }
 }

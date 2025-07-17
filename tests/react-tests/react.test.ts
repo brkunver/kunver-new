@@ -22,7 +22,7 @@ describe("create-react", () => {
     if (!tempDir) throw new Error("Failed to create temp directory")
     console.log(chalk.green(`Temporary directory created at: ${tempDir}`))
 
-    await createReactProject({ name: projectName, packageManager })
+    await createReactProject({ name: projectName, packageManager, cwd: tempDir })
 
     const projectPath = path.join(tempDir, projectName)
     try {

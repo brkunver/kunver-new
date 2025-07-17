@@ -15,3 +15,15 @@
 
 
 - Code style should follow prettier rules (.prettierrc.json file).
+
+## correct use of execa
+
+first, call execa with parameters as an option object, then pass the command with template string
+
+example:
+
+const child = await execa({input : "a\ny\n"})`pnpm approve-builds`
+
+wrong example:
+
+const child = await execa("pnpm approve-builds", { input: "a\ny\n" })

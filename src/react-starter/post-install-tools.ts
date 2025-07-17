@@ -31,6 +31,46 @@ export async function deleteAssets(projectName: string) {
   }
 }
 
+export async function deleteAppCss(projectName: string) {
+  const path = `${projectName}/src/app.css`
+  const spinner = ora("Deleting app.css...").start()
+  spinner.color = "white"
+
+  try {
+    await unlink(path)
+    spinner.succeed("Deleted app.css")
+  } catch (error) {
+    spinner.fail(`Failed to delete app.css: ${error}`)
+    console.error(error)
+  }
+}
+
+export async function clearAppTsx(projectName: string) {
+  const path = `${projectName}/src/app.tsx`
+  const spinner = ora("Clearing app.tsx...").start()
+  spinner.color = "white"
+
+  const newContent = `
+    function App() {
+      return (
+        <>
+          <h1>Hello</h1>
+        </>
+      )
+    }
+
+    export default App
+`
+
+  try {
+    await writeFile(path, newContent, "utf-8")
+    spinner.succeed("Cleared app.tsx")
+  } catch (error) {
+    spinner.fail(`Failed to clear app.tsx: ${error}`)
+    console.error(error)
+  }
+}
+
 export async function deleteEslintFiles(projectName: string) {
   const path = `${projectName}/eslint.config.js`
   const spinner = ora("Deleting eslint.config.js...").start()

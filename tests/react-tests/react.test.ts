@@ -9,10 +9,12 @@ const projectName = "testing-react"
 const packageManager = "pnpm"
 
 describe.sequential("create-react", () => {
-  let tempDir: string | undefined
+  let tempDir: string
   beforeAll(async () => {
-    tempDir = await createTempDir()
-    if (!tempDir) throw new Error("Failed to create temp directory")
+    const createdTempDir = await createTempDir()
+    if (!createdTempDir) throw new Error("Failed to create temp directory")
+    tempDir = createdTempDir
+    console.log(chalk.green(`Temporary directory created at: ${tempDir}`))
   })
 
   afterAll(async () => {
@@ -22,7 +24,7 @@ describe.sequential("create-react", () => {
   it("should create a react project", async () => {
     await createReactProject({ name: projectName, packageManager, cwd: tempDir })
 
-    const projectPath = path.join(tempDir!, projectName)
+    const projectPath = path.join(tempDir, projectName)
     try {
       await fs.access(projectPath)
       expect(true)
@@ -32,7 +34,7 @@ describe.sequential("create-react", () => {
   })
 
   it("should install dependencies", async () => {
-    const projectPath = path.join(tempDir!, projectName)
+    const projectPath = path.join(tempDir, projectName)
     try {
       await fs.access(projectPath + "/node_modules")
       expect(true)

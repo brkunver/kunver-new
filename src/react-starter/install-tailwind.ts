@@ -8,24 +8,21 @@ function editViteConfig(projectName: string) {
   const path = `${projectName}/vite.config.ts`
   const spinner = ora("Editing vite.config.ts...").start()
   spinner.color = "blue"
-  
+
   try {
     // Read the file
     let viteConfig = readFileSync(path, "utf-8")
-    
+
     // Check if the import already exists to avoid duplicates
     if (!viteConfig.includes('import tailwindcss from "@tailwindcss/vite"')) {
       // Add the import at the top of the file
       viteConfig = 'import tailwindcss from "@tailwindcss/vite"\n' + viteConfig
-      
+
       // add tailwind to plugins
-      viteConfig = viteConfig.replace(
-        /plugins:\s*\[.*?\]/,
-        'plugins: [react(), tailwindcss()]'
-      )
-      
+      viteConfig = viteConfig.replace(/plugins:\s*\[.*?\]/, "plugins: [react(), tailwindcss()]")
+
       writeFileSync(path, viteConfig, "utf-8")
-      
+
       spinner.succeed("Updated vite.config.ts with Tailwind import")
     } else {
       spinner.info("Tailwind import already exists in vite.config.ts")
@@ -36,7 +33,7 @@ function editViteConfig(projectName: string) {
   }
 }
 
-function addTailwindDirective(projectName : string){
+function addTailwindDirective(projectName: string, cwd: string) {
   const indexCssPath = `${projectName}/src/index.css`
   const directive = '@import "tailwindcss";'
   const spinner = ora("Adding Tailwind directive to index.css...").start()
@@ -45,10 +42,10 @@ function addTailwindDirective(projectName : string){
   spinner.succeed("Added Tailwind directive to index.css")
 }
 
-export async function installTailwind(packageManager: string, projectName: string): Promise<boolean> {
+export async function installTailwind(packageManager: string, projectName: string, cwd: string): Promise<boolean> {
   return new Promise(resolve => {
     const command = "cd " + projectName + " && " + packageManager + " install tailwindcss @tailwindcss/vite"
-    const child = spawn(command, { shell: true, cwd: process.cwd() })
+    const child = spawn(command, { shell: true, cwd: cwd })
     const spinner = ora("Installing Tailwind with " + chalk.blue(packageManager)).start()
     spinner.color = "blue"
     spinner.start()
@@ -57,7 +54,7 @@ export async function installTailwind(packageManager: string, projectName: strin
       if (code === 0) {
         spinner.succeed("Installed tailwind")
         editViteConfig(projectName)
-        addTailwindDirective(projectName)
+        addTailwindDirective(projectName, cwd)
         resolve(true)
       } else {
         spinner.fail("Failed to install tailwind")

@@ -2,8 +2,8 @@ import { writeFile, unlink, rm } from "node:fs/promises"
 import ora from "ora"
 import { spawn } from "node:child_process"
 
-export async function editReadme(projectName: string) {
-  const path = `${projectName}/README.md`
+export async function editReadme(projectName: string, cwd: string) {
+  const path = `${cwd}/${projectName}/README.md`
   const spinner = ora("Editing README.md...").start()
   spinner.color = "white"
 
@@ -17,8 +17,8 @@ export async function editReadme(projectName: string) {
   }
 }
 
-export async function deleteAssets(projectName: string) {
-  const path = `${projectName}/src/assets`
+export async function deleteAssets(projectName: string, cwd: string) {
+  const path = `${cwd}/${projectName}/src/assets`
   const spinner = ora("Deleting assets...").start()
   spinner.color = "white"
 
@@ -31,8 +31,8 @@ export async function deleteAssets(projectName: string) {
   }
 }
 
-export async function deleteAppCss(projectName: string) {
-  const path = `${projectName}/src/app.css`
+export async function deleteAppCss(projectName: string, cwd: string) {
+  const path = `${cwd}/${projectName}/src/app.css`
   const spinner = ora("Deleting app.css...").start()
   spinner.color = "white"
 
@@ -45,8 +45,8 @@ export async function deleteAppCss(projectName: string) {
   }
 }
 
-export async function clearAppTsx(projectName: string) {
-  const path = `${projectName}/src/app.tsx`
+export async function clearAppTsx(projectName: string, cwd: string) {
+  const path = `${cwd}/${projectName}/src/app.tsx`
   const spinner = ora("Clearing app.tsx...").start()
   spinner.color = "white"
 
@@ -71,8 +71,8 @@ export async function clearAppTsx(projectName: string) {
   }
 }
 
-export async function deleteEslintFile(projectName: string) {
-  const path = `${projectName}/eslint.config.js`
+export async function deleteEslintFile(projectName: string, cwd: string) {
+  const path = `${cwd}/${projectName}/eslint.config.js`
   const spinner = ora("Deleting eslint.config.js...").start()
   spinner.color = "white"
 
@@ -85,7 +85,7 @@ export async function deleteEslintFile(projectName: string) {
   }
 }
 
-export async function removePackages(projectName: string, packageManager: string) {
+export async function removePackages(projectName: string, packageManager: string, cwd: string) {
   const command =
     "cd " +
     projectName +
@@ -93,7 +93,7 @@ export async function removePackages(projectName: string, packageManager: string
     packageManager +
     " remove @eslint/js eslint eslint-plugin-react-hooks eslint-plugin-react-refresh globals typescript-eslint"
   return new Promise(resolve => {
-    const child = spawn(command, { shell: true, cwd: process.cwd() })
+    const child = spawn(command, { shell: true, cwd: cwd })
     const spinner = ora("Removing packages...").start()
     spinner.color = "white"
     spinner.start()

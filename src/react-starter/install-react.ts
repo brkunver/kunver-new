@@ -2,7 +2,7 @@ import { spawn } from "node:child_process"
 import ora from "ora"
 import chalk from "chalk"
 
-export function installReact(packageManager: string, name: string): Promise<boolean> {
+export function installReact(packageManager: string, name: string, cwd: string): Promise<boolean> {
   let command: string
   switch (packageManager) {
     case "pnpm":
@@ -19,7 +19,7 @@ export function installReact(packageManager: string, name: string): Promise<bool
   }
 
   return new Promise(resolve => {
-    const child = spawn(command, { shell: true, cwd: process.cwd() })
+    const child = spawn(command, { shell: true, cwd: cwd })
     const spinner = ora("Creating React project " + chalk.blue(name)).start()
     spinner.color = "blue"
 
@@ -33,5 +33,4 @@ export function installReact(packageManager: string, name: string): Promise<bool
       }
     })
   })
-
 }

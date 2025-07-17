@@ -2,7 +2,7 @@ import { spawn } from "node:child_process"
 import chalk from "chalk"
 import ora from "ora"
 
-export async function installDependencies(packageManager: string, name: string): Promise<boolean> {
+export async function installDependencies(packageManager: string, name: string, cwd: string): Promise<boolean> {
   return new Promise(resolve => {
     let command: string
 
@@ -20,10 +20,10 @@ export async function installDependencies(packageManager: string, name: string):
         command = `cd ${name} && pnpm install`
     }
 
-    const child = spawn(command, { shell: true, cwd: process.cwd() })
+    const child = spawn(command, { shell: true, cwd: cwd })
     const spinner = ora("Installing dependencies with " + chalk.blue(packageManager)).start()
     spinner.color = "white"
-    
+
     child.stderr.pipe(process.stderr)
 
     child.on("close", code => {

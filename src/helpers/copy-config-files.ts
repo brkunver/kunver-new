@@ -6,8 +6,8 @@ import { execSync } from "child_process"
 import chalk from "chalk"
 import ora from "ora"
 
-export async function copyConfigFiles(projectName: string) {
-  const projectPath = join(process.cwd(), projectName)
+export async function copyConfigFiles(projectName: string, cwd: string) {
+  const projectPath = join(cwd, projectName)
   const pushShPath = join(projectPath, "push.sh")
 
   const spinner = ora("Copying config files to " + chalk.blue(projectName)).start()
@@ -17,7 +17,7 @@ export async function copyConfigFiles(projectName: string) {
     // Write both files concurrently
     await Promise.all([
       writeFile(join(projectPath, ".prettierrc.json"), prettierConfigFile),
-      writeFile(pushShPath, pushFile)
+      writeFile(pushShPath, pushFile),
     ])
 
     // Make push.sh executable

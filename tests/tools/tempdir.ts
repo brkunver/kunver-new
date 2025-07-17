@@ -20,7 +20,7 @@ export async function removeTempDir(tempDir: string | undefined) {
       console.log("No temp directory provided")
       return
     }
-    await rm(tempDir, { recursive: true })
+    await rm(tempDir, { recursive: true, force: true })
     console.log("Temporary directory removed:", tempDir)
   } catch (error) {
     console.error("Failed to remove temp directory:", error)

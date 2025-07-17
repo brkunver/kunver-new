@@ -1,25 +1,30 @@
 import { prettierConfigFile, pushFile } from "./config-files"
 
-import { writeFileSync } from "fs"
+import { writeFile } from "node:fs/promises"
 import { join } from "node:path"
 import { execSync } from "child_process"
 import chalk from "chalk"
+import ora from "ora"
 
-export function copyConfigFiles(projectName: string) {
+export async function copyConfigFiles(projectName: string) {
   const projectPath = join(process.cwd(), projectName)
   const pushShPath = join(projectPath, "push.sh")
 
-  console.log(chalk.green("Copying config files to " + chalk.bold.blue(projectName)))
-  // Copy .prettierrc.json
-  writeFileSync(join(projectPath, ".prettierrc.json"), prettierConfigFile)
+  const spinner = ora("Copying config files to " + chalk.blue(projectName)).start()
+  spinner.color = "blue"
 
-  // Copy push.sh and make it executable
-  writeFileSync(pushShPath, pushFile)
-  
   try {
+    // Write both files concurrently
+    await Promise.all([
+      writeFile(join(projectPath, ".prettierrc.json"), prettierConfigFile),
+      writeFile(pushShPath, pushFile)
+    ])
+
+    // Make push.sh executable
     execSync(`chmod +x "${pushShPath}"`)
-    console.log(chalk.green("✅ Set execute permissions for push.sh"))
+    spinner.succeed("Config files copied and push.sh is executable")
   } catch (error) {
-    console.warn(chalk.yellow(`Warning: Could not set execute permissions for push.sh: ${error}`))
+    spinner.fail("Failed to copy config files or set permissions")
+    console.error(error)
   }
 }

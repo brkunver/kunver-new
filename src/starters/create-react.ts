@@ -13,24 +13,29 @@ type projectOptions = {
 // create react-ts project
 export async function createReactProject(options: projectOptions) {
   const { name, packageManager } = options
-  const isReactCreated = await installReact(packageManager, name)
 
-  if (isReactCreated) {
-    // install dependencies
-    await installDependencies(packageManager, name)
-    
-    // copy config files
-    await copyConfigFiles(name)
-    
-    // install tailwind
-    await installTailwind(packageManager, name)
-    
-    // approve builds
-    if (packageManager === "pnpm") {
-      await approveBuilds(name)
+  try {
+    const isReactCreated = await installReact(packageManager, name)
+
+    if (isReactCreated) {
+      // install dependencies
+      await installDependencies(packageManager, name)
+
+      // copy config files
+      await copyConfigFiles(name)
+
+      // install tailwind
+      await installTailwind(packageManager, name)
+
+      // approve builds
+      if (packageManager === "pnpm") {
+        await approveBuilds(name)
+      }
+
+      // post install react
+      await postInstallReact(name, packageManager)
     }
-
-    // post install react
-    await postInstallReact(name, packageManager)
+  } catch (error) {
+    console.error(error)
   }
 }

@@ -14,8 +14,12 @@ export async function createTempDir() {
   }
 }
 
-export async function removeTempDir(tempDir: string) {
+export async function removeTempDir(tempDir: string | undefined) {
   try {
+    if (!tempDir) {
+      console.log("No temp directory provided")
+      return
+    }
     await rm(tempDir, { recursive: true })
     console.log("Temporary directory removed:", tempDir)
   } catch (error) {

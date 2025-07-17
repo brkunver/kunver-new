@@ -17,7 +17,8 @@
     "build": "tsup",
     "start": "pnpm run build && node dist/index.js",
     "prepublishOnly": "pnpm run build",
-    "local": "pnpm link --global"
+    "local": "pnpm link --global",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "Burak Unver <burakhanunver@gmail.com> (https://kunver.dev)",
@@ -26,7 +27,8 @@
   "devDependencies": {
     "@types/node": "^24.0.13",
     "tsup": "^8.2.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@inquirer/prompts": "^7.6.0",

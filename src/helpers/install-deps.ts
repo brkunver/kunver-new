@@ -2,7 +2,7 @@ import { spawn } from "node:child_process"
 import chalk from "chalk"
 import ora from "ora"
 
-export function installDependencies(packageManager: string, name: string): Promise<boolean> {
+export async function installDependencies(packageManager: string, name: string): Promise<boolean> {
   return new Promise(resolve => {
     let command: string
 
@@ -21,19 +21,17 @@ export function installDependencies(packageManager: string, name: string): Promi
     }
 
     const child = spawn(command, { shell: true, cwd: process.cwd() })
-    const spinner = ora("Installing dependencies with " + chalk.bold.blue(packageManager) + " ...")
+    const spinner = ora("Installing dependencies with " + chalk.blue(packageManager)).start()
     spinner.color = "white"
-    spinner.start()
     
     child.stderr.pipe(process.stderr)
 
     child.on("close", code => {
-      spinner.stop()
       if (code == 0) {
-        console.log(chalk.green("✅ Installed dependencies for " + chalk.bold.blue(name)))
+        spinner.succeed("Installed dependencies for " + chalk.blue(name))
         resolve(true)
       } else {
-        console.error(chalk.red("❌ Failed to install dependencies for " + chalk.bold.blue(name)))
+        spinner.fail("Failed to install dependencies for " + chalk.blue(name))
         resolve(false)
       }
     })

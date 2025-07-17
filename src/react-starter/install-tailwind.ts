@@ -4,8 +4,8 @@ import { spawn } from "node:child_process"
 import ora from "ora"
 import chalk from "chalk"
 
-function editViteConfig(projectName: string) {
-  const path = `${projectName}/vite.config.ts`
+function editViteConfig(projectName: string, cwd: string) {
+  const path = `${cwd}/${projectName}/vite.config.ts`
   const spinner = ora("Editing vite.config.ts...").start()
   spinner.color = "blue"
 
@@ -34,7 +34,7 @@ function editViteConfig(projectName: string) {
 }
 
 function addTailwindDirective(projectName: string, cwd: string) {
-  const indexCssPath = `${projectName}/src/index.css`
+  const indexCssPath = `${cwd}/${projectName}/src/index.css`
   const directive = '@import "tailwindcss";'
   const spinner = ora("Adding Tailwind directive to index.css...").start()
 
@@ -53,7 +53,7 @@ export async function installTailwind(packageManager: string, projectName: strin
     child.on("close", code => {
       if (code === 0) {
         spinner.succeed("Installed tailwind")
-        editViteConfig(projectName)
+        editViteConfig(projectName, cwd)
         addTailwindDirective(projectName, cwd)
         resolve(true)
       } else {

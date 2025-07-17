@@ -71,7 +71,7 @@ export async function clearAppTsx(projectName: string) {
   }
 }
 
-export async function deleteEslintFiles(projectName: string) {
+export async function deleteEslintFile(projectName: string) {
   const path = `${projectName}/eslint.config.js`
   const spinner = ora("Deleting eslint.config.js...").start()
   spinner.color = "white"

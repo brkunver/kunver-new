@@ -51,15 +51,15 @@ export async function clearAppTsx(projectName: string) {
   spinner.color = "white"
 
   const newContent = `
-    function App() {
-      return (
-        <>
-          <h1>Hello</h1>
-        </>
-      )
-    }
+  function App() {
+    return (
+      <>
+        <h1 className="text-3xl font-bold underline">Hello</h1>
+      </>
+    )
+  }
 
-    export default App
+  export default App
 `
 
   try {

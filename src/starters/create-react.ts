@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process"
+import { execa } from "execa"
 
 import ora from "ora"
 import chalk from "chalk"
@@ -30,42 +30,38 @@ export async function createReactProject(options: projectOptions) {
     default:
       command = `pnpm create vite ${name} --template react-swc-ts`
   }
-  const child = spawn(command, { shell: true })
-  const spinner = ora("Creating React project...")
+  const spinner = ora("Creating React project...").start()
   spinner.color = "blue"
-  spinner.start()
 
-  child.on("close", async code => {
-    spinner.stop()
-    if (code == 0) {
-      console.log(chalk.green("Created React Project At " + chalk.bold.blue(name)))
-      // install dependencies
-      const dependencyInstallSuccess = await installDependencies(packageManager, name)
-      if (!dependencyInstallSuccess) {
-        console.log(chalk.red("❌ Failed to install dependencies for " + chalk.bold.blue(name)))
-        console.log(chalk.red("Please install dependencies manually, tool will continue"))
-      }
+  try {
+    await execa(command, { shell: true })
+    spinner.succeed(chalk.green("Created React Project At " + chalk.bold.blue(name)))
 
-      if (dependencyInstallSuccess && packageManager == "pnpm") {
-        approveBuilds()
-      }
-
-      // copy config files
-      copyConfigFiles(name)
-      // install tailwind
-      const tailwindInstallSuccess = await installTailwind(packageManager, name)
-      if (!tailwindInstallSuccess) {
-        console.log(chalk.red("❌ Failed to install tailwind for " + chalk.bold.blue(name)))
-        console.log(chalk.red("Please install tailwind manually, tool will continue"))
-      }
-      else {
-        console.log(chalk.green("✅ Installed tailwind for " + chalk.bold.blue(name)))
-        if (packageManager == "pnpm") {
-          approveBuilds() 
-        }
-      } 
-    } else {
-      console.error(`Failed to create React project at ${name}`)
+    // install dependencies
+    const dependencyInstallSuccess = await installDependencies(packageManager, name)
+    if (!dependencyInstallSuccess) {
+      console.log(chalk.red("❌ Failed to install dependencies for " + chalk.bold.blue(name)))
+      console.log(chalk.red("Please install dependencies manually, tool will continue"))
     }
-  })
+
+    if (dependencyInstallSuccess && packageManager == "pnpm") {
+      await approveBuilds()
+    }
+
+    // copy config files
+    copyConfigFiles(name)
+    // install tailwind
+    const tailwindInstallSuccess = await installTailwind(packageManager, name)
+    if (!tailwindInstallSuccess) {
+      console.log(chalk.red("❌ Failed to install tailwind for " + chalk.bold.blue(name)))
+      console.log(chalk.red("Please install tailwind manually, tool will continue"))
+    } else {
+      console.log(chalk.green("✅ Installed tailwind for " + chalk.bold.blue(name)))
+      if (packageManager == "pnpm") {
+        await approveBuilds()
+      }
+    }
+  } catch (error) {
+    spinner.fail(`Failed to create React project at ${name}`)
+  }
 }

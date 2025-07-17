@@ -2,13 +2,13 @@
 import { readFileSync, writeFileSync } from "fs"
 import { spawn } from "node:child_process"
 import ora from "ora"
+import chalk from "chalk"
 import { approveBuilds } from "./pnpm-approve"
 
 function editViteConfig(projectName: string) {
   const path = `${projectName}/vite.config.ts`
-  const spinner = ora("Editing vite.config.ts...")
+  const spinner = ora("Editing vite.config.ts...").start()
   spinner.color = "blue"
-  spinner.start()
   
   try {
     // Read the file
@@ -37,22 +37,23 @@ function editViteConfig(projectName: string) {
   }
 }
 
-export function installTailwind(packageManager: string, projectName: string): Promise<boolean> {
+export async function installTailwind(packageManager: string, projectName: string): Promise<boolean> {
   return new Promise(resolve => {
     const command = "cd " + projectName + " && " + packageManager + " install tailwindcss @tailwindcss/vite"
     const child = spawn(command, { shell: true, cwd: process.cwd() })
-    const spinner = ora("Installing Tailwind...")
+    const spinner = ora("Installing Tailwind with " + chalk.blue(packageManager)).start()
     spinner.color = "blue"
     spinner.start()
 
     child.on("close", code => {
-      spinner.stop()
+      
       if (code === 0) {
-        console.log("✅ Installed tailwind")
+        spinner.succeed("Installed tailwind")
+        approveBuilds()
         editViteConfig(projectName)
         resolve(true)
       } else {
-        console.error("❌ Failed to install tailwind")
+        spinner.fail("Failed to install tailwind")
         resolve(false)
       }
     })

@@ -24,7 +24,7 @@ function editViteConfig(projectName: string) {
         'plugins: [react(), tailwindcss()]'
       )
       
-      writeFileSync(path, viteConfig, 'utf-8')
+      writeFileSync(path, viteConfig, "utf-8")
       
       spinner.succeed("Updated vite.config.ts with Tailwind import")
     } else {
@@ -34,6 +34,15 @@ function editViteConfig(projectName: string) {
     spinner.fail(`Failed to edit vite.config.ts: ${error}`)
     console.error(error)
   }
+}
+
+function addTailwindDirective(projectName : string){
+  const indexCssPath = `${projectName}/src/index.css`
+  const directive = '@import "tailwindcss";'
+  const spinner = ora("Adding Tailwind directive to index.css...").start()
+
+  writeFileSync(indexCssPath, directive, "utf-8")
+  spinner.succeed("Added Tailwind directive to index.css")
 }
 
 export async function installTailwind(packageManager: string, projectName: string): Promise<boolean> {
@@ -48,6 +57,7 @@ export async function installTailwind(packageManager: string, projectName: strin
       if (code === 0) {
         spinner.succeed("Installed tailwind")
         editViteConfig(projectName)
+        addTailwindDirective(projectName)
         resolve(true)
       } else {
         spinner.fail("Failed to install tailwind")

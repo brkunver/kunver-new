@@ -3,7 +3,6 @@ import { readFileSync, writeFileSync } from "fs"
 import { spawn } from "node:child_process"
 import ora from "ora"
 import chalk from "chalk"
-import { approveBuilds } from "./pnpm-approve"
 
 function editViteConfig(projectName: string) {
   const path = `${projectName}/vite.config.ts`
@@ -46,10 +45,8 @@ export async function installTailwind(packageManager: string, projectName: strin
     spinner.start()
 
     child.on("close", code => {
-      
       if (code === 0) {
         spinner.succeed("Installed tailwind")
-        approveBuilds()
         editViteConfig(projectName)
         resolve(true)
       } else {

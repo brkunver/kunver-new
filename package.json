@@ -18,7 +18,7 @@
     "start": "pnpm run build && node dist/index.js",
     "prepublishOnly": "pnpm run build",
     "local": "pnpm link --global",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "Burak Unver <burakhanunver@gmail.com> (https://kunver.dev)",

@@ -1,7 +1,7 @@
 import { installDependencies } from "../helpers/install-deps"
-import { installTailwind } from "../helpers/install-tailwind"
+import { installTailwind } from "../react-starter/install-tailwind"
 import { copyConfigFiles } from "../helpers/copy-config-files"
-import { installReact } from "../helpers/install-react"
+import { installReact } from "../react-starter/install-react"
 import { approveBuilds } from "../helpers/pnpm-approve"
 
 type projectOptions = {
@@ -25,6 +25,8 @@ export async function createReactProject(options: projectOptions) {
     await installTailwind(packageManager, name)
     
     // approve builds
-    await approveBuilds(name)
+    if (packageManager === "pnpm") {
+      await approveBuilds(name)
+    }
   }
 }

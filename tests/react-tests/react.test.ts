@@ -8,10 +8,11 @@ import path from "node:path"
 const projectName = "testing-react"
 const packageManager = "pnpm"
 
-describe("create-react", () => {
+describe.sequential("create-react", () => {
   let tempDir: string | undefined
   beforeAll(async () => {
     tempDir = await createTempDir()
+    if (!tempDir) throw new Error("Failed to create temp directory")
   })
 
   afterAll(async () => {
@@ -19,17 +20,24 @@ describe("create-react", () => {
   })
 
   it("should create a react project", async () => {
-    if (!tempDir) throw new Error("Failed to create temp directory")
-    console.log(chalk.green(`Temporary directory created at: ${tempDir}`))
-
     await createReactProject({ name: projectName, packageManager, cwd: tempDir })
 
-    const projectPath = path.join(tempDir, projectName)
+    const projectPath = path.join(tempDir!, projectName)
     try {
       await fs.access(projectPath)
       expect(true)
     } catch (error) {
       expect(false)
     }
-  }, 30000)
+  })
+
+  it("should install dependencies", async () => {
+    const projectPath = path.join(tempDir!, projectName)
+    try {
+      await fs.access(projectPath + "/node_modules")
+      expect(true)
+    } catch (error) {
+      expect(false)
+    }
+  })
 })

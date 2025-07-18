@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process"
 import ora from "ora"
 
-export async function approveBuilds(projectName: string, cwd: string) {
+export async function pnpmApproveBuilds(projectName: string, cwd: string) {
   return new Promise((resolve, reject) => {
     const command = "cd " + projectName + " && pnpm approve-builds"
     const child = spawn(command, { shell: true, cwd: cwd })

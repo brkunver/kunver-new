@@ -1,13 +1,15 @@
+import path from "node:path"
+import fs from "node:fs/promises"
+import chalk from "chalk"
+
+import { afterAll, beforeAll, describe, expect, it } from "vitest"
+
 import { createTempDir, removeTempDir } from "../tools/tempdir"
 import { createReactProject } from "../../src/starters/create-react"
-import chalk from "chalk"
-import { afterAll, beforeAll, describe, expect, it } from "vitest"
-import fs from "node:fs/promises"
-import path from "node:path"
 import { packageManagers } from "../../src/project-starter"
 
 export const runReactTests = (packageManager: (typeof packageManagers)[number]) => {
-  const projectName = "testing-react"
+  const projectName = "testing-react "
 
   describe.sequential(`${packageManager} react test`, () => {
     let tempDir: string

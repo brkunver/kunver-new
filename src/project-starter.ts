@@ -1,7 +1,7 @@
 import { createReactProject } from "./starters/create-react"
 
 export const projects = ["react-ts-tw", "next-ts", "wxt-react", "wxt-svelte"] as const
-export const packageManagers = ["pnpm", "npm", "bun"] as const
+export const packageManagers = ["bun", "pnpm", "npm"] as const
 
 type options = {
   projectType: (typeof projects)[number]

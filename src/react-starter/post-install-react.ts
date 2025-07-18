@@ -1,3 +1,4 @@
+import { packageManagers } from "../project-starter"
 import {
   deleteAppCss,
   deleteAssets,
@@ -7,7 +8,11 @@ import {
   removePackages,
 } from "./post-install-tools"
 
-export async function postInstallReact(projectName: string, packageManager: string, cwd: string) {
+export async function postInstallReact(
+  projectName: string,
+  packageManager: (typeof packageManagers)[number],
+  cwd: string,
+) {
   await Promise.all([
     deleteAppCss(projectName, cwd),
     deleteAssets(projectName, cwd),

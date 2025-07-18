@@ -4,7 +4,8 @@ import chalk from "chalk"
 
 export async function bunApproveBuilds(projectName: string, cwd: string) {
   return new Promise(resolve => {
-    const child = spawn("bun pm trust --all", { shell: true, cwd: cwd })
+    const command = `cd ${projectName} && bun pm trust --all`
+    const child = spawn(command, { shell: true, cwd: cwd })
     const spinner = ora("Approving builds for " + chalk.blue(projectName)).start()
     spinner.color = "blue"
 

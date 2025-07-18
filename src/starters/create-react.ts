@@ -2,12 +2,15 @@ import { installDependencies } from "../helpers/install-deps"
 import { installTailwind } from "../react-starter/install-tailwind"
 import { copyConfigFiles } from "../helpers/copy-config-files"
 import { installReact } from "../react-starter/install-react"
-import { approveBuilds } from "../helpers/pnpm-approve"
+import { pnpmApproveBuilds } from "../helpers/pnpm-approve"
+import { bunApproveBuilds } from "../helpers/bun-approve"
 import { postInstallReact } from "../react-starter/post-install-react"
+
+import { packageManagers } from "../project-starter"
 
 type projectOptions = {
   name: string
-  packageManager: string
+  packageManager: (typeof packageManagers)[number]
   cwd?: string
 }
 
@@ -30,11 +33,13 @@ export async function createReactProject(options: projectOptions) {
 
       // approve builds
       if (packageManager === "pnpm") {
-        await approveBuilds(name, cwd)
+        await pnpmApproveBuilds(name, cwd)
+      } else if (packageManager === "bun") {
+        await bunApproveBuilds(name, cwd)
       }
 
       // post install react
-      await postInstallReact(name, packageManager,cwd)
+      await postInstallReact(name, packageManager, cwd)
     }
   } catch (error) {
     console.error(error)

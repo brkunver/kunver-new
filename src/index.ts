@@ -21,13 +21,13 @@ const projectName = await input({
     }
 
     return true
-  }
+  },
 })
 
 const packageManager: (typeof packageManagers)[number] = await select({
   message: chalk.bold.green("Select a package manager"),
   choices: packageManagers,
-  default: "pnpm",
+  default: "bun",
 })
 
 // select project type

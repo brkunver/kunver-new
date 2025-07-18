@@ -24,8 +24,6 @@ export async function installDependencies(packageManager: string, name: string, 
     const spinner = ora("Installing dependencies with " + chalk.blue(packageManager)).start()
     spinner.color = "white"
 
-    child.stderr.pipe(process.stderr)
-
     child.on("close", code => {
       if (code == 0) {
         spinner.succeed("Installed dependencies for " + chalk.blue(name))

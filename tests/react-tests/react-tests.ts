@@ -7,6 +7,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest"
 import { createTempDir, removeTempDir } from "../tools/tempdir"
 import { createReactProject } from "../../src/starters/create-react"
 import { packageManagers } from "../../src/project-starter"
+import { spawn } from "node:child_process"
 
 export const runReactTests = (packageManager: (typeof packageManagers)[number]) => {
   const projectName = "testing-react "
@@ -129,6 +130,20 @@ export const runReactTests = (packageManager: (typeof packageManagers)[number]) 
         expect(appTsx.includes(newContent))
       } catch (error) {
         expect(false)
+      }
+    })
+
+    // it should have start dev server succesfully (ping localhost:5173)
+    it("should have start dev server succesfully with " + packageManager, async () => {
+      const child = spawn(packageManager + " run dev", { shell: true, cwd: projectPath })
+      try {
+        await new Promise(resolve => setTimeout(resolve, 5000))
+        const response = await fetch("http://localhost:5173")
+        expect(response.ok)
+      } catch (error) {
+        expect(false)
+      } finally {
+        child.kill()
       }
     })
   })

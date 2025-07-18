@@ -23,7 +23,7 @@ export const runReactTests = (packageManager: (typeof packageManagers)[number]) 
       await removeTempDir(tempDir)
     })
 
-    it("should create a react project", async () => {
+    it("should create a react project with " + packageManager, async () => {
       await createReactProject({ name: projectName, packageManager, cwd: tempDir })
 
       const projectPath = path.join(tempDir, projectName)
@@ -35,7 +35,7 @@ export const runReactTests = (packageManager: (typeof packageManagers)[number]) 
       }
     })
 
-    it("should install dependencies", async () => {
+    it("should install dependencies with " + packageManager, async () => {
       const projectPath = path.join(tempDir, projectName)
       try {
         await fs.access(projectPath + "/node_modules")

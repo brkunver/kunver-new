@@ -15,3 +15,17 @@
 - This project uses prettier for code formatting.
 
 - Code style should follow prettier rules (.prettierrc.json file).
+
+## React starter plan
+
+1. create react project with vite ( using preferred package manager)
+2. install dependencies
+3. copy config files
+4. install tailwind with command
+   1. add tailwind plugin into vite.config.ts
+   2. add tailwindcss import into index.css
+5. approve builds
+6. post install react
+   1. delete unnecessary files
+   2. clear files
+   3. edit readme

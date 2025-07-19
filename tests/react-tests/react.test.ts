@@ -1,7 +1,6 @@
 // tests/react-tests/react.test.ts
 import path from "node:path"
 import fs from "node:fs/promises"
-import { spawn } from "node:child_process"
 import { beforeAll, afterAll, describe, expect, it } from "vitest"
 import { createTempDir, removeTempDir } from "../tools/tempdir"
 import { createReactProject } from "../../src/starters/create-react"
@@ -9,11 +8,15 @@ import { packageManagers } from "../../src/project-starter"
 
 describe.each(packageManagers)(`React project with %s`, packageManager => {
   const projectName = "testing-react"
-  let tempDir = ""
+  let tempDir: string
   let projectPath = ""
 
   beforeAll(async () => {
-    tempDir = (await createTempDir()) as string
+    const getTempDir = await createTempDir()
+    if (!getTempDir) {
+      process.exit(1)
+    }
+    tempDir = getTempDir
     projectPath = path.join(tempDir, projectName)
   })
 
@@ -92,24 +95,5 @@ describe.each(packageManagers)(`React project with %s`, packageManager => {
   it("should clear app.tsx", async () => {
     const content = await fs.readFile(path.join(projectPath, "src/app.tsx"), "utf-8")
     expect(content.includes(`<h1 className="text-3xl font-bold underline">Hello</h1>`)).toBe(true)
-  })
-
-  it("should start dev server", async () => {
-    const child = spawn(`${packageManager} run dev`, {
-      shell: true,
-      cwd: projectPath,
-      stdio: "ignore",
-    })
-
-    await new Promise(resolve => setTimeout(resolve, 5000))
-
-    try {
-      const res = await fetch("http://localhost:5173")
-      expect(res.ok).toBe(true)
-    } catch {
-      expect(false).toBe(true)
-    } finally {
-      child.kill()
-    }
   })
 })

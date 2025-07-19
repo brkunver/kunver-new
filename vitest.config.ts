@@ -14,6 +14,7 @@ export default defineConfig({
 
     // Global test timeout (in milliseconds)
     testTimeout: 50000,
+    hookTimeout: 50000,
 
     // Watch mode configuration
     watch: false, // Disable watch mode by default (use --watch to enable)

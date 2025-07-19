@@ -1,7 +1,7 @@
 // tests/react-tests/react.test.ts
 import path from "node:path"
 import fs from "node:fs/promises"
-import { beforeAll, afterAll, describe, expect, it, vi } from "vitest"
+import { beforeAll, afterAll, describe, expect, it } from "vitest"
 import { createTempDir, removeTempDir } from "../tools/tempdir"
 import { createReactProject } from "../../src/starters/create-react"
 import { packageManagers } from "../../src/project-starter"
@@ -25,16 +25,12 @@ async function readFileSafe(filePath: string): Promise<string> {
 }
 
 // Test configuration
-const TEST_TIMEOUT = 50000 // 50 seconds
-
 describe.each(packageManagers)(`React project with %s`, packageManager => {
   const projectName = "testing-react-with" + packageManager
   let tempDir: string
   let projectPath: string
 
   beforeAll(async () => {
-    vi.setConfig({ testTimeout: TEST_TIMEOUT })
-
     const tempDirPath = await createTempDir()
     if (!tempDirPath) {
       throw new Error("Failed to create temporary directory")
@@ -49,7 +45,7 @@ describe.each(packageManagers)(`React project with %s`, packageManager => {
       packageManager,
       cwd: tempDir,
     })
-  }, TEST_TIMEOUT)
+  })
 
   afterAll(async () => {
     try {
@@ -81,7 +77,7 @@ describe.each(packageManagers)(`React project with %s`, packageManager => {
         `${dep} should be installed`,
       ).toBeDefined()
     })
-  }, 60000) // Increased timeout for dependency installation
+  })
 
   it("should have all required configuration files", async () => {
     const requiredConfigs = [".prettierrc.json", "vite.config.ts", "tsconfig.json", "push.sh"]
@@ -143,7 +139,7 @@ describe.each(packageManagers)(`React project with %s`, packageManager => {
   it("should have Tailwind CSS directive in index.css", async () => {
     const indexPath = path.join(projectPath, "src/index.css")
     const cssContent = await readFileSafe(indexPath)
-    
+
     // Check for Tailwind v4 directive
     expect(cssContent.trim()).toBe('@import "tailwindcss";')
   })

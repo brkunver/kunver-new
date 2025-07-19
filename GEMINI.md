@@ -11,8 +11,7 @@
 - This project uses @inquirer/prompts for prompts.
 - This project's npm name is "@kunver/new"
 - This project's bin name is "kunver"
-
+- This project's uses vitest for testing.
+- This project uses prettier for code formatting.
 
 - Code style should follow prettier rules (.prettierrc.json file).
-
-

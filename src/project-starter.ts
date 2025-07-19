@@ -32,6 +32,6 @@ export default async function projectStarter(options: options) {
   }
 
   if (options.openInEditor !== "no") {
-    await openInEditor(options.openInEditor, options.name, options.openInEditor)
+    await openInEditor(options.name, process.cwd(), options.openInEditor)
   }
 }

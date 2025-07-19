@@ -37,11 +37,19 @@ const projectType: (typeof projects)[number] = await select({
   choices: projects,
 })
 
+// open in editor ?
+const openInEditor: "no" | "windsurf" | "cursor" | "code" = await select({
+  message: chalk.bold.red("Open in editor?"),
+  choices: ["no", "windsurf", "cursor", "code"],
+  default: "no",
+})
+
 // create project
 const options = {
   projectType,
   packageManager,
   name: projectName,
+  openInEditor,
 }
 
-projectStarter(options)
+await projectStarter(options)

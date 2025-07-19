@@ -18,14 +18,26 @@
 
 ## React starter plan
 
-1. create react project with vite ( using preferred package manager)
-2. install dependencies
-3. copy config files
-4. install tailwind with command
-   1. add tailwind plugin into vite.config.ts
-   2. add tailwindcss import into index.css
-5. approve builds
-6. post install react
-   1. delete unnecessary files
-   2. clear files
-   3. edit readme
+- create react project with vite ( using preferred package manager)
+- install dependencies
+- copy config files
+- install tailwind with command
+- add tailwind plugin into vite.config.ts
+- add tailwindcss import into index.css
+- approve builds
+- post install react
+- delete unnecessary files
+- clear files
+- edit readme
+
+## Wxt starter plan
+
+- create wxt project with wxt ( using preferred package manager and selected framework)
+- install dependencies
+- copy config files
+- approve builds
+- post install wxt
+- delete unnecessary files
+- delete assets/\*
+- clear files
+- edit readme

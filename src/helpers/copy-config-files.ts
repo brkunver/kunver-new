@@ -21,7 +21,11 @@ export async function copyConfigFiles(projectName: string, cwd: string) {
     ])
 
     // Make push.sh executable
-    execSync(`chmod +x "${pushShPath}"`)
+    try {
+      execSync(`chmod +x "${pushShPath}"`)
+    } catch (error) {
+      console.error(chalk.red("Failed to make push.sh executable"))
+    }
     spinner.succeed("Config files copied and push.sh is executable")
   } catch (error) {
     spinner.fail("Failed to copy config files or set permissions")

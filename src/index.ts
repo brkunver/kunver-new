@@ -39,7 +39,7 @@ const projectType: (typeof projects)[number] = await select({
 
 // open in editor ?
 const openInEditor: "no" | "windsurf" | "cursor" | "code" = await select({
-  message: chalk.bold.red("Open in editor?"),
+  message: chalk.bold.cyan("Open in editor?"),
   choices: ["no", "windsurf", "cursor", "code"],
   default: "no",
 })

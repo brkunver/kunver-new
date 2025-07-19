@@ -6,6 +6,18 @@ import { createTempDir, removeTempDir } from "../tools/tempdir"
 import { createReactProject } from "../../src/starters/create-react"
 import { packageManagers } from "../../src/project-starter"
 
+// Helper functions for file system operations
+async function fileExists(filePath: string): Promise<boolean> {
+  return fs
+    .access(filePath)
+    .then(() => true)
+    .catch(() => false)
+}
+
+async function readFileSafe(filePath: string): Promise<string> {
+  return fs.readFile(filePath, "utf-8")
+}
+
 describe.each(packageManagers)(`React project with %s`, packageManager => {
   const projectName = "testing-react"
   let tempDir: string
@@ -26,74 +38,48 @@ describe.each(packageManagers)(`React project with %s`, packageManager => {
 
   it("should create project", async () => {
     await createReactProject({ name: projectName, packageManager, cwd: tempDir })
-    const exists = await fs
-      .access(projectPath)
-      .then(() => true)
-      .catch(() => false)
-    expect(exists).toBe(true)
+    expect(await fileExists(projectPath)).toBe(true)
   })
 
   it("should install dependencies", async () => {
-    const exists = await fs
-      .access(path.join(projectPath, "node_modules"))
-      .then(() => true)
-      .catch(() => false)
-    expect(exists).toBe(true)
+    expect(await fileExists(path.join(projectPath, "node_modules"))).toBe(true)
   })
 
   it("should have config files", async () => {
-    const hasPrettier = await fs
-      .access(path.join(projectPath, ".prettierrc.json"))
-      .then(() => true)
-      .catch(() => false)
-    const hasPush = await fs
-      .access(path.join(projectPath, "push.sh"))
-      .then(() => true)
-      .catch(() => false)
+    const hasPrettier = await fileExists(path.join(projectPath, ".prettierrc.json"))
+    const hasPush = await fileExists(path.join(projectPath, "push.sh"))
     expect(hasPrettier && hasPush).toBe(true)
   })
 
   it("should include tailwind import", async () => {
-    const viteConfig = await fs.readFile(path.join(projectPath, "vite.config.ts"), "utf-8")
-    expect(viteConfig.includes('import tailwindcss from "@tailwindcss/vite"')).toBe(true)
+    const viteConfig = await readFileSafe(path.join(projectPath, "vite.config.ts"))
+    expect(viteConfig).toContain('import tailwindcss from "@tailwindcss/vite"')
   })
 
   it("should include tailwind plugin", async () => {
-    const viteConfig = await fs.readFile(path.join(projectPath, "vite.config.ts"), "utf-8")
-    expect(viteConfig.includes("tailwindcss()")).toBe(true)
+    const viteConfig = await readFileSafe(path.join(projectPath, "vite.config.ts"))
+    expect(viteConfig).toContain("tailwindcss()")
   })
 
   it("should add tailwind directive", async () => {
-    const css = await fs.readFile(path.join(projectPath, "src/index.css"), "utf-8")
-    expect(css.includes('@import "tailwindcss";')).toBe(true)
+    const css = await readFileSafe(path.join(projectPath, "src/index.css"))
+    expect(css).toContain('@import "tailwindcss";')
   })
 
   it("should delete app.css", async () => {
-    const exists = await fs
-      .access(path.join(projectPath, "src/app.css"))
-      .then(() => true)
-      .catch(() => false)
-    expect(exists).toBe(false)
+    expect(await fileExists(path.join(projectPath, "src/app.css"))).toBe(false)
   })
 
   it("should delete assets", async () => {
-    const exists = await fs
-      .access(path.join(projectPath, "src/assets"))
-      .then(() => true)
-      .catch(() => false)
-    expect(exists).toBe(false)
+    expect(await fileExists(path.join(projectPath, "src/assets"))).toBe(false)
   })
 
   it("should delete eslint.config.js", async () => {
-    const exists = await fs
-      .access(path.join(projectPath, "eslint.config.js"))
-      .then(() => true)
-      .catch(() => false)
-    expect(exists).toBe(false)
+    expect(await fileExists(path.join(projectPath, "eslint.config.js"))).toBe(false)
   })
 
   it("should clear app.tsx", async () => {
-    const content = await fs.readFile(path.join(projectPath, "src/app.tsx"), "utf-8")
-    expect(content.includes(`<h1 className="text-3xl font-bold underline">Hello</h1>`)).toBe(true)
+    const content = await readFileSafe(path.join(projectPath, "src/app.tsx"))
+    expect(content).toContain(`<h1 className="text-3xl font-bold underline">Hello</h1>`)
   })
 })

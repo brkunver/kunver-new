@@ -1,6 +1,5 @@
 import { createReactProject } from "./starters/create-react"
 import { createWxtProject } from "./starters/create-wxt"
-import { installWxt } from "./wxt-starter/install-wxt"
 
 export const projects = ["react-ts-tw", "next-ts", "wxt", "cpp-cmake"] as const
 export const packageManagers = ["bun", "pnpm", "npm"] as const

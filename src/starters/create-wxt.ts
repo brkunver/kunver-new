@@ -1,6 +1,6 @@
 import { installWxt } from "../wxt-starter/install-wxt"
 import { installDependencies } from "../helpers/install-deps"
-import { pnpmApproveBuilds } from "../helpers/pnpm-approve"
+import { pnpmApproveBuilds } from "../helpers/approve"
 import { bunApproveBuilds } from "../helpers/bun-approve"
 import { packageManagers } from "../project-starter"
 import { select } from "@inquirer/prompts"

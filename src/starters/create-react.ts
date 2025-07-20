@@ -1,8 +1,6 @@
 import { installDependencies } from "../helpers/install-deps"
 import { copyTemplateFolder } from "../helpers/copy-template"
-import { pnpmApproveBuilds } from "../helpers/pnpm-approve"
-import { bunApproveBuilds } from "../helpers/bun-approve"
-
+import { pnpmApproveBuilds, bunApproveBuilds } from "../helpers/approve"
 import { packageManagers } from "../project-starter"
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"

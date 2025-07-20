@@ -26,7 +26,7 @@ async function readFileSafe(filePath: string): Promise<string> {
 
 // Test configuration
 describe.each(packageManagers)(`React project with %s`, async packageManager => {
-  const projectName = "testing-react-with " + packageManager
+  const projectName = "testing-react-with-" + packageManager
   let tempDir: string
   let projectPath: string
 

@@ -1,10 +1,8 @@
 import { installDependencies } from "../helpers/install-deps"
-import { installTailwind } from "../react-starter/install-tailwind"
-import { copyConfigFiles } from "../helpers/copy-config-files"
-import { installReact } from "../react-starter/install-react"
+import { copyTemplateFolder } from "../helpers/copy-template"
 import { pnpmApproveBuilds } from "../helpers/pnpm-approve"
 import { bunApproveBuilds } from "../helpers/bun-approve"
-import { postInstallReact } from "../react-starter/post-install-react"
+
 
 import { packageManagers } from "../project-starter"
 
@@ -31,16 +29,7 @@ export async function createReactProject(options: projectOptions) {
       throw new Error("Failed to install dependencies")
     }
 
-    // Copy config files
-    await copyConfigFiles(name, cwd)
-
-    // Install tailwind
-    const isTailwindInstalled = await installTailwind(packageManager, name, cwd)
-    if (!isTailwindInstalled) {
-      throw new Error("Failed to install Tailwind")
-    }
-
-    // Approve builds
+      // Approve builds
     if (packageManager === "pnpm") {
       await pnpmApproveBuilds(name, cwd)
     } else if (packageManager === "bun") {

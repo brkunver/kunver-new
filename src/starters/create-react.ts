@@ -3,8 +3,13 @@ import { copyTemplateFolder } from "../helpers/copy-template"
 import { pnpmApproveBuilds } from "../helpers/pnpm-approve"
 import { bunApproveBuilds } from "../helpers/bun-approve"
 
-
 import { packageManagers } from "../project-starter"
+import { join } from "node:path"
+import { fileURLToPath } from "node:url"
+import path from "node:path"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 type projectOptions = {
   name: string
@@ -15,12 +20,13 @@ type projectOptions = {
 // create react-ts project
 export async function createReactProject(options: projectOptions) {
   const { name, packageManager, cwd = process.cwd() } = options
-
+  // template path : dist/templates/react-ts-tw
+  const templatePath = join(__dirname, "templates", "react-ts-tw")
   try {
-    const isReactCreated = await installReact(packageManager, name, cwd)
-
-    if (!isReactCreated) {
-      throw new Error("Failed to create React project")
+    // copy template folder
+    const isTemplateCopied = await copyTemplateFolder(templatePath, join(cwd, name))
+    if (!isTemplateCopied) {
+      throw new Error("Failed to copy template folder")
     }
 
     // Install dependencies
@@ -29,15 +35,12 @@ export async function createReactProject(options: projectOptions) {
       throw new Error("Failed to install dependencies")
     }
 
-      // Approve builds
+    // Approve builds
     if (packageManager === "pnpm") {
       await pnpmApproveBuilds(name, cwd)
     } else if (packageManager === "bun") {
       await bunApproveBuilds(name, cwd)
     }
-
-    // Post install react
-    await postInstallReact(name, packageManager, cwd)
 
     return true
   } catch (error) {

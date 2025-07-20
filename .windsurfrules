@@ -30,14 +30,39 @@
 - clear files
 - edit readme
 
-## Wxt starter plan
+## Wxt-svelte starter plan
 
 - create wxt project with wxt ( using preferred package manager and selected framework)
 - install dependencies
 - copy config files
-- approve builds
-- post install wxt
-- delete unnecessary files
-- delete assets/\*
-- clear files
+- delete src/assets/svelte.svg file
+- delete src/entrypoints/popup/app.css file
+- delete `import './app.css';` line in src/entrypoints/popup/main.ts file
+- delete src/entrypoints/content.ts file
+- create content folder in src/entrypoints
+- create index.ts and main.ts files in src/entrypoints/content
+- delete src/lib/Counter.svelte file
+- run '${packageManager} install tailwindcss @tailwindcss/vite' command
+- create 'tailwind.css' file in src/assets folder. add '@import "tailwindcss";' line at top of the file
+- add `import tailwindcss from '@tailwindcss/vite'` line at the top of `wxt.config.ts` file
+- add this vite object into config object in the `wxt.config.ts` file
+
+```ts
+vite: () => ({
+  plugins: [tailwindcss()],
+})
+```
+
+- add `import "~/assets/tailwind.css"` to src/entrypoints/popup/main.ts file.
+- replace content of src/entrypoints/popup/App.svelte file with this content
+
+```ts
+<script lang="ts">
+  let message = "Hello World"
+</script>
+
+<h1 class="text-3xl">{message}</h1>
+```
+
 - edit readme
+- approve builds if pnpm or bun

@@ -1,4 +1,4 @@
-import { writeFile, unlink, rm } from "node:fs/promises"
+import { writeFile, unlink, rm, access } from "node:fs/promises"
 import ora from "ora"
 import { execa } from "execa"
 
@@ -37,11 +37,17 @@ export async function deleteAppCss(projectName: string, cwd: string) {
   spinner.color = "white"
 
   try {
+    // Check if file exists before trying to delete
+    await access(path)
     await unlink(path)
     spinner.succeed("Deleted app.css")
-  } catch (error) {
-    spinner.fail(`Failed to delete app.css: ${error}`)
-    console.error(error)
+  } catch (error: any) {
+    if (error.code === "ENOENT") {
+      spinner.info("app.css not found (already deleted or doesn't exist)")
+    } else {
+      spinner.fail(`Failed to delete app.css: ${error}`)
+      console.error(error)
+    }
   }
 }
 
@@ -77,11 +83,17 @@ export async function deleteEslintFile(projectName: string, cwd: string) {
   spinner.color = "white"
 
   try {
+    // Check if file exists before trying to delete
+    await access(path)
     await unlink(path)
     spinner.succeed("Deleted eslint.config.js")
-  } catch (error) {
-    spinner.fail(`Failed to delete eslint.config.js: ${error}`)
-    console.error(error)
+  } catch (error: any) {
+    if (error.code === "ENOENT") {
+      spinner.info("eslint.config.js not found (already deleted or doesn't exist)")
+    } else {
+      spinner.fail(`Failed to delete eslint.config.js: ${error}`)
+      console.error(error)
+    }
   }
 }
 

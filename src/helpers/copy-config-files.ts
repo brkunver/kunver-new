@@ -1,6 +1,5 @@
 import { prettierConfigFile, pushFile } from "./config-files"
-
-import { writeFile } from "node:fs/promises"
+import { writeFile, access } from "node:fs/promises"
 import { join } from "node:path"
 import { execSync } from "child_process"
 import chalk from "chalk"
@@ -14,6 +13,9 @@ export async function copyConfigFiles(projectName: string, cwd: string) {
   spinner.color = "blue"
 
   try {
+    // Check if project directory exists
+    await access(projectPath)
+
     // Write both files concurrently
     await Promise.all([
       writeFile(join(projectPath, ".prettierrc.json"), prettierConfigFile),
@@ -30,5 +32,6 @@ export async function copyConfigFiles(projectName: string, cwd: string) {
   } catch (error) {
     spinner.fail("Failed to copy config files or set permissions")
     console.error(error)
+    throw error // Re-throw error so tests can handle it
   }
 }

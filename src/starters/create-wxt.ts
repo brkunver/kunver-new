@@ -21,17 +21,20 @@ type projectOptions = {
   name: string
   packageManager: (typeof packageManagers)[number]
   cwd?: string
+  selectedFramework?: (typeof wxtTemplates)[number]
 }
 
 export async function createWxtProject(options: projectOptions) {
-  const { name, packageManager, cwd = process.cwd() } = options
+  const { name, packageManager, cwd = process.cwd(), selectedFramework } = options
 
   try {
-    const framework: (typeof wxtTemplates)[number] = await select({
-      message: chalk.bold.magenta("Select a framework for WXT"),
-      choices: wxtTemplates,
-      default: "svelte",
-    })
+    const framework: (typeof wxtTemplates)[number] =
+      selectedFramework ||
+      ((await select({
+        message: chalk.bold.magenta("Select a framework for WXT"),
+        choices: wxtTemplates,
+        default: "svelte",
+      })) as (typeof wxtTemplates)[number])
 
     const isWxtCreated = await installWxt(framework, packageManager, name, cwd)
 

@@ -44,8 +44,9 @@ describe.each(packageManagers)(`WXT Svelte project with %s`, packageManager => {
       name: projectName,
       packageManager,
       cwd: tempDir,
+      selectedFramework: "svelte",
     })
-  }, 120000) // 2 minutes timeout for wxt installation
+  }, 60000) // 1 minute timeout for wxt installation
 
   afterAll(async () => {
     try {
@@ -104,7 +105,12 @@ describe.each(packageManagers)(`WXT Svelte project with %s`, packageManager => {
   })
 
   it("should clean up unnecessary files", async () => {
-    const deletedFiles = ["src/assets/svelte.svg", "src/entrypoints/popup/app.css", "src/entrypoints/content.ts", "src/lib/Counter.svelte"]
+    const deletedFiles = [
+      "src/assets/svelte.svg",
+      "src/entrypoints/popup/app.css",
+      "src/entrypoints/content.ts",
+      "src/lib/Counter.svelte",
+    ]
 
     const deletionChecks = await Promise.all(
       deletedFiles.map(async file => ({
@@ -137,7 +143,7 @@ describe.each(packageManagers)(`WXT Svelte project with %s`, packageManager => {
     expect(appContent).toContain('<h1 class="text-3xl fixed top-20 left-20 z-50">{message}</h1>')
 
     const indexContent = await readFileSafe(contentIndexPath)
-    expect(indexContent).toContain('export default defineContentScript({')
+    expect(indexContent).toContain("export default defineContentScript({")
   })
 
   it("should have Tailwind CSS import in main.ts and tailwind.css file", async () => {

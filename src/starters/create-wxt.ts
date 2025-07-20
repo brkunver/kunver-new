@@ -9,7 +9,13 @@ import chalk from "chalk"
 import { postInstallWxtSvelte } from "../wxt-starter/post-install-wxt-svelte"
 import { join } from "node:path"
 
-const wxtTemplates = ["react", "vue", "svelte", "vanilla", "solid"] as const
+const wxtTemplates = [
+  "react - !not ready",
+  "vue - !not ready",
+  "svelte",
+  "vanilla - !not ready",
+  "solid - !not ready",
+] as const
 
 type projectOptions = {
   name: string

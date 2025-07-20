@@ -2,7 +2,7 @@ import { createReactProject } from "./starters/create-react"
 import { createWxtProject } from "./starters/create-wxt"
 import { openInEditor } from "./helpers/open-in-editor"
 
-export const projects = ["react-ts-tw", "next-ts", "wxt", "cpp-cmake"] as const
+export const projects = ["react-ts-tw", "next-ts - !not ready", "wxt", "cpp-cmake - !not ready"] as const
 export const packageManagers = ["bun", "pnpm", "npm"] as const
 
 type options = {
@@ -17,13 +17,13 @@ export default async function projectStarter(options: options) {
     case "react-ts-tw":
       await createReactProject({ name: options.name, packageManager: options.packageManager })
       break
-    case "next-ts":
+    case "next-ts - !not ready":
       console.log("next-ts", options.packageManager, options.name)
       break
     case "wxt":
       await createWxtProject({ name: options.name, packageManager: options.packageManager })
       break
-    case "cpp-cmake":
+    case "cpp-cmake - !not ready":
       console.log("cpp-cmake", options.packageManager, options.name)
       break
     default:

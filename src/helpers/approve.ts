@@ -1,6 +1,7 @@
 import ora from "ora"
 import chalk from "chalk"
-const { spawn } = await import("node:child_process")
+import { execa } from "execa"
+import { spawn } from "node:child_process"
 
 export async function pnpmApproveBuilds(projectName: string, cwd: string) {
   const spinner = ora("Approving builds for " + chalk.blue(projectName)).start()
@@ -42,6 +43,20 @@ export async function pnpmApproveBuilds(projectName: string, cwd: string) {
   } catch (error) {
     spinner.fail("Failed to approve builds for " + chalk.blue(projectName))
     console.error(error)
+    return false
+  }
+}
+
+export async function bunApproveBuilds(projectName: string, cwd: string) {
+  const command = `cd ${projectName} && bun pm trust --all`
+  const spinner = ora("Approving builds for " + chalk.blue(projectName)).start()
+
+  try {
+    await execa(command, { shell: true, cwd: cwd })
+    spinner.succeed("Approved builds for " + chalk.blue(projectName))
+    return true
+  } catch (error) {
+    spinner.fail("Failed to approve builds for " + chalk.blue(projectName))
     return false
   }
 }

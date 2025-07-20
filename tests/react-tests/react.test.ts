@@ -96,14 +96,19 @@ describe.each(packageManagers)(`React project with %s`, packageManager => {
 
   it("should configure Vite with Tailwind plugin", async () => {
     const viteConfigPath = path.join(projectPath, "vite.config.ts")
-    const viteConfig = await readFileSafe(viteConfigPath)
+    try {
+      const viteConfig = await readFileSafe(viteConfigPath)
+      // Check for Tailwind imports and configuration
+      expect(viteConfig).toContain('import tailwindcss from "@tailwindcss/vite"')
+      expect(viteConfig).toContain("tailwindcss()")
 
-    // Check for Tailwind imports and configuration
-    expect(viteConfig).toContain('import tailwindcss from "@tailwindcss/vite"')
-    expect(viteConfig).toContain("tailwindcss()")
-
-    // Check if the plugin is properly added to the config
-    expect(viteConfig).toMatch(/plugins:\s*\[[\s\S]*?tailwindcss\(\)[\s\S]*?\]/)
+      // Check if the plugin is properly added to the config
+      expect(viteConfig).toMatch(/plugins:\s*\[[\s\S]*?tailwindcss\(\)[\s\S]*?\]/)
+    } catch (error) {
+      // Log the error for debugging
+      console.error(`Failed to read or parse ${viteConfigPath}:`, error)
+      throw error // Re-throw to fail the test
+    }
   })
 
   it("should clean up unnecessary files", async () => {
@@ -122,7 +127,7 @@ describe.each(packageManagers)(`React project with %s`, packageManager => {
   })
 
   it("should have the correct App component structure", async () => {
-    const appPath = path.join(projectPath, "src/App.tsx")
+    const appPath = path.join(projectPath, "src/app.tsx")
     const appContent = await readFileSafe(appPath)
 
     // Check for basic structure

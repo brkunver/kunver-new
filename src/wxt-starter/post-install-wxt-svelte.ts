@@ -63,9 +63,7 @@ export default defineContentScript({
     // Update wxt.config.ts
     const wxtConfigPath = join(projectDir, "wxt.config.ts")
     let wxtConfig = await readFile(wxtConfigPath, "utf-8")
-    wxtConfig =
-      `import tailwindcss from '@tailwindcss/vite'
-` + wxtConfig
+    wxtConfig = `import tailwindcss from "@tailwindcss/vite"` + wxtConfig
     wxtConfig = wxtConfig.replace(
       "defineConfig({",
       `defineConfig({

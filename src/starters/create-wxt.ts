@@ -1,12 +1,10 @@
 import { installWxt } from "../wxt-starter/install-wxt"
 import { installDependencies } from "../helpers/install-deps"
-import { copyConfigFiles } from "../helpers/copy-config-files"
 import { pnpmApproveBuilds } from "../helpers/pnpm-approve"
 import { bunApproveBuilds } from "../helpers/bun-approve"
 import { packageManagers } from "../project-starter"
 import { select } from "@inquirer/prompts"
 import chalk from "chalk"
-import { postInstallWxtSvelte } from "../wxt-starter/post-install-wxt-svelte"
 import { join } from "node:path"
 
 const wxtTemplates = [
@@ -42,14 +40,6 @@ export async function createWxtProject(options: projectOptions) {
       const projectDir = join(cwd, name)
       // install dependencies
       await installDependencies(packageManager, name, cwd)
-
-      // copy config files
-      await copyConfigFiles(name, cwd)
-
-      // run post-install steps for svelte template
-      if (framework === "svelte") {
-        await postInstallWxtSvelte(name, projectDir, packageManager)
-      }
 
       // approve builds
       if (packageManager === "pnpm") {

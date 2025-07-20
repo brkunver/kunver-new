@@ -7,7 +7,6 @@ export async function pnpmApproveBuilds(projectName: string, cwd: string) {
 
   try {
     // Use spawn instead of execa for better control over stdio
-
     return new Promise<boolean>(resolve => {
       const child = spawn("pnpm", ["approve-builds"], {
         cwd: `${cwd}/${projectName}`,

@@ -4,7 +4,7 @@ import { spawn } from "node:child_process"
 import ora from "ora"
 import chalk from "chalk"
 
-export async function postInstallWxt(projectName: string, projectDir: string, packageManager: string) {
+export async function postInstallWxtSvelte(projectName: string, projectDir: string, packageManager: string) {
   const spinner = ora("Finalizing WXT Svelte project setup...").start()
   try {
     // Delete unnecessary files
@@ -28,7 +28,7 @@ export async function postInstallWxt(projectName: string, projectDir: string, pa
 
     const indexTsContent = `import App from "./App.svelte"
 import { mount, unmount } from "svelte"
-import "~/assets/tailwind.css"
+
 export default defineContentScript({
   matches: ["<all_urls>"],
   cssInjectionMode: "ui",
@@ -75,7 +75,7 @@ export default defineContentScript({
     wxtConfig = `import tailwindcss from '@tailwindcss/vite'\n` + wxtConfig
     wxtConfig = wxtConfig.replace(
       "defineConfig({",
-      "defineConfig({\n  vite: () => ({\n    plugins: [tailwindcss()]\n  }),\n  webExt: {\n    disabled: true\n  },",
+      "defineConfig({\n  vite: () => ({\n    plugins: [tailwindcss()]\n  }),\n  webExt: {\n    disabled: true\n  },"
     )
     await writeFile(wxtConfigPath, wxtConfig)
 

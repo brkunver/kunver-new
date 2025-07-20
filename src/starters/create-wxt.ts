@@ -6,7 +6,7 @@ import { bunApproveBuilds } from "../helpers/bun-approve"
 import { packageManagers } from "../project-starter"
 import { select } from "@inquirer/prompts"
 import chalk from "chalk"
-import { postInstallWxt } from "../wxt-starter/post-install-wxt"
+import { postInstallWxtSvelte } from "../wxt-starter/post-install-wxt-svelte"
 import { join } from "node:path"
 
 const wxtTemplates = ["react", "vue", "svelte", "vanilla", "solid"] as const
@@ -39,7 +39,7 @@ export async function createWxtProject(options: projectOptions) {
 
       // run post-install steps for svelte template
       if (framework === "svelte") {
-        await postInstallWxt(name, projectDir, packageManager)
+        await postInstallWxtSvelte(name, projectDir, packageManager)
       }
 
       // approve builds

@@ -16,6 +16,13 @@
 
 - Code style should follow prettier rules (.prettierrc.json file).
 
+## Code Flow
+
+1. Code starts at src/index.ts,user selects a project type and a package manager, enter project name, select an editor to open the project in.
+2. Selected project type is passed to project-starter.ts, selected package manager is passed to project-starter.ts, selected editor is passed to project-starter.ts, selected project name is passed to project-starter.ts.
+3. project-starter.ts file calls the selected project type's starter function from starters folder.
+4. create-xx.ts files starts to create project with selected package manager.
+
 ## React starter plan
 
 - create react project with vite ( using preferred package manager)

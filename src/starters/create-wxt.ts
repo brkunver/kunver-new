@@ -1,7 +1,5 @@
-import { installWxt } from "../wxt-starter/install-wxt"
 import { installDependencies } from "../helpers/install-deps"
-import { pnpmApproveBuilds } from "../helpers/approve"
-import { bunApproveBuilds } from "../helpers/bun-approve"
+import { pnpmApproveBuilds, bunApproveBuilds } from "../helpers/approve"
 import { packageManagers } from "../project-starter"
 import { select } from "@inquirer/prompts"
 import chalk from "chalk"
@@ -34,7 +32,8 @@ export async function createWxtProject(options: projectOptions) {
         default: "svelte",
       })) as (typeof wxtTemplates)[number])
 
-    const isWxtCreated = await installWxt(framework, packageManager, name, cwd)
+    //TODO : copy template folder
+    const isWxtCreated = false
 
     if (isWxtCreated) {
       const projectDir = join(cwd, name)

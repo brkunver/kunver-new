@@ -1,6 +1,6 @@
 // install tailwind helper
 import { readFileSync, writeFileSync } from "fs"
-import { spawn } from "node:child_process"
+import { execa } from "execa"
 import ora from "ora"
 import chalk from "chalk"
 
@@ -43,23 +43,18 @@ function addTailwindDirective(projectName: string, cwd: string) {
 }
 
 export async function installTailwind(packageManager: string, projectName: string, cwd: string): Promise<boolean> {
-  return new Promise(resolve => {
-    const command = "cd " + projectName + " && " + packageManager + " install tailwindcss @tailwindcss/vite"
-    const child = spawn(command, { shell: true, cwd: cwd })
-    const spinner = ora("Installing Tailwind with " + chalk.blue(packageManager)).start()
-    spinner.color = "blue"
-    spinner.start()
+  const command = "cd " + projectName + " && " + packageManager + " install tailwindcss @tailwindcss/vite"
+  const spinner = ora("Installing Tailwind with " + chalk.blue(packageManager)).start()
+  spinner.color = "blue"
 
-    child.on("close", code => {
-      if (code === 0) {
-        spinner.succeed("Installed tailwind")
-        editViteConfig(projectName, cwd)
-        addTailwindDirective(projectName, cwd)
-        resolve(true)
-      } else {
-        spinner.fail("Failed to install tailwind")
-        resolve(false)
-      }
-    })
-  })
+  try {
+    await execa(command, { shell: true, cwd: cwd })
+    spinner.succeed("Installed tailwind")
+    editViteConfig(projectName, cwd)
+    addTailwindDirective(projectName, cwd)
+    return true
+  } catch (error) {
+    spinner.fail("Failed to install tailwind")
+    return false
+  }
 }

@@ -1,8 +1,8 @@
-import { spawn } from "node:child_process"
+import { execa } from "execa"
 import ora from "ora"
 import chalk from "chalk"
 
-export function installReact(packageManager: string, name: string, cwd: string): Promise<boolean> {
+export async function installReact(packageManager: string, name: string, cwd: string): Promise<boolean> {
   let command: string
   switch (packageManager) {
     case "pnpm":
@@ -18,19 +18,15 @@ export function installReact(packageManager: string, name: string, cwd: string):
       command = `pnpm create vite ${name} --template react-swc-ts`
   }
 
-  return new Promise(resolve => {
-    const child = spawn(command, { shell: true, cwd: cwd })
-    const spinner = ora("Creating React project " + chalk.blue(name)).start()
-    spinner.color = "blue"
+  const spinner = ora("Creating React project " + chalk.blue(name)).start()
+  spinner.color = "blue"
 
-    child.on("close", code => {
-      if (code === 0) {
-        spinner.succeed("Created React project at " + chalk.blue(name))
-        resolve(true)
-      } else {
-        spinner.fail("Failed to create React project at " + chalk.blue(name))
-        resolve(false)
-      }
-    })
-  })
+  try {
+    await execa(command, { shell: true, cwd: cwd })
+    spinner.succeed("Created React project at " + chalk.blue(name))
+    return true
+  } catch (error) {
+    spinner.fail("Failed to create React project at " + chalk.blue(name))
+    return false
+  }
 }

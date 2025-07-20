@@ -1,6 +1,6 @@
 import { writeFile, unlink, rm } from "node:fs/promises"
 import ora from "ora"
-import { spawn } from "node:child_process"
+import { execa } from "execa"
 
 export async function editReadme(projectName: string, cwd: string) {
   const path = `${cwd}/${projectName}/README.md`
@@ -92,20 +92,16 @@ export async function removePackages(projectName: string, packageManager: string
     " && " +
     packageManager +
     " remove @eslint/js eslint eslint-plugin-react-hooks eslint-plugin-react-refresh globals typescript-eslint"
-  return new Promise(resolve => {
-    const child = spawn(command, { shell: true, cwd: cwd })
-    const spinner = ora("Removing packages...").start()
-    spinner.color = "white"
-    spinner.start()
+  const spinner = ora("Removing packages...").start()
+  spinner.color = "white"
 
-    child.on("close", code => {
-      if (code === 0) {
-        spinner.succeed("Removed packages")
-        resolve(true)
-      } else {
-        spinner.fail("Failed to remove packages")
-        resolve(false)
-      }
-    })
-  })
+  try {
+    await execa(command, { shell: true, cwd: cwd })
+    spinner.succeed("Removed packages")
+    return true
+  } catch (error) {
+    spinner.fail("Failed to remove packages")
+    console.error(error)
+    return false
+  }
 }

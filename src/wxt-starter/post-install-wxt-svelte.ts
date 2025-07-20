@@ -1,6 +1,6 @@
 import { rm, mkdir, writeFile, readFile } from "node:fs/promises"
 import { join } from "node:path"
-import { spawn } from "node:child_process"
+import { execa } from "execa"
 import ora from "ora"
 import chalk from "chalk"
 
@@ -52,17 +52,8 @@ export default defineContentScript({
 
     // Install Tailwind CSS
     spinner.text = "Installing Tailwind CSS..."
-    await new Promise<void>((resolve, reject) => {
-      const command = `${packageManager} install tailwindcss @tailwindcss/vite`
-      const child = spawn(command, { shell: true, cwd: projectDir })
-      child.on("close", code => {
-        if (code === 0) {
-          resolve()
-        } else {
-          reject(new Error("Failed to install Tailwind CSS"))
-        }
-      })
-    })
+    const command = `${packageManager} install tailwindcss @tailwindcss/vite`
+    await execa(command, { shell: true, cwd: projectDir })
 
     // Create Tailwind CSS file
     spinner.text = "Configuring Tailwind CSS..."
@@ -72,10 +63,17 @@ export default defineContentScript({
     // Update wxt.config.ts
     const wxtConfigPath = join(projectDir, "wxt.config.ts")
     let wxtConfig = await readFile(wxtConfigPath, "utf-8")
-    wxtConfig = `import tailwindcss from '@tailwindcss/vite'\n` + wxtConfig
+    wxtConfig = `import tailwindcss from '@tailwindcss/vite'
+` + wxtConfig
     wxtConfig = wxtConfig.replace(
       "defineConfig({",
-      "defineConfig({\n  vite: () => ({\n    plugins: [tailwindcss()]\n  }),\n  webExt: {\n    disabled: true\n  },",
+      "defineConfig({
+  vite: () => ({
+    plugins: [tailwindcss()]
+  }),
+  webExt: {
+    disabled: true
+  },",
     )
     await writeFile(wxtConfigPath, wxtConfig)
 

@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process"
+import { execa } from "execa"
 import ora from "ora"
 import chalk from "chalk"
 
@@ -18,19 +18,15 @@ export async function installWxt(framework: string, packageManager: string, name
       command = `bun wxt@latest init ${name} -t ${framework} --pm ${packageManager}`
   }
 
-  return new Promise(resolve => {
-    const child = spawn(command, { shell: true, cwd: cwd })
-    const spinner = ora("Creating WXT project " + chalk.blue(name)).start()
-    spinner.color = "blue"
+  const spinner = ora("Creating WXT project " + chalk.blue(name)).start()
+  spinner.color = "blue"
 
-    child.on("close", code => {
-      if (code === 0) {
-        spinner.succeed("Created WXT project at " + chalk.blue(name))
-        resolve(true)
-      } else {
-        spinner.fail("Failed to create WXT project at " + chalk.blue(name))
-        resolve(false)
-      }
-    })
-  })
+  try {
+    await execa(command, { shell: true, cwd: cwd })
+    spinner.succeed("Created WXT project at " + chalk.blue(name))
+    return true
+  } catch (error) {
+    spinner.fail("Failed to create WXT project at " + chalk.blue(name))
+    return false
+  }
 }

@@ -42,7 +42,7 @@ export default defineContentScript({
         return mount(App, { target: container })
       },
       onRemove: app => {
-        unmount(app)
+        unmount(app as any)
       },
     })
     ui.mount()
@@ -75,7 +75,7 @@ export default defineContentScript({
     wxtConfig = `import tailwindcss from '@tailwindcss/vite'\n` + wxtConfig
     wxtConfig = wxtConfig.replace(
       "defineConfig({",
-      "defineConfig({\n  vite: () => ({\n    plugins: [tailwindcss()]\n  }),\n  webExt: {\n    disabled: true\n  },"
+      "defineConfig({\n  vite: () => ({\n    plugins: [tailwindcss()]\n  }),\n  webExt: {\n    disabled: true\n  },",
     )
     await writeFile(wxtConfigPath, wxtConfig)
 

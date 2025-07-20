@@ -14,9 +14,11 @@ pnpx | npx | bunx @kunver/new
 
 ✅ React + TypeScript + Tailwind + Prettierconfig
 
+✅ Wxt + Svelte + TypeScript + Tailwind + Prettierconfig
+
 ### Work in progress
 
-🟡 Wxt + TypeScript + Tailwind + Prettierconfig
+🟡 Wxt + React + TypeScript + Tailwind + Prettierconfig
 
 ### Will be added
 

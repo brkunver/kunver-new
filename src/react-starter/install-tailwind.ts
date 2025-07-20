@@ -7,7 +7,6 @@ import chalk from "chalk"
 function editViteConfig(projectName: string, cwd: string) {
   const path = `${cwd}/${projectName}/vite.config.ts`
   const spinner = ora("Editing vite.config.ts...").start()
-  spinner.color = "blue"
 
   try {
     // Read the file
@@ -45,7 +44,6 @@ function addTailwindDirective(projectName: string, cwd: string) {
 export async function installTailwind(packageManager: string, projectName: string, cwd: string): Promise<boolean> {
   const command = "cd " + projectName + " && " + packageManager + " install tailwindcss @tailwindcss/vite"
   const spinner = ora("Installing Tailwind with " + chalk.blue(packageManager)).start()
-  spinner.color = "blue"
 
   try {
     await execa(command, { shell: true, cwd: cwd })

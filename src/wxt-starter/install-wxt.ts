@@ -19,7 +19,6 @@ export async function installWxt(framework: string, packageManager: string, name
   }
 
   const spinner = ora("Creating WXT project " + chalk.blue(name)).start()
-  spinner.color = "blue"
 
   try {
     await execa(command, { shell: true, cwd: cwd })

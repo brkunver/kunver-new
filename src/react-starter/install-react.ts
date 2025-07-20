@@ -19,7 +19,6 @@ export async function installReact(packageManager: string, name: string, cwd: st
   }
 
   const spinner = ora("Creating React project " + chalk.blue(name)).start()
-  spinner.color = "blue"
 
   try {
     await execa(command, { shell: true, cwd: cwd })

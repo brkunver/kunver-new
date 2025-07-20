@@ -10,7 +10,6 @@ export async function copyConfigFiles(projectName: string, cwd: string) {
   const pushShPath = join(projectPath, "push.sh")
 
   const spinner = ora("Copying config files to " + chalk.blue(projectName)).start()
-  spinner.color = "blue"
 
   try {
     // Check if project directory exists

@@ -4,7 +4,6 @@ const { spawn } = await import("node:child_process")
 
 export async function pnpmApproveBuilds(projectName: string, cwd: string) {
   const spinner = ora("Approving builds for " + chalk.blue(projectName)).start()
-  spinner.color = "blue"
 
   try {
     // Use spawn instead of execa for better control over stdio

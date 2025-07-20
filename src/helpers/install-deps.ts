@@ -20,7 +20,6 @@ export async function installDependencies(packageManager: string, name: string, 
   }
 
   const spinner = ora("Installing dependencies with " + chalk.blue(packageManager)).start()
-  spinner.color = "white"
 
   try {
     await execa(command, { shell: true, cwd: cwd })

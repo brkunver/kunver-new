@@ -6,6 +6,8 @@ import { bunApproveBuilds } from "../helpers/bun-approve"
 import { packageManagers } from "../project-starter"
 import { select } from "@inquirer/prompts"
 import chalk from "chalk"
+import { postInstallWxt } from "../wxt-starter/post-install-wxt"
+import { join } from "node:path"
 
 const wxtTemplates = ["react", "vue", "svelte", "vanilla", "solid"] as const
 
@@ -28,26 +30,24 @@ export async function createWxtProject(options: projectOptions) {
     const isWxtCreated = await installWxt(framework, packageManager, name, cwd)
 
     if (isWxtCreated) {
+      const projectDir = join(cwd, name)
       // install dependencies
       await installDependencies(packageManager, name, cwd)
 
       // copy config files
       await copyConfigFiles(name, cwd)
 
-      // WXT has its own Tailwind setup, so we might not need a separate `installTailwind` step.
-      // We need to investigate how to integrate Tailwind properly with WXT's structure.
-      // COMMENT: Need to check if a separate Tailwind installation is needed or if it's handled by WXT templates.
+      // run post-install steps for svelte template
+      if (framework === "svelte") {
+        await postInstallWxt(name, projectDir, packageManager)
+      }
 
       // approve builds
       if (packageManager === "pnpm") {
-        // COMMENT: Need to confirm if pnpmApproveBuilds is necessary for WXT projects.
         await pnpmApproveBuilds(name, cwd)
       } else if (packageManager === "bun") {
-        // COMMENT: Need to confirm if bunApproveBuilds is necessary for WXT projects.
         await bunApproveBuilds(name, cwd)
       }
-
-      // COMMENT: Need to check if there are any post-installation steps required for WXT, similar to `postInstallReact`.
     }
   } catch (error) {
     console.error(error)

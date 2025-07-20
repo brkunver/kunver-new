@@ -10,4 +10,5 @@ export default defineConfig({
   },
   splitting: false,
   minify: true,
+  publicDir: "src/public",
 })

@@ -1,7 +1,8 @@
+import { spawn } from "node:child_process"
+
 import ora from "ora"
 import chalk from "chalk"
 import { execa } from "execa"
-import { spawn } from "node:child_process"
 
 export async function pnpmApproveBuilds(projectName: string, cwd: string) {
   const spinner = ora("Approving builds for " + chalk.blue(projectName)).start()

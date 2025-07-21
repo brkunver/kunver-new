@@ -1,9 +1,11 @@
+import { join } from "node:path"
+
+import chalk from "chalk"
+import { select } from "@inquirer/prompts"
+
 import { installDependencies } from "../helpers/install-deps"
 import { pnpmApproveBuilds, bunApproveBuilds } from "../helpers/approve"
 import { packageManagers } from "../project-starter"
-import { select } from "@inquirer/prompts"
-import chalk from "chalk"
-import { join } from "node:path"
 
 const wxtTemplates = [
   "react - !not ready",

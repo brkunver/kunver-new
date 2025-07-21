@@ -1,10 +1,11 @@
+import { join } from "node:path"
+import { fileURLToPath } from "node:url"
+import path from "node:path"
+
 import { installDependencies } from "../helpers/install-deps"
 import { copyTemplateFolder } from "../helpers/copy-template"
 import { pnpmApproveBuilds, bunApproveBuilds } from "../helpers/approve"
 import { packageManagers } from "../project-starter"
-import { join } from "node:path"
-import { fileURLToPath } from "node:url"
-import path from "node:path"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

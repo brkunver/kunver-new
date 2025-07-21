@@ -52,7 +52,11 @@ export async function createWxtProject(options: projectOptions) {
       // get package.json file. add manager script
       const packageJsonPath = join(cwd, name, "package.json")
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"))
-      packageJson.scripts.manager = `node manager.cjs ${packageManager}`
+      if (packageManager == "bun") {
+        packageJson.scripts.manager = `bun manager.cjs ${packageManager}`
+      } else {
+        packageJson.scripts.manager = `node manager.cjs ${packageManager}`
+      }
       fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
 
       // install dependencies

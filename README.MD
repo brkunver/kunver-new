@@ -12,17 +12,17 @@ pnpx | npx | bunx @kunver/new
 
 ### Ready to use
 
-✅ React + TypeScript + Tailwind + Prettierconfig
+✅ React
 
-✅ Wxt + Svelte + TypeScript + Tailwind + Prettierconfig
+✅ Wxt + Svelte
+
+✅ Next.js + Prisma
 
 ### Work in progress
 
-🟡 Wxt + React + TypeScript + Tailwind + Prettierconfig
+🟡 Wxt + React
 
 ### Will be added
-
-🟡 Next.js + TypeScript + Tailwind + Prettierconfig
 
 🟡 Astro + TypeScript + Tailwind + Prettierconfig
 

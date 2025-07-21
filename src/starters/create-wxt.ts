@@ -9,7 +9,7 @@ import { installDependencies } from "../helpers/install-deps"
 import { pnpmApproveBuilds, bunApproveBuilds } from "../helpers/approve"
 import { packageManagers } from "../project-starter"
 import { copyTemplateFolder } from "../helpers/copy-template"
-import fs from "node:fs"
+import { addManagerScript } from "../helpers/add-manager-script"
 
 const wxtTemplates = [
   "react - !not ready",
@@ -49,15 +49,7 @@ export async function createWxtProject(options: projectOptions) {
 
     const isWxtCreated = await copyTemplateFolder(templatePath, join(cwd, name))
     if (isWxtCreated) {
-      // get package.json file. add manager script
-      const packageJsonPath = join(cwd, name, "package.json")
-      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"))
-      if (packageManager == "bun") {
-        packageJson.scripts.manager = `bun manager.cjs ${packageManager}`
-      } else {
-        packageJson.scripts.manager = `node manager.cjs ${packageManager}`
-      }
-      fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
+      await addManagerScript(packageManager, name, cwd)
 
       // install dependencies
       await installDependencies(packageManager, name, cwd)

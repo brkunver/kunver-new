@@ -6,7 +6,7 @@ import { select } from "@inquirer/prompts"
 
 import { installDependencies } from "../helpers/install-deps"
 import { pnpmApproveBuilds, bunApproveBuilds } from "../helpers/approve"
-import { packageManagers } from "../project-starter"
+import { TpackageManager } from "../project-starter"
 import { copyTemplateFolder } from "../helpers/copy-template"
 import { addManagerScript } from "../helpers/add-manager-script"
 
@@ -23,7 +23,7 @@ const __dirname = path.dirname(__filename)
 
 type projectOptions = {
   name: string
-  packageManager: (typeof packageManagers)[number]
+  packageManager: TpackageManager
   cwd?: string
   selectedFramework?: (typeof wxtTemplates)[number]
 }

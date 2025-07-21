@@ -4,7 +4,7 @@ import path from "node:path"
 import { input, select } from "@inquirer/prompts"
 import chalk from "chalk"
 
-import projectStarter, { projects, packageManagers } from "./project-starter"
+import projectStarter, { TprojectType, TpackageManager, projects, packageManagers } from "./project-starter"
 
 const projectName = await input({
   message: chalk.bold.blue("Enter a project name"),
@@ -26,18 +26,21 @@ const projectName = await input({
   },
 })
 
-const packageManager: (typeof packageManagers)[number] = await select({
-  message: chalk.bold.green("Select a package manager"),
-  choices: packageManagers,
-  default: "bun",
-})
-
 // select project type
-const projectType: (typeof projects)[number] = await select({
+const projectType: TprojectType = await select({
   message: chalk.bold.yellow("Select a project type"),
   default: "react-ts-tw",
   choices: projects,
 })
+
+let packageManager: TpackageManager | undefined
+if (projectType !== "cpp-cmake - !not ready") {
+  packageManager = await select({
+    message: chalk.bold.green("Select a package manager"),
+    choices: packageManagers,
+    default: "bun",
+  })
+}
 
 // open in editor ?
 const openInEditor: "no" | "windsurf" | "cursor" | "code" = await select({

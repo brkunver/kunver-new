@@ -34,7 +34,7 @@ const projectType: TprojectType = await select({
 })
 
 let packageManager: TpackageManager | undefined
-if (projectType !== "cpp-cmake - !not ready") {
+if (projectType !== "cpp-cmake") {
   packageManager = await select({
     message: chalk.bold.green("Select a package manager"),
     choices: packageManagers,

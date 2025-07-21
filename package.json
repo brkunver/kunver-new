@@ -18,7 +18,7 @@
     "start": "pnpm run build && node dist/index.js",
     "prepublishOnly": "pnpm run build",
     "local": "pnpm link --global",
-    "manager": "node manager.js",
+    "manager": "node manager.cjs",
     "test": "vitest run"
   },
   "keywords": [],

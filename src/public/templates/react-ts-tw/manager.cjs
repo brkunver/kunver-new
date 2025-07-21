@@ -18,7 +18,7 @@ function runCommand(command) {
     })
 }
 
-async function publishAndPushOperations(command) {
+async function publishAndPushOperations(packageManager, command) {
     console.log("Switching to main branch...")
     if (!await runCommand("git checkout main")) {
         process.exit(1)
@@ -39,9 +39,9 @@ async function publishAndPushOperations(command) {
     console.log("✅ Successfully merged 'dev' into 'main' and pushed to GitHub!")
 
     if (command === "publish") {
-        console.log("Publishing package (pnpm publish)...")
-        if (!await runCommand("pnpm publish")) {
-            console.log("❌ pnpm publish command failed.")
+        console.log(`Publishing package (${packageManager} publish)...`)
+        if (!await runCommand(`${packageManager} publish`)) {
+            console.log(`❌ ${packageManager} publish command failed.`)
             process.exit(1)
         }
     }
@@ -55,10 +55,15 @@ async function publishAndPushOperations(command) {
     console.log("✅ All operations completed.")
 }
 
-const commandArg = process.argv[2]
+const packageManagerArg = process.argv[2]
+const commandArg = process.argv[3]
 
-if (commandArg === "push" || commandArg === "publish") {
-    publishAndPushOperations(commandArg)
-} else {
-    console.log(`Invalid or missing command: '${commandArg || ""}'. Usage: node manager.js [push|publish]`)
+const validManagers = ["pnpm", "npm", "yarn", "bun"]
+const validCommands = ["push", "publish"]
+
+if (!validManagers.includes(packageManagerArg) || !validCommands.includes(commandArg)) {
+    console.log(`Invalid or missing arguments. Usage: node manager.cjs <package-manager> <push|publish>\nValid package managers: ${validManagers.join(", ")}`)
+    process.exit(1)
 }
+
+publishAndPushOperations(packageManagerArg, commandArg)

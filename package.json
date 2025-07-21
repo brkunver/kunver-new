@@ -18,8 +18,7 @@
     "start": "pnpm run build && node dist/index.js",
     "prepublishOnly": "pnpm run build",
     "local": "pnpm link --global",
-    "manager": "node manager.cjs pnpm",
-    "test": "vitest run"
+    "manager": "node manager.cjs pnpm"
   },
   "keywords": [],
   "author": "Burak Unver <burakhanunver@gmail.com> (https://kunver.dev)",
@@ -36,7 +35,6 @@
   "devDependencies": {
     "@types/node": "^24.0.13",
     "tsup": "^8.2.2",
-    "typescript": "^5.5.4",
-    "vitest": "^3.2.4"
+    "typescript": "^5.5.4"
   }
 }

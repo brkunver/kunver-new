@@ -25,12 +25,6 @@
   "author": "Burak Unver <burakhanunver@gmail.com> (https://kunver.dev)",
   "license": "MIT",
   "packageManager": "pnpm@10.13.1",
-  "devDependencies": {
-    "@types/node": "^24.0.13",
-    "tsup": "^8.2.2",
-    "typescript": "^5.5.4",
-    "vitest": "^3.2.4"
-  },
   "dependencies": {
     "@inquirer/prompts": "^7.6.0",
     "@types/fs-extra": "^11.0.4",
@@ -38,5 +32,11 @@
     "execa": "^9.6.0",
     "fs-extra": "^11.3.0",
     "ora": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.13",
+    "tsup": "^8.2.2",
+    "typescript": "^5.5.4",
+    "vitest": "^3.2.4"
   }
 }

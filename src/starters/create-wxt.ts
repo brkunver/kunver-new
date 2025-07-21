@@ -18,6 +18,8 @@ const wxtTemplates = [
   "solid - !not ready",
 ] as const
 
+type wxtTemplatesType = (typeof wxtTemplates)[number]
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -25,20 +27,20 @@ type projectOptions = {
   name: string
   packageManager: TpackageManager
   cwd?: string
-  selectedFramework?: (typeof wxtTemplates)[number]
+  selectedFramework?: wxtTemplatesType
 }
 
 export async function createWxtProject(options: projectOptions) {
   const { name, packageManager, cwd = process.cwd(), selectedFramework } = options
 
   try {
-    const framework: (typeof wxtTemplates)[number] =
+    const framework: wxtTemplatesType =
       selectedFramework ||
       ((await select({
         message: chalk.bold.magenta("Select a framework for WXT"),
         choices: wxtTemplates,
         default: "svelte",
-      })) as (typeof wxtTemplates)[number])
+      })) as wxtTemplatesType)
 
     // default template path
     let templatePath = join(__dirname, "templates", "wxt-svelte")

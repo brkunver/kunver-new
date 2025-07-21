@@ -5,6 +5,7 @@ import { installDependencies } from "../helpers/install-deps"
 import { copyTemplateFolder } from "../helpers/copy-template"
 import { pnpmApproveBuilds, bunApproveBuilds } from "../helpers/approve"
 import { packageManagers } from "../project-starter"
+import { addManagerScript } from "../helpers/add-manager-script"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -32,6 +33,9 @@ export async function createReactProject(options: projectOptions) {
     if (!isDepsInstalled) {
       throw new Error("Failed to install dependencies")
     }
+
+    // add manager script
+    await addManagerScript(packageManager, name, cwd)
 
     // Approve builds
     if (packageManager === "pnpm") {

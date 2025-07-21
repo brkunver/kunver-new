@@ -1,4 +1,6 @@
 import { join } from "node:path"
+import { fileURLToPath } from "node:url"
+import path from "node:path"
 
 import chalk from "chalk"
 import { select } from "@inquirer/prompts"
@@ -6,6 +8,8 @@ import { select } from "@inquirer/prompts"
 import { installDependencies } from "../helpers/install-deps"
 import { pnpmApproveBuilds, bunApproveBuilds } from "../helpers/approve"
 import { packageManagers } from "../project-starter"
+import { copyTemplateFolder } from "../helpers/copy-template"
+import fs from "node:fs"
 
 const wxtTemplates = [
   "react - !not ready",
@@ -14,6 +18,9 @@ const wxtTemplates = [
   "vanilla - !not ready",
   "solid - !not ready",
 ] as const
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 type projectOptions = {
   name: string
@@ -34,11 +41,20 @@ export async function createWxtProject(options: projectOptions) {
         default: "svelte",
       })) as (typeof wxtTemplates)[number])
 
-    //TODO : copy template folder
-    const isWxtCreated = false
+    // default template path
+    let templatePath = join(__dirname, "templates", "wxt-svelte")
+    if (framework === "svelte") {
+      templatePath = join(__dirname, "templates", "wxt-svelte")
+    }
 
+    const isWxtCreated = await copyTemplateFolder(templatePath, join(cwd, name))
     if (isWxtCreated) {
-      const projectDir = join(cwd, name)
+      // get package.json file. add manager script
+      const packageJsonPath = join(cwd, name, "package.json")
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"))
+      packageJson.scripts.manager = `node manager.cjs ${packageManager}`
+      fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))
+
       // install dependencies
       await installDependencies(packageManager, name, cwd)
 

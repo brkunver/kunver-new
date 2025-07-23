@@ -22,8 +22,8 @@ pnpx | npx | bunx @kunver/new
 
 ### Work in progress
 
-🟡 Wxt + React
-
 ### Will be added
+
+🟡 Wxt + React
 
 🟡 Astro + TypeScript + Tailwind + Prettierconfig

@@ -34,7 +34,7 @@ const projectType: TprojectType = await select({
 })
 
 let packageManager: TpackageManager | undefined
-if (projectType !== "cpp-cmake") {
+if (projectType !== "python-notebook") {
   packageManager = await select({
     message: chalk.bold.green("Select a package manager"),
     choices: packageManagers,

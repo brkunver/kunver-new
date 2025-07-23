@@ -18,6 +18,8 @@ pnpx | npx | bunx @kunver/new
 
 ✅ Next.js + Prisma
 
+✅ Python Jupyter Notebook
+
 ### Work in progress
 
 🟡 Wxt + React
@@ -25,7 +27,3 @@ pnpx | npx | bunx @kunver/new
 ### Will be added
 
 🟡 Astro + TypeScript + Tailwind + Prettierconfig
-
-🟡 Cpp + Cmake + bash Scripts
-
-🟡 Golang

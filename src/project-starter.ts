@@ -31,7 +31,7 @@ export default async function projectStarter(options: options) {
       await createPythonNotebookProject({ name: options.name })
       break
     default:
-      console.log("Invalid project type", options.projectType)
+      console.log("Project Type Not Implemented", options.projectType)
       break
   }
 

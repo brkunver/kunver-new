@@ -10,13 +10,7 @@ import { TpackageManager } from "../project-starter"
 import { copyTemplateFolder } from "../helpers/copy-template"
 import { addManagerScript } from "../helpers/add-manager-script"
 
-const wxtTemplates = [
-  "react - !not ready",
-  "vue - !not ready",
-  "svelte",
-  "vanilla - !not ready",
-  "solid - !not ready",
-] as const
+const wxtTemplates = ["react - !not ready", "vue - !not ready", "svelte", "vanilla"] as const
 
 type wxtTemplatesType = (typeof wxtTemplates)[number]
 
@@ -46,6 +40,8 @@ export async function createWxtProject(options: projectOptions) {
     let templatePath = join(__dirname, "templates", "wxt-svelte")
     if (framework === "svelte") {
       templatePath = join(__dirname, "templates", "wxt-svelte")
+    } else if (framework === "vanilla") {
+      templatePath = join(__dirname, "templates", "wxt-vanilla")
     }
 
     const isWxtCreated = await copyTemplateFolder(templatePath, join(cwd, name))

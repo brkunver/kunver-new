@@ -23,7 +23,6 @@
   "keywords": [],
   "author": "Burak Unver <burakhanunver@gmail.com> (https://kunver.dev)",
   "license": "MIT",
-  "packageManager": "pnpm@10.13.1",
   "dependencies": {
     "@inquirer/prompts": "^7.6.0",
     "@types/fs-extra": "^11.0.4",

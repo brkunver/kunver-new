@@ -15,10 +15,10 @@
   },
   "scripts": {
     "build": "tsup",
-    "start": "pnpm run build && node dist/index.js",
-    "prepublishOnly": "pnpm run build",
-    "local": "pnpm link --global",
-    "manager": "node manager.cjs pnpm"
+    "start": "bun dist/index.js",
+    "prepublishOnly": "bun run build",
+    "local": "bun link kunver",
+    "manager": "bun manager.cjs bun"
   },
   "keywords": [],
   "author": "Burak Unver <burakhanunver@gmail.com> (https://kunver.dev)",

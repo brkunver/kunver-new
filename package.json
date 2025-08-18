@@ -17,7 +17,7 @@
     "build": "tsup",
     "start": "bun dist/index.js",
     "prepublishOnly": "bun run build",
-    "local": "bun link kunver",
+    "local": "bun link",
     "manager": "bun manager.cjs bun"
   },
   "keywords": [],

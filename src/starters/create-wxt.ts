@@ -4,11 +4,11 @@ import { fileURLToPath } from "node:url"
 import chalk from "chalk"
 import { select } from "@inquirer/prompts"
 
-import { installDependencies } from "../helpers/install-deps"
-import approveBuilds from "../helpers/approve"
-import { TpackageManager } from "../project-starter"
-import { copyTemplateFolder } from "../helpers/copy-template"
-import { addManagerScript } from "../helpers/add-manager-script"
+import { installDependencies } from "@/helpers/install-deps"
+import approveBuilds from "@/helpers/approve"
+import { TpackageManager } from "@/project-starter"
+import { copyTemplateFolder } from "@/helpers/copy-template"
+import { addManagerScript } from "@/helpers/add-manager-script"
 
 const wxtTemplates = ["react - !not ready", "vue - !not ready", "svelte", "vanilla"] as const
 
@@ -59,6 +59,8 @@ export async function createWxtProject(options: projectOptions) {
 
       // approve builds
       await approveBuilds(packageManager, name, cwd)
+
+      await addManagerScript(packageManager, name, cwd)
     }
   } catch (error) {
     console.error(error)

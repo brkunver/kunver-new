@@ -1,10 +1,10 @@
-import fsx from "fs-extra"
+import { promises as fs } from "fs"
 import ora from "ora"
 
 export async function copyTemplateFolder(templatePath: string, destinationPath: string) {
   const spinner = ora("Copying template folder...").start()
   try {
-    await fsx.copy(templatePath, destinationPath)
+    await fs.cp(templatePath, destinationPath, { recursive: true })
     spinner.succeed("Copied template folder")
     return true
   } catch (error) {

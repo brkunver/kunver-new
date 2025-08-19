@@ -4,7 +4,7 @@ import path from "node:path"
 import { input, select } from "@inquirer/prompts"
 import chalk from "chalk"
 
-import projectStarter, { TprojectType, TpackageManager, projects, packageManagers } from "./project-starter"
+import projectStarter, { TprojectType, TpackageManager, projects, packageManagers } from "@/project-starter"
 
 const projectName = await input({
   message: chalk.bold.blue("Enter a project name"),

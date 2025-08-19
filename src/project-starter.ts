@@ -1,8 +1,8 @@
-import { createReactProject } from "./starters/create-react"
-import { createNextProject } from "./starters/create-next"
-import { createWxtProject } from "./starters/create-wxt"
-import { createPythonNotebookProject } from "./starters/create-python-notebook"
-import { openInEditor } from "./helpers/open-in-editor"
+import { createReactProject } from "@/starters/create-react"
+import { createNextProject } from "@/starters/create-next"
+import { createWxtProject } from "@/starters/create-wxt"
+import { createPythonNotebookProject } from "@/starters/create-python-notebook"
+import { openInEditor } from "@/helpers/open-in-editor"
 
 export const projects = ["react-ts-tw", "next-ts-prisma", "wxt", "python-notebook", "cpp-makefile"] as const
 export type TprojectType = (typeof projects)[number]

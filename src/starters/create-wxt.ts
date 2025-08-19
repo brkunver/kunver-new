@@ -5,7 +5,7 @@ import chalk from "chalk"
 import { select } from "@inquirer/prompts"
 
 import { installDependencies } from "../helpers/install-deps"
-import { pnpmApproveBuilds, bunApproveBuilds } from "../helpers/approve"
+import approveBuilds from "../helpers/approve"
 import { TpackageManager } from "../project-starter"
 import { copyTemplateFolder } from "../helpers/copy-template"
 import { addManagerScript } from "../helpers/add-manager-script"
@@ -38,10 +38,16 @@ export async function createWxtProject(options: projectOptions) {
 
     // default template path
     let templatePath = join(__dirname, "templates", "wxt-svelte")
-    if (framework === "svelte") {
-      templatePath = join(__dirname, "templates", "wxt-svelte")
-    } else if (framework === "vanilla") {
-      templatePath = join(__dirname, "templates", "wxt-vanilla")
+
+    switch (framework) {
+      case "svelte":
+        templatePath = join(__dirname, "templates", "wxt-svelte")
+        break
+      case "vanilla":
+        templatePath = join(__dirname, "templates", "wxt-vanilla")
+        break
+      default:
+        break
     }
 
     const isWxtCreated = await copyTemplateFolder(templatePath, join(cwd, name))
@@ -52,11 +58,7 @@ export async function createWxtProject(options: projectOptions) {
       await installDependencies(packageManager, name, cwd)
 
       // approve builds
-      if (packageManager === "pnpm") {
-        await pnpmApproveBuilds(name, cwd)
-      } else if (packageManager === "bun") {
-        await bunApproveBuilds(name, cwd)
-      }
+      await approveBuilds(packageManager, name, cwd)
     }
   } catch (error) {
     console.error(error)

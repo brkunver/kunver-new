@@ -4,6 +4,19 @@ import ora from "ora"
 import chalk from "chalk"
 import { execa } from "execa"
 
+import { TpackageManager } from "@/project-starter"
+
+export default async function approveBuilds(packageManager: TpackageManager, projectName: string, cwd: string) {
+  switch (packageManager) {
+    case "pnpm":
+      return await pnpmApproveBuilds(projectName, cwd)
+    case "bun":
+      return await bunApproveBuilds(projectName, cwd)
+    default:
+      return false
+  }
+}
+
 export async function pnpmApproveBuilds(projectName: string, cwd: string) {
   const spinner = ora("Approving builds for " + chalk.blue(projectName)).start()
 

@@ -1,5 +1,5 @@
-import path, { join } from "node:path"
-import { fileURLToPath } from "node:url"
+import path, { join } from "path"
+import { fileURLToPath } from "url"
 
 import chalk from "chalk"
 import { select } from "@inquirer/prompts"

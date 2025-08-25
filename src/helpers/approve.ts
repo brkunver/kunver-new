@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process"
+import { spawn } from "child_process"
 
 import ora from "ora"
 import chalk from "chalk"

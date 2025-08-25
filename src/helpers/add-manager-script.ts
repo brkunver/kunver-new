@@ -1,5 +1,5 @@
-import { join } from "node:path"
-import fs from "node:fs"
+import { join } from "path"
+import fs from "fs"
 
 export async function addManagerScript(packageManager: string, name: string, cwd: string) {
   const packageJsonPath = join(cwd, name, "package.json")

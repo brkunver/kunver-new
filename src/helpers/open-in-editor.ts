@@ -1,7 +1,9 @@
 import { execa } from "execa"
 import chalk from "chalk"
 
-type editorName = "code" | "windsurf" | "cursor"
+import * as constant from "@/constant"
+
+type editorName = constant.TopenInEditor
 
 export async function openInEditor(projectName: string, cwd: string, editorName: editorName) {
   console.log(chalk.white("Opening " + chalk.blue(projectName) + " in " + chalk.green(editorName)))

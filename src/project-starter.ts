@@ -12,7 +12,7 @@ import * as constant from "./constant"
 
 type options = {
   projectType: constant.TprojectType
-  packageManager?: constant.TpackageManager
+  packageManager: constant.TpackageManager
   openInEditor: constant.TopenInEditor
   name: string
 }
@@ -20,16 +20,16 @@ type options = {
 export default async function projectStarter(options: options) {
   switch (options.projectType) {
     case "react-ts-tw":
-      await createReactProject({ name: options.name, packageManager: options.packageManager! })
+      await createReactProject({ name: options.name, packageManager: options.packageManager })
       break
     case "next-ts-prisma":
-      await createNextProject({ name: options.name, packageManager: options.packageManager! })
+      await createNextProject({ name: options.name, packageManager: options.packageManager })
       break
     case "wxt":
-      await createWxtProject({ name: options.name, packageManager: options.packageManager! })
+      await createWxtProject({ name: options.name, packageManager: options.packageManager })
       break
     case "electron-svelte":
-      await createElectronSvelteProject({ name: options.name, packageManager: options.packageManager! })
+      await createElectronSvelteProject({ name: options.name, packageManager: options.packageManager })
       break
     case "python-notebook":
       await createPythonNotebookProject({ name: options.name })

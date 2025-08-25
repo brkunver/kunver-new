@@ -7,6 +7,10 @@ import chalk from "chalk"
 import projectStarter from "@/project-starter"
 import * as constant from "@/constant"
 
+const version = "2.4.0"
+
+console.log(chalk.bold.green("Kunver v" + version))
+
 const projectName = await input({
   message: chalk.bold.blue("Enter a project name"),
   default: chalk.gray("my-project"),

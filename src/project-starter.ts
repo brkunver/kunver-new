@@ -2,6 +2,7 @@ import { createReactProject } from "@/starters/create-react"
 import { createNextProject } from "@/starters/create-next"
 import { createWxtProject } from "@/starters/create-wxt"
 import { createPythonNotebookProject } from "@/starters/create-python-notebook"
+import { createElectronSvelteProject } from "@/starters/create-electron-svelte"
 import { openInEditor } from "@/helpers/open-in-editor"
 
 import * as constant from "./constant"
@@ -23,6 +24,9 @@ export default async function projectStarter(options: options) {
       break
     case "wxt":
       await createWxtProject({ name: options.name, packageManager: options.packageManager! })
+      break
+    case "electron-svelte":
+      await createElectronSvelteProject({ name: options.name, packageManager: options.packageManager! })
       break
     case "python-notebook":
       await createPythonNotebookProject({ name: options.name })

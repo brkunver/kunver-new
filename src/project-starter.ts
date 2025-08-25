@@ -1,9 +1,12 @@
-import { createReactProject } from "@/starters/create-react"
-import { createNextProject } from "@/starters/create-next"
-import { createWxtProject } from "@/starters/create-wxt"
-import { createPythonNotebookProject } from "@/starters/create-python-notebook"
-import { createElectronSvelteProject } from "@/starters/create-electron-svelte"
-import { openInEditor } from "@/helpers/open-in-editor"
+import {
+  createReactProject,
+  createNextProject,
+  createWxtProject,
+  createPythonNotebookProject,
+  createElectronSvelteProject,
+} from "@/starters"
+
+import { openInEditor } from "@/helpers"
 
 import * as constant from "./constant"
 

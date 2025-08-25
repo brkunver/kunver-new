@@ -7,14 +7,23 @@ type projectOptions = {
   templateName: string
   name: string
   packageManager: constant.TpackageManager
+  addManager?: boolean
+  approveBuild?: boolean
+  installDependency?: boolean
   cwd?: string
 }
 
 // A generic function to create a project
 export async function createTemplateProject(options: projectOptions) {
-  const { templateName, name, packageManager, cwd = process.cwd() } = options
-
-  // template path example : dist/templates/next-prisma
+  const {
+    templateName,
+    name,
+    packageManager,
+    cwd = process.cwd(),
+    addManager = true,
+    approveBuild = true,
+    installDependency = true,
+  } = options
 
   const templatePath = join(__dirname, "templates", templateName)
   try {
@@ -25,15 +34,21 @@ export async function createTemplateProject(options: projectOptions) {
     }
 
     // Install dependencies
-    const isDepsInstalled = await installDependencies(packageManager, name, cwd)
-    if (!isDepsInstalled) {
-      throw new Error("Failed to install dependencies")
+    if (installDependency) {
+      const isDepsInstalled = await installDependencies(packageManager, name, cwd)
+      if (!isDepsInstalled) {
+        throw new Error("Failed to install dependencies")
+      }
     }
 
     // add manager script
-    await addManagerScript(packageManager, name, cwd)
+    if (addManager) {
+      await addManagerScript(packageManager, name, cwd)
+    }
 
-    await approveBuilds(packageManager, name, cwd)
+    if (approveBuild) {
+      await approveBuilds(packageManager, name, cwd)
+    }
 
     return true
   } catch (error) {

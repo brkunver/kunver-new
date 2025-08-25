@@ -1,10 +1,11 @@
 import path, { join } from "node:path"
 import { fileURLToPath } from "node:url"
 
+import * as constant from "@/constant"
+
 import { installDependencies } from "@/helpers/install-deps"
 import { copyTemplateFolder } from "@/helpers/copy-template"
-import { pnpmApproveBuilds, bunApproveBuilds } from "@/helpers/approve"
-import * as constant from "@/constant"
+import { approveBuilds } from "@/helpers"
 import { addManagerScript } from "@/helpers/add-manager-script"
 
 const __filename = fileURLToPath(import.meta.url)
@@ -36,12 +37,7 @@ export async function createNextProject(options: projectOptions) {
     // add manager script
     await addManagerScript(packageManager, name, cwd)
 
-    // Approve builds
-    if (packageManager === "pnpm") {
-      await pnpmApproveBuilds(name, cwd)
-    } else if (packageManager === "bun") {
-      await bunApproveBuilds(name, cwd)
-    }
+    await approveBuilds(packageManager, name, cwd)
 
     return true
   } catch (error) {

@@ -1,4 +1,4 @@
-export const projects = ["react-ts-tw", "next-ts-prisma", "wxt", "electron-svelte", "python-notebook"] as const
+export const projects = ["react-ts-tw", "next-ts-prisma", "wxt...", "electron-svelte", "python-notebook"] as const
 export type TprojectType = (typeof projects)[number]
 
 export const packageManagers = ["bun", "pnpm", "npm"] as const

@@ -20,6 +20,7 @@ export default async function projectStarter(options: options) {
         packageManager: options.packageManager,
       })
       break
+
     case "next-ts-prisma":
       await createTemplateProject({
         templateName: "next-ts-prisma",
@@ -27,9 +28,11 @@ export default async function projectStarter(options: options) {
         packageManager: options.packageManager,
       })
       break
-    case "wxt":
+
+    case "wxt...":
       await createWxtProject({ name: options.name, packageManager: options.packageManager })
       break
+
     case "electron-svelte":
       await createTemplateProject({
         templateName: "electron-svelte",
@@ -37,9 +40,11 @@ export default async function projectStarter(options: options) {
         packageManager: options.packageManager,
       })
       break
+
     case "python-notebook":
       await createPythonNotebookProject({ name: options.name })
       break
+
     default:
       console.log("Project Type Not Implemented", options.projectType)
       break

@@ -1,6 +1,6 @@
 import { join } from "path"
 
-import { copyTemplateFolder, installDependencies, approveBuilds, addManagerScript } from "@/helpers"
+import { copyTemplateFolder, installDependencies, approveBuilds, addManagerScript, changeProjectName } from "@/helpers"
 import * as constant from "@/constant"
 
 type projectOptions = {
@@ -9,6 +9,7 @@ type projectOptions = {
   packageManager: constant.TpackageManager
   addManager?: boolean
   approveBuild?: boolean
+  changeName?: boolean
   installDependency?: boolean
   cwd?: string
 }
@@ -21,6 +22,7 @@ export async function createTemplateProject(options: projectOptions) {
     packageManager,
     cwd = process.cwd(),
     addManager = true,
+    changeName = true,
     approveBuild = true,
     installDependency = true,
   } = options
@@ -48,6 +50,10 @@ export async function createTemplateProject(options: projectOptions) {
 
     if (approveBuild) {
       await approveBuilds(packageManager, name, cwd)
+    }
+
+    if (changeName) {
+      await changeProjectName(join(cwd, name), name)
     }
 
     return true

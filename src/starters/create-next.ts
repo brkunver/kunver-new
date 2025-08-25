@@ -3,10 +3,7 @@ import { fileURLToPath } from "url"
 
 import * as constant from "@/constant"
 
-import { installDependencies } from "@/helpers/install-deps"
-import { copyTemplateFolder } from "@/helpers/copy-template"
-import { approveBuilds } from "@/helpers"
-import { addManagerScript } from "@/helpers/add-manager-script"
+import { approveBuilds, installDependencies, copyTemplateFolder, addManagerScript } from "@/helpers"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

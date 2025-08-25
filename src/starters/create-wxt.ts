@@ -4,11 +4,9 @@ import { fileURLToPath } from "url"
 import chalk from "chalk"
 import { select } from "@inquirer/prompts"
 
-import { installDependencies } from "@/helpers/install-deps"
-import approveBuilds from "@/helpers/approve"
 import * as constant from "@/constant"
-import { copyTemplateFolder } from "@/helpers/copy-template"
-import { addManagerScript } from "@/helpers/add-manager-script"
+
+import { approveBuilds, installDependencies, copyTemplateFolder, addManagerScript } from "@/helpers"
 
 const wxtTemplates = ["svelte", "vanilla"] as const
 

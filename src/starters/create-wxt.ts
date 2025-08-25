@@ -1,63 +1,47 @@
-import path, { join } from "path"
-import { fileURLToPath } from "url"
-
 import chalk from "chalk"
 import { select } from "@inquirer/prompts"
 
 import * as constant from "@/constant"
 
-import { approveBuilds, installDependencies, copyTemplateFolder, addManagerScript } from "@/helpers"
-
-const wxtTemplates = ["svelte", "vanilla"] as const
-
-type wxtTemplatesType = (typeof wxtTemplates)[number]
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import { createTemplateProject } from "@/helpers"
 
 type projectOptions = {
   name: string
   packageManager: constant.TpackageManager
-  cwd?: string
-  selectedFramework?: wxtTemplatesType
+  selectedFramework?: constant.TwxtTemplatesType
 }
 
 export async function createWxtProject(options: projectOptions) {
-  const { name, packageManager, cwd = process.cwd(), selectedFramework } = options
+  const { name, packageManager, selectedFramework } = options
 
   try {
-    const framework: wxtTemplatesType =
-      selectedFramework ||
-      ((await select({
-        message: chalk.bold.magenta("Select a framework for WXT"),
-        choices: wxtTemplates,
-        default: "svelte",
-      })) as wxtTemplatesType)
+    // Determine available templates and a safe default
+    const availableFrameworks = constant.wxtTemplates
+    const defaultFramework = availableFrameworks.includes("svelte") ? "svelte" : availableFrameworks[0]
 
-    // default template path
-    let templatePath = join(__dirname, "templates", "wxt-svelte")
+    let framework: constant.TwxtTemplatesType
+
+    // If user provided a selection and it is valid, use it. Otherwise ask via prompt.
+    if (selectedFramework && availableFrameworks.includes(selectedFramework)) {
+      framework = selectedFramework
+    } else {
+      framework = (await select({
+        message: chalk.bold.magenta("Select a framework for WXT"),
+        // Present nicer labels while keeping the original values
+        choices: availableFrameworks.map(f => ({ name: f.charAt(0).toUpperCase() + f.slice(1), value: f })),
+        default: defaultFramework,
+      })) as constant.TwxtTemplatesType
+    }
 
     switch (framework) {
       case "svelte":
-        templatePath = join(__dirname, "templates", "wxt-svelte")
+        await createTemplateProject({ templateName: "wxt-svelte", name, packageManager })
         break
       case "vanilla":
-        templatePath = join(__dirname, "templates", "wxt-vanilla")
+        await createTemplateProject({ templateName: "wxt-vanilla", name, packageManager })
         break
       default:
         break
-    }
-
-    const isWxtCreated = await copyTemplateFolder(templatePath, join(cwd, name))
-    if (isWxtCreated) {
-      await addManagerScript(packageManager, name, cwd)
-
-      // install dependencies
-      await installDependencies(packageManager, name, cwd)
-      // approve builds
-      await approveBuilds(packageManager, name, cwd)
-
-      await addManagerScript(packageManager, name, cwd)
     }
   } catch (error) {
     console.error(error)

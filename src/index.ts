@@ -1,4 +1,4 @@
-import fs from "fs"
+import fs,{ readFileSync } from "fs"
 import path from "path"
 
 import { input, select } from "@inquirer/prompts"
@@ -7,7 +7,15 @@ import chalk from "chalk"
 import projectStarter from "@/project-starter"
 import * as constant from "@/constant"
 
-const version: string = process.env.npm_package_version || chalk.red(" error ")
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const packagePath = join(__dirname, '../package.json');
+const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'));
+const version = packageJson.version;
 
 console.log(chalk.green("Kunver v" + chalk.bold(version) + "\n"))
 

@@ -7,5 +7,6 @@ export default defineConfig({
   clean: true,
   splitting: false,
   minify: true,
+  treeshake: true,
   publicDir: "src/public",
 })

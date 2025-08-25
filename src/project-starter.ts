@@ -1,12 +1,6 @@
-import {
-  createReactProject,
-  createNextProject,
-  createWxtProject,
-  createPythonNotebookProject,
-  createElectronSvelteProject,
-} from "@/starters"
+import { createWxtProject, createPythonNotebookProject } from "@/starters"
 
-import { openInEditor } from "@/helpers"
+import { openInEditor, createTemplateProject } from "@/helpers"
 
 import * as constant from "./constant"
 
@@ -20,16 +14,28 @@ type options = {
 export default async function projectStarter(options: options) {
   switch (options.projectType) {
     case "react-ts-tw":
-      await createReactProject({ name: options.name, packageManager: options.packageManager })
+      await createTemplateProject({
+        templateName: "react-ts-tw",
+        name: options.name,
+        packageManager: options.packageManager,
+      })
       break
     case "next-ts-prisma":
-      await createNextProject({ name: options.name, packageManager: options.packageManager })
+      await createTemplateProject({
+        templateName: "next-ts-prisma",
+        name: options.name,
+        packageManager: options.packageManager,
+      })
       break
     case "wxt":
       await createWxtProject({ name: options.name, packageManager: options.packageManager })
       break
     case "electron-svelte":
-      await createElectronSvelteProject({ name: options.name, packageManager: options.packageManager })
+      await createTemplateProject({
+        templateName: "electron-svelte",
+        name: options.name,
+        packageManager: options.packageManager,
+      })
       break
     case "python-notebook":
       await createPythonNotebookProject({ name: options.name })

@@ -1,4 +1,4 @@
-import path, { join } from "node:path"
+import { join } from "node:path"
 import fs from "node:fs"
 
 type projectOptions = {

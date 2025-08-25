@@ -4,15 +4,12 @@ import { createWxtProject } from "@/starters/create-wxt"
 import { createPythonNotebookProject } from "@/starters/create-python-notebook"
 import { openInEditor } from "@/helpers/open-in-editor"
 
-export const projects = ["react-ts-tw", "next-ts-prisma", "wxt", "python-notebook", "cpp-makefile"] as const
-export type TprojectType = (typeof projects)[number]
-export const packageManagers = ["bun", "pnpm", "npm"] as const
-export type TpackageManager = (typeof packageManagers)[number]
+import * as constant from "./constant"
 
 type options = {
-  projectType: TprojectType
-  packageManager?: TpackageManager
-  openInEditor: "no" | "windsurf" | "cursor" | "code"
+  projectType: constant.TprojectType
+  packageManager?: constant.TpackageManager
+  openInEditor: constant.TopenInEditor
   name: string
 }
 

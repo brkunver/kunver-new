@@ -6,11 +6,11 @@ import { select } from "@inquirer/prompts"
 
 import { installDependencies } from "@/helpers/install-deps"
 import approveBuilds from "@/helpers/approve"
-import { TpackageManager } from "@/project-starter"
+import * as constant from "@/constant"
 import { copyTemplateFolder } from "@/helpers/copy-template"
 import { addManagerScript } from "@/helpers/add-manager-script"
 
-const wxtTemplates = ["react - !not ready", "vue - !not ready", "svelte", "vanilla"] as const
+const wxtTemplates = ["svelte", "vanilla"] as const
 
 type wxtTemplatesType = (typeof wxtTemplates)[number]
 
@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename)
 
 type projectOptions = {
   name: string
-  packageManager: TpackageManager
+  packageManager: constant.TpackageManager
   cwd?: string
   selectedFramework?: wxtTemplatesType
 }
@@ -56,7 +56,6 @@ export async function createWxtProject(options: projectOptions) {
 
       // install dependencies
       await installDependencies(packageManager, name, cwd)
-
       // approve builds
       await approveBuilds(packageManager, name, cwd)
 

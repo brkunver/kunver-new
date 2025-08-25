@@ -4,7 +4,8 @@ import path from "node:path"
 import { input, select } from "@inquirer/prompts"
 import chalk from "chalk"
 
-import projectStarter, { TprojectType, TpackageManager, projects, packageManagers } from "@/project-starter"
+import projectStarter from "@/project-starter"
+import * as constant from "@/constant"
 
 const projectName = await input({
   message: chalk.bold.blue("Enter a project name"),
@@ -27,25 +28,25 @@ const projectName = await input({
 })
 
 // select project type
-const projectType: TprojectType = await select({
+const projectType: constant.TprojectType = await select({
   message: chalk.bold.yellow("Select a project type"),
   default: "react-ts-tw",
-  choices: projects,
+  choices: constant.projects,
 })
 
-let packageManager: TpackageManager | undefined
+let packageManager: constant.TpackageManager | undefined
 if (projectType !== "python-notebook") {
   packageManager = await select({
     message: chalk.bold.green("Select a package manager"),
-    choices: packageManagers,
+    choices: constant.packageManagers,
     default: "bun",
   })
 }
 
 // open in editor ?
-const openInEditor: "no" | "windsurf" | "cursor" | "code" = await select({
+const openInEditor: constant.TopenInEditor = await select({
   message: chalk.bold.cyan("Open in editor?"),
-  choices: ["no", "windsurf", "cursor", "code"],
+  choices: constant.openInEditorOptions,
   default: "no",
 })
 

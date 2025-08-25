@@ -1,11 +1,9 @@
 import path, { join } from "node:path"
 import { fileURLToPath } from "node:url"
 
-import { installDependencies } from "@/helpers/install-deps"
-import { copyTemplateFolder } from "@/helpers/copy-template"
-import { pnpmApproveBuilds, bunApproveBuilds } from "@/helpers/approve"
 import * as constant from "@/constant"
-import { addManagerScript } from "@/helpers/add-manager-script"
+
+import { approveBuilds, installDependencies, copyTemplateFolder, addManagerScript } from "@/helpers"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -38,11 +36,7 @@ export async function createReactProject(options: projectOptions) {
     await addManagerScript(packageManager, name, cwd)
 
     // Approve builds
-    if (packageManager === "pnpm") {
-      await pnpmApproveBuilds(name, cwd)
-    } else if (packageManager === "bun") {
-      await bunApproveBuilds(name, cwd)
-    }
+    await approveBuilds(packageManager, name, cwd)
 
     return true
   } catch (error) {

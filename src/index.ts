@@ -7,9 +7,9 @@ import chalk from "chalk"
 import projectStarter from "@/project-starter"
 import * as constant from "@/constant"
 
-const version = "2.4.0"
+const version: string = process.env.npm_package_version || chalk.red(" error ")
 
-console.log(chalk.bold.green("Kunver v" + version))
+console.log(chalk.green("Kunver v" + chalk.bold(version) + "\n"))
 
 const projectName = await input({
   message: chalk.bold.blue("Enter a project name"),

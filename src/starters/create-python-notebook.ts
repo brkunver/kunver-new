@@ -1,19 +1,25 @@
-import { join } from "node:path"
-import fs from "node:fs"
+import { join } from "path"
+import { mkdir, writeFile, access } from "fs/promises"
+import { constants } from "fs"
 
-type projectOptions = {
+type ProjectOptions = {
   name: string
   cwd?: string
 }
 
 // create python notebook project
-export async function createPythonNotebookProject(options: projectOptions) {
+export async function createPythonNotebookProject(options: ProjectOptions) {
   const { name, cwd = process.cwd() } = options
-  // create project folder then create main.ipynb file
   const projectPath = join(cwd, name)
-  if (!fs.existsSync(projectPath)) {
-    fs.mkdirSync(projectPath)
+
+  try {
+    // Check if directory exists
+    await access(projectPath, constants.F_OK)
+  } catch {
+    // Directory doesn't exist, create it
+    await mkdir(projectPath, { recursive: true })
   }
+
   const mainPath = join(projectPath, "main.ipynb")
-  fs.writeFileSync(mainPath, "")
+  await writeFile(mainPath, "")
 }

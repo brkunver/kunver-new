@@ -18,7 +18,7 @@
     "start": "bun dist/index.js",
     "dev": "bun run src/index.ts",
     "prepublishOnly": "bun run build",
-    "local": "bun link",
+    "local": "bun run build && bun link",
     "manager": "bun manager.cjs bun"
   },
   "keywords": [],

@@ -16,7 +16,7 @@
   "scripts": {
     "build": "tsup",
     "start": "bun dist/index.js",
-    "dev": "bun run src/index.ts",
+    "dev": "bun src/index.ts",
     "prepublishOnly": "bun run build",
     "local": "bun run build && bun link",
     "manager": "bun manager.cjs bun",

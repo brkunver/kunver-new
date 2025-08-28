@@ -19,7 +19,10 @@
     "dev": "bun run src/index.ts",
     "prepublishOnly": "bun run build",
     "local": "bun run build && bun link",
-    "manager": "bun manager.cjs bun"
+    "manager": "bun manager.cjs bun",
+    "patch": "bun pm version patch && git push",
+    "minor": "bun pm version minor && git push",
+    "major": "bun pm version major && git push"
   },
   "keywords": [],
   "author": "Burak Unver <burakhanunver@gmail.com> (https://kunver.dev)",

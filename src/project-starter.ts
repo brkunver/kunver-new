@@ -3,6 +3,7 @@ import { createWxtProject, createPythonNotebookProject } from "@/starters"
 import { openInEditor, createTemplateProject } from "@/helpers"
 
 import * as constant from "./constant"
+import chalk from "chalk"
 
 type options = {
   projectType: constant.TprojectType
@@ -38,7 +39,10 @@ export default async function projectStarter(options: options) {
         templateName: "electron-svelte",
         name: options.name,
         packageManager: options.packageManager,
+        installDependency: false,
+        approveBuild: false,
       })
+      console.log(chalk.yellow("Dependencies not installed. Please install dependencies manually"))
       break
 
     case "python-notebook":
@@ -46,7 +50,7 @@ export default async function projectStarter(options: options) {
       break
 
     default:
-      console.log("Project Type Not Implemented", options.projectType)
+      console.log(chalk.red("Project Type Not Implemented"), options.projectType)
       break
   }
 

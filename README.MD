@@ -2,6 +2,9 @@
 
 Cli tool for creating new projects with pre-configured settings.
 
+[![npm v](https://img.shields.io/npm/v/@kunver/new)](https://www.npmjs.com/package/@kunver/new)
+[![npm downloads](https://img.shields.io/npm/dm/@kunver/new)](https://www.npmjs.com/package/@kunver/new)
+
 ## Using
 
 ```bash

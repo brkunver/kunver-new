@@ -1,0 +1,26 @@
+# Build artifacts
+/bin/
+/obj/
+
+# Compiled object files
+*.o
+*.out
+*.exe
+
+# Libraries
+*.so
+*.a
+*.lib
+*.dll
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Editor/IDE configs
+.vscode/
+.idea/
+
+# OS-specific
+.DS_Store
+Thumbs.db

@@ -49,6 +49,16 @@ export default async function projectStarter(options: options) {
       await createPythonNotebookProject({ name: options.name })
       break
 
+    case "cpp-makefile":
+      await createTemplateProject({
+        templateName: "make-cpp",
+        name: options.name,
+        packageManager: "bun",
+        addManager: false,
+        approveBuild: false,
+        installDependency: false,
+      })
+
     default:
       console.log(chalk.red("Project Type Not Implemented"), options.projectType)
       break

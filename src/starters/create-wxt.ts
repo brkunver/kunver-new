@@ -17,7 +17,7 @@ export async function createWxtProject(options: projectOptions) {
   try {
     // Determine available templates and a safe default
     const availableFrameworks = constant.wxtTemplates
-    const defaultFramework = availableFrameworks.includes("svelte") ? "svelte" : availableFrameworks[0]
+    const defaultFramework = availableFrameworks.includes("solid") ? "solid" : availableFrameworks[0]
 
     let framework: constant.TwxtTemplatesType
 
@@ -34,6 +34,9 @@ export async function createWxtProject(options: projectOptions) {
     }
 
     switch (framework) {
+      case "solid":
+        await createTemplateProject({ templateName: "wxt-solid", name, packageManager })
+        break
       case "svelte":
         await createTemplateProject({ templateName: "wxt-svelte", name, packageManager })
         break

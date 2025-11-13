@@ -1,21 +1,24 @@
 {
   "name": "wxt-starter",
   "description": "manifest.json description",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
     "build": "wxt build",
+    "resize":"bunx @kunver/resize",
     "build:firefox": "wxt build -b firefox",
     "zip": "wxt zip",
-    "zip:all": "bunx wxt zip -b firefox & bunx wxt zip -b chrome & bunx wxt zip -b edge",
+    "zip:all": "concurrently \"bunx wxt zip -b firefox\" \"bunx wxt zip -b chrome\" \"bunx wxt zip -b edge\"",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "manager": "bun manager.cjs bun"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "typescript": "^5.8.3",
     "wxt": "^0.20.6"
   }

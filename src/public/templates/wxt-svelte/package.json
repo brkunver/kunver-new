@@ -1,5 +1,5 @@
 {
-  "name": "wxt-svelte-starter",
+  "name": "test1",
   "description": "manifest.json description",
   "private": false,
   "version": "0.0.0",
@@ -9,16 +9,19 @@
     "dev:firefox": "wxt -b firefox",
     "build": "wxt build",
     "build:firefox": "wxt build -b firefox",
+    "resize":"bunx @kunver/resize",
     "zip": "wxt zip",
-    "zip:all": "bunx wxt zip -b firefox & bunx wxt zip -b chrome & bunx wxt zip -b edge",
+    "zip:all": "concurrently \"bunx wxt zip -b firefox\" \"bunx wxt zip -b chrome\" \"bunx wxt zip -b edge\"",
     "zip:firefox": "wxt zip -b firefox",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "manager": "bun manager.cjs bun"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.12",
     "@tsconfig/svelte": "^5.0.5",
     "@wxt-dev/module-svelte": "^2.0.3",
+    "concurrently": "^9.2.1",
     "svelte": "^5.38.6",
     "svelte-check": "^4.3.1",
     "tailwindcss": "^4.1.12",

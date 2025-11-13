@@ -1,7 +1,7 @@
 {
   "name": "wxt-svelte-starter",
   "description": "manifest.json description",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
     "build": "wxt build",
     "build:firefox": "wxt build -b firefox",
     "zip": "wxt zip",
+    "zip:all": "bunx wxt zip -b firefox & bunx wxt zip -b chrome & bunx wxt zip -b edge",
     "zip:firefox": "wxt zip -b firefox",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "postinstall": "wxt prepare"

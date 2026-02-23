@@ -7,7 +7,7 @@ export default defineConfig({
   manifest: {
     name: "wxt-svelte-starter",
     description: "manifest.json description",
-    permission: [],
+    //permission: ["storage"],
   },
   modules: ["@wxt-dev/module-svelte"],
   vite: () => ({

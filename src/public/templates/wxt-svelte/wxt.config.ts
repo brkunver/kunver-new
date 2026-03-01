@@ -3,7 +3,6 @@ import tailwindcss from "@tailwindcss/vite"
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
-  srcDir: "src",
   manifest: {
     name: "wxt-svelte-starter",
     description: "manifest.json description",

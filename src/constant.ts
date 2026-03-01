@@ -14,5 +14,5 @@ export type TpackageManager = (typeof packageManagers)[number]
 export const openInEditorOptions = ["antigravity", "windsurf", "no", "cursor", "code"] as const
 export type TopenInEditor = (typeof openInEditorOptions)[number]
 
-export const wxtTemplates = ["svelte", "vanilla"] as const
+export const wxtTemplates = ["svelte", "vanilla", "solid"] as const
 export type TwxtTemplatesType = (typeof wxtTemplates)[number]

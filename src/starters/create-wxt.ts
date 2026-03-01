@@ -37,6 +37,9 @@ export async function createWxtProject(options: projectOptions) {
       case "svelte":
         await createTemplateProject({ templateName: "wxt-svelte", name, packageManager })
         break
+      case "solid":
+        await createTemplateProject({ templateName: "wxt-solid", name, packageManager })
+        break
       case "vanilla":
         await createTemplateProject({ templateName: "wxt-vanilla", name, packageManager })
         break

@@ -1,7 +1,7 @@
 export const projects = [
   "react-ts-tw",
   "next-ts-prisma",
-  "wxt...",
+  "wxt",
   "electron-svelte",
   "python-notebook",
   "cpp-makefile",

@@ -11,7 +11,7 @@ export type TprojectType = (typeof projects)[number]
 export const packageManagers = ["bun", "pnpm", "npm"] as const
 export type TpackageManager = (typeof packageManagers)[number]
 
-export const openInEditorOptions = ["antigravity", "no", "cursor", "code"] as const
+export const openInEditorOptions = ["antigravity", "windsurf", "no", "cursor", "code"] as const
 export type TopenInEditor = (typeof openInEditorOptions)[number]
 
 export const wxtTemplates = ["svelte", "vanilla"] as const

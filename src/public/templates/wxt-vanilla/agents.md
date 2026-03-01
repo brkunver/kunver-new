@@ -1,5 +1,5 @@
 - This is a Web Extension Project
-- Goal : Create timestamps and chapters for youtube video using AI
+- Goal : <goal>
 
 - This project uses wxt framework for development. wxt is a extension development framework.
 - website to framework is : https://wxt.dev/

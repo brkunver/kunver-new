@@ -24,7 +24,12 @@
     "minor": "bun pm version minor && git push",
     "major": "bun pm version major && git push"
   },
-  "keywords": [],
+  "keywords": [
+    "project starter",
+    "cli",
+    "template",
+    "opiniated"
+  ],
   "author": "Burak Unver <burakhanunver@gmail.com> (https://kunver.dev)",
   "license": "MIT",
   "dependencies": {

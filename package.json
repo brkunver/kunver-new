@@ -1,6 +1,6 @@
 {
   "name": "@kunver/new",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Opiniated project starter",
   "type": "module",
   "bin": {

@@ -19,6 +19,8 @@ pnpx | npx | bunx @kunver/new
 
 ✅ Wxt + Svelte
 
+✅ Wxt + Vanilla
+
 ✅ Next.js + Prisma
 
 ✅ Python Jupyter Notebook
@@ -27,6 +29,7 @@ pnpx | npx | bunx @kunver/new
 
 ### Will be added
 
-🟡 Wxt + React
-
-🟡 Astro + TypeScript + Tailwind + Prettierconfig
+🟡 Wxt Solid
+🟡 C++ CMake
+🟡 Rust
+🟡 Rust Tauri

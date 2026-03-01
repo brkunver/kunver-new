@@ -1,5 +1,5 @@
 - This is a Web Extension Project
-- Goal : <goal>
+- Goal : Create timestamps and chapters for youtube video using AI
 
 - This project uses wxt framework for development. wxt is a extension development framework.
 - website to framework is : https://wxt.dev/
@@ -22,15 +22,11 @@ WXT Modules added to your project can modify your manifest
 Hooks defined in your project can modify your manifest
 Your extension's manifest.json will be output to .output/{target}/manifest.json when running wxt build.
 
-- this extension should work <url>
-- this project uses svelte 5 for frontend.
 - this extension aims manifest v3
-- this project uses tailwindcss v4 for styling.
 - this project uses typescript for development.
 - this project uses prettier for code formatting.
 - this project uses vite.
 - this project uses bun package manager, not npm.
-- when using svelte, use modern latest svelte 5 runes syntax.
 - I should have a .prettierrc.json file in the root directory. please also follow rules on that.
 
 - entrypoints are in src/entrypoints directory

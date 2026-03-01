@@ -1,7 +1,12 @@
-import { join } from "path"
+import { join, dirname } from "path"
+import { fileURLToPath } from "url"
+import { existsSync } from "fs"
 
 import { copyTemplateFolder, installDependencies, approveBuilds, addManagerScript, changeProjectName } from "@/helpers"
 import * as constant from "@/constant"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 type projectOptions = {
   templateName: string
@@ -29,7 +34,10 @@ export async function createTemplateProject(options: projectOptions) {
     onBeforeInstall,
   } = options
 
-  const templatePath = join(__dirname, "templates", templateName)
+  const devTemplatePath = join(__dirname, "../public/templates", templateName)
+  const prodTemplatePath = join(__dirname, "templates", templateName)
+  const templatePath = existsSync(devTemplatePath) ? devTemplatePath : prodTemplatePath
+
   try {
     // copy template folder
     const isTemplateCopied = await copyTemplateFolder(templatePath, join(cwd, name))

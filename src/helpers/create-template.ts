@@ -5,8 +5,23 @@ import { existsSync } from "fs"
 import { copyTemplateFolder, installDependencies, approveBuilds, addManagerScript, changeProjectName } from "@/helpers"
 import * as constant from "@/constant"
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+// A cross-runtime and cross-module-format compatible way to get the current directory
+function getDirname() {
+  if (typeof __dirname !== "undefined") {
+    // In CJS or runtimes that provide __dirname
+    return __dirname
+  }
+
+  if (typeof import.meta !== "undefined" && import.meta.url) {
+    // In ESM
+    return dirname(fileURLToPath(import.meta.url))
+  }
+
+  // Fallback, usually process.cwd() or similar, but typically the above covers all bases
+  return process.cwd()
+}
+
+const currentDir = getDirname()
 
 type projectOptions = {
   templateName: string
@@ -34,8 +49,8 @@ export async function createTemplateProject(options: projectOptions) {
     onBeforeInstall,
   } = options
 
-  const devTemplatePath = join(__dirname, "../public/templates", templateName)
-  const prodTemplatePath = join(__dirname, "templates", templateName)
+  const devTemplatePath = join(currentDir, "../public/templates", templateName)
+  const prodTemplatePath = join(currentDir, "templates", templateName)
   const templatePath = existsSync(devTemplatePath) ? devTemplatePath : prodTemplatePath
 
   try {

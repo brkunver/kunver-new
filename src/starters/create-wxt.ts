@@ -40,6 +40,7 @@ export async function createWxtProject(options: projectOptions) {
       default: false,
     })
 
+    // Install i18n dependencies and modify config if user opts in
     const onBeforeInstall = async (projectPath: string) => {
       if (!useI18n) return
 

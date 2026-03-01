@@ -24,13 +24,13 @@ export default async function projectStarter(options: options) {
 
     case "next-ts-prisma":
       await createTemplateProject({
-        templateName: "next-ts-prisma",
+        templateName: "next-prisma",
         name: options.name,
         packageManager: options.packageManager,
       })
       break
 
-    case "wxt...":
+    case "wxt":
       await createWxtProject({ name: options.name, packageManager: options.packageManager })
       break
 
@@ -58,6 +58,7 @@ export default async function projectStarter(options: options) {
         approveBuild: false,
         installDependency: false,
       })
+      break
 
     default:
       console.log(chalk.red("Project Type Not Implemented"), options.projectType)

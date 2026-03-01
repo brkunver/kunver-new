@@ -40,6 +40,7 @@ async function publishAndPushOperations(packageManager, command) {
 
   if (command === "publish") {
     console.log(`Publishing package (${packageManager} publish)...`)
+    console.log("Important Note : You need npm token env variable")
     if (!(await runCommand(`${packageManager} publish`))) {
       console.log(`❌ ${packageManager} publish command failed.`)
       process.exit(1)

@@ -12,6 +12,7 @@ type projectOptions = {
   changeName?: boolean
   installDependency?: boolean
   cwd?: string
+  onBeforeInstall?: (projectPath: string) => Promise<void>
 }
 
 // A generic function to create a project
@@ -25,6 +26,7 @@ export async function createTemplateProject(options: projectOptions) {
     changeName = true,
     approveBuild = true,
     installDependency = true,
+    onBeforeInstall,
   } = options
 
   const templatePath = join(__dirname, "templates", templateName)
@@ -33,6 +35,11 @@ export async function createTemplateProject(options: projectOptions) {
     const isTemplateCopied = await copyTemplateFolder(templatePath, join(cwd, name))
     if (!isTemplateCopied) {
       throw new Error("Failed to copy template folder")
+    }
+
+    // Call onBeforeInstall hook before installing dependencies
+    if (onBeforeInstall) {
+      await onBeforeInstall(join(cwd, name))
     }
 
     // Install dependencies

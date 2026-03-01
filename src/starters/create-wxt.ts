@@ -1,5 +1,7 @@
 import chalk from "chalk"
-import { select } from "@inquirer/prompts"
+import { select, confirm } from "@inquirer/prompts"
+import { join } from "path"
+import { readFile, writeFile, mkdir } from "fs/promises"
 
 import * as constant from "@/constant"
 
@@ -33,15 +35,56 @@ export async function createWxtProject(options: projectOptions) {
       })) as constant.TwxtTemplatesType
     }
 
+    const useI18n = await confirm({
+      message: chalk.bold.cyan("Use i18n? (@wxt-dev/i18n)"),
+      default: false,
+    })
+
+    const onBeforeInstall = async (projectPath: string) => {
+      if (!useI18n) return
+
+      const pkgPath = join(projectPath, "package.json")
+      const pkgContent = await readFile(pkgPath, "utf-8")
+      const pkg = JSON.parse(pkgContent)
+      pkg.devDependencies = pkg.devDependencies || {}
+      pkg.devDependencies["@wxt-dev/i18n"] = "0.2.5"
+      await writeFile(pkgPath, JSON.stringify(pkg, null, 2), "utf-8")
+
+      const wxtConfigPath = join(projectPath, "wxt.config.ts")
+      let wxtConfig = await readFile(wxtConfigPath, "utf-8")
+
+      wxtConfig = wxtConfig.replace(
+        "manifest: {",
+        `manifest: {
+    default_locale: "en",`,
+      )
+
+      if (wxtConfig.includes("modules: [")) {
+        wxtConfig = wxtConfig.replace("modules: [", `modules: ["@wxt-dev/i18n/module", `)
+      } else {
+        wxtConfig = wxtConfig.replace(
+          "export default defineConfig({",
+          `export default defineConfig({
+  modules: ["@wxt-dev/i18n/module"],`,
+        )
+      }
+
+      await writeFile(wxtConfigPath, wxtConfig, "utf-8")
+
+      const localesPath = join(projectPath, "locales")
+      await mkdir(localesPath, { recursive: true })
+      await writeFile(join(localesPath, "en.yml"), "hello: Hello!\n", "utf-8")
+    }
+
     switch (framework) {
       case "svelte":
-        await createTemplateProject({ templateName: "wxt-svelte", name, packageManager })
+        await createTemplateProject({ templateName: "wxt-svelte", name, packageManager, onBeforeInstall })
         break
       case "solid":
-        await createTemplateProject({ templateName: "wxt-solid", name, packageManager })
+        await createTemplateProject({ templateName: "wxt-solid", name, packageManager, onBeforeInstall })
         break
       case "vanilla":
-        await createTemplateProject({ templateName: "wxt-vanilla", name, packageManager })
+        await createTemplateProject({ templateName: "wxt-vanilla", name, packageManager, onBeforeInstall })
         break
       default:
         break

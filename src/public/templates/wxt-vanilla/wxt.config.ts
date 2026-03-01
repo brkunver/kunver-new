@@ -5,6 +5,7 @@ export default defineConfig({
   manifest: {
     name: "wxt-vanilla-starter",
     description: "manifest.json description",
+    //permissions: ["storage"],
   },
   webExt: {
     disabled: true,

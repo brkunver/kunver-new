@@ -1,7 +1,7 @@
 import chalk from "chalk"
 import { select, confirm } from "@inquirer/prompts"
 import { join } from "path"
-import { readFile, writeFile, mkdir } from "fs/promises"
+import { readFile, writeFile, mkdir, rm } from "fs/promises"
 
 import * as constant from "@/constant"
 
@@ -40,8 +40,32 @@ export async function createWxtProject(options: projectOptions) {
       default: false,
     })
 
+    let useContentUI = false
+    if (framework === "svelte" || framework === "solid") {
+      useContentUI = await confirm({
+        message: chalk.bold.cyan("Do you want to use content UI?"),
+        default: false,
+      })
+    }
+
     // Install i18n dependencies and modify config if user opts in
     const onBeforeInstall = async (projectPath: string) => {
+      // Handle Content UI Removal for svelte/solid frameworks if user opts out
+      if ((framework === "svelte" || framework === "solid") && !useContentUI) {
+        const contentDirPath = join(projectPath, "entrypoints", "content")
+        await rm(contentDirPath, { recursive: true, force: true })
+
+        const contentTsPath = join(projectPath, "entrypoints", "content.ts")
+        const contentTsContent = `export default defineContentScript({
+  matches: ["*://*.google.com/*"],
+  main() {
+    console.log("Hello content.");
+  },
+});
+`
+        await writeFile(contentTsPath, contentTsContent, "utf-8")
+      }
+
       if (!useI18n) return
 
       const pkgPath = join(projectPath, "package.json")

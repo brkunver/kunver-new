@@ -17,6 +17,7 @@
     "build": "tsup",
     "start": "bun dist/index.js",
     "dev": "bun run build && bun run start",
+    "format": "bunx prettier --write .",
     "prepublishOnly": "bun run build",
     "local": "bun run build && bun link",
     "manager": "bun manager.cjs bun",

@@ -1,0 +1,5 @@
+{
+  "vitest.rootConfig": "vitest.config.ts",
+  "vitest.configSearchPatternExclude": "{**/node_modules/**,**/vendor/**,**/.*/**,**/*.d.ts,**/src/public/templates/**}",
+  "vitest.ignoreWorkspace": true
+}

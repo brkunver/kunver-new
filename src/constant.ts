@@ -5,6 +5,7 @@ export const projects = [
   "electron-svelte",
   "python-notebook",
   "cpp-makefile",
+  "cmake-cpp",
 ] as const
 export type TprojectType = (typeof projects)[number]
 

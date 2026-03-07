@@ -60,6 +60,17 @@ export default async function projectStarter(options: options) {
       })
       break
 
+    case "cmake-cpp":
+      await createTemplateProject({
+        templateName: "cmake-cpp",
+        name: options.name,
+        packageManager: "bun",
+        addManager: false,
+        approveBuild: false,
+        installDependency: false,
+      })
+      break
+
     default:
       console.log(chalk.red("Project Type Not Implemented"), options.projectType)
       break

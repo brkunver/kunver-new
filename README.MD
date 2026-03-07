@@ -25,11 +25,12 @@ pnpx | npx | bunx @kunver/new
 
 ✅ Python Jupyter Notebook
 
+✅ C++ CMake
+
 ### Work in progress
 
 ### Will be added
 
 🟡 Wxt Solid
-🟡 C++ CMake
 🟡 Rust
 🟡 Rust Tauri

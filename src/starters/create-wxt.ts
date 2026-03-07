@@ -13,108 +13,132 @@ type projectOptions = {
   selectedFramework?: constant.TwxtTemplatesType
 }
 
-export async function createWxtProject(options: projectOptions) {
-  const { name, packageManager, selectedFramework } = options
+type WxtCustomizationOptions = {
+  useI18n: boolean
+  useContentUI: boolean
+}
 
-  try {
-    // Determine available templates and a safe default
-    const availableFrameworks = constant.wxtTemplates
-    const defaultFramework = availableFrameworks.includes("svelte") ? "svelte" : availableFrameworks[0]
+const WXT_TEMPLATE_MAP: Record<constant.TwxtTemplatesType, string> = {
+  svelte: "wxt-svelte",
+  solid: "wxt-solid",
+  vanilla: "wxt-vanilla",
+}
 
-    let framework: constant.TwxtTemplatesType
+async function resolveFrameworkSelection(selectedFramework?: constant.TwxtTemplatesType) {
+  if (selectedFramework && constant.wxtTemplates.includes(selectedFramework)) {
+    return selectedFramework
+  }
 
-    // If user provided a selection and it is valid, use it. Otherwise ask via prompt.
-    if (selectedFramework && availableFrameworks.includes(selectedFramework)) {
-      framework = selectedFramework
-    } else {
-      framework = (await select({
-        message: chalk.bold.magenta("Select a framework for WXT"),
-        // Present nicer labels while keeping the original values
-        choices: availableFrameworks.map(f => ({ name: f.charAt(0).toUpperCase() + f.slice(1), value: f })),
-        default: defaultFramework,
-      })) as constant.TwxtTemplatesType
-    }
+  return (await select({
+    message: chalk.bold.magenta("Select a framework for WXT"),
+    choices: constant.wxtTemplates.map(framework => ({
+      name: framework.charAt(0).toUpperCase() + framework.slice(1),
+      value: framework,
+    })),
+    default: "svelte",
+  })) as constant.TwxtTemplatesType
+}
 
-    const useI18n = await confirm({
-      message: chalk.bold.cyan("Use i18n? (@wxt-dev/i18n)"),
-      default: false,
-    })
+async function resolveCustomizationOptions(framework: constant.TwxtTemplatesType): Promise<WxtCustomizationOptions> {
+  const useI18n = await confirm({
+    message: chalk.bold.cyan("Use i18n? (@wxt-dev/i18n)"),
+    default: false,
+  })
 
-    let useContentUI = false
-    if (framework === "svelte" || framework === "solid") {
-      useContentUI = await confirm({
+  const supportsContentUI = framework === "svelte" || framework === "solid"
+  const useContentUI = supportsContentUI
+    ? await confirm({
         message: chalk.bold.cyan("Do you want to use content UI?"),
         default: false,
       })
-    }
+    : false
 
-    // Install i18n dependencies and modify config if user opts in
-    const onBeforeInstall = async (projectPath: string) => {
-      // Handle Content UI Removal for svelte/solid frameworks if user opts out
-      if ((framework === "svelte" || framework === "solid") && !useContentUI) {
-        const contentDirPath = join(projectPath, "entrypoints", "content")
-        await rm(contentDirPath, { recursive: true, force: true })
+  return {
+    useI18n,
+    useContentUI,
+  }
+}
 
-        const contentTsPath = join(projectPath, "entrypoints", "content.ts")
-        const contentTsContent = `export default defineContentScript({
+async function removeContentUi(projectPath: string) {
+  const contentDirPath = join(projectPath, "entrypoints", "content")
+  const contentTsPath = join(projectPath, "entrypoints", "content.ts")
+  const contentTsContent = `export default defineContentScript({
   matches: ["*://*.google.com/*"],
   main() {
     console.log("Hello content.");
   },
 });
 `
-        await writeFile(contentTsPath, contentTsContent, "utf-8")
-      }
 
-      if (!useI18n) return
+  await rm(contentDirPath, { recursive: true, force: true })
+  await writeFile(contentTsPath, contentTsContent, "utf-8")
+}
 
-      const pkgPath = join(projectPath, "package.json")
-      const pkgContent = await readFile(pkgPath, "utf-8")
-      const pkg = JSON.parse(pkgContent)
-      pkg.devDependencies = pkg.devDependencies || {}
-      pkg.devDependencies["@wxt-dev/i18n"] = "0.2.5"
-      await writeFile(pkgPath, JSON.stringify(pkg, null, 2), "utf-8")
+async function applyI18n(projectPath: string) {
+  const pkgPath = join(projectPath, "package.json")
+  const pkgContent = await readFile(pkgPath, "utf-8")
+  const pkg = JSON.parse(pkgContent)
 
-      const wxtConfigPath = join(projectPath, "wxt.config.ts")
-      let wxtConfig = await readFile(wxtConfigPath, "utf-8")
+  pkg.devDependencies = pkg.devDependencies || {}
+  pkg.devDependencies["@wxt-dev/i18n"] = "0.2.5"
 
-      wxtConfig = wxtConfig.replace(
-        "manifest: {",
-        `manifest: {
+  await writeFile(pkgPath, JSON.stringify(pkg, null, 2), "utf-8")
+
+  const wxtConfigPath = join(projectPath, "wxt.config.ts")
+  let wxtConfig = await readFile(wxtConfigPath, "utf-8")
+
+  wxtConfig = wxtConfig.replace(
+    "manifest: {",
+    `manifest: {
     default_locale: "en",`,
-      )
+  )
 
-      if (wxtConfig.includes("modules: [")) {
-        wxtConfig = wxtConfig.replace("modules: [", `modules: ["@wxt-dev/i18n/module", `)
-      } else {
-        wxtConfig = wxtConfig.replace(
-          "export default defineConfig({",
-          `export default defineConfig({
+  if (wxtConfig.includes("modules: [")) {
+    wxtConfig = wxtConfig.replace("modules: [", `modules: ["@wxt-dev/i18n/module", `)
+  } else {
+    wxtConfig = wxtConfig.replace(
+      "export default defineConfig({",
+      `export default defineConfig({
   modules: ["@wxt-dev/i18n/module"],`,
-        )
-      }
+    )
+  }
 
-      await writeFile(wxtConfigPath, wxtConfig, "utf-8")
+  await writeFile(wxtConfigPath, wxtConfig, "utf-8")
 
-      const localesPath = join(projectPath, "locales")
-      await mkdir(localesPath, { recursive: true })
-      await writeFile(join(localesPath, "en.yml"), "hello: Hello!\n", "utf-8")
+  const localesPath = join(projectPath, "locales")
+  await mkdir(localesPath, { recursive: true })
+  await writeFile(join(localesPath, "en.yml"), "hello: Hello!\n", "utf-8")
+}
+
+function createOnBeforeInstall(framework: constant.TwxtTemplatesType, customization: WxtCustomizationOptions) {
+  return async (projectPath: string) => {
+    const shouldReplaceContentUi = (framework === "svelte" || framework === "solid") && !customization.useContentUI
+
+    if (shouldReplaceContentUi) {
+      await removeContentUi(projectPath)
     }
 
-    switch (framework) {
-      case "svelte":
-        await createTemplateProject({ templateName: "wxt-svelte", name, packageManager, onBeforeInstall })
-        break
-      case "solid":
-        await createTemplateProject({ templateName: "wxt-solid", name, packageManager, onBeforeInstall })
-        break
-      case "vanilla":
-        await createTemplateProject({ templateName: "wxt-vanilla", name, packageManager, onBeforeInstall })
-        break
-      default:
-        break
+    if (customization.useI18n) {
+      await applyI18n(projectPath)
     }
+  }
+}
+
+export async function createWxtProject(options: projectOptions) {
+  const { name, packageManager, selectedFramework } = options
+
+  try {
+    const framework = await resolveFrameworkSelection(selectedFramework)
+    const customization = await resolveCustomizationOptions(framework)
+
+    await createTemplateProject({
+      templateName: WXT_TEMPLATE_MAP[framework],
+      name,
+      packageManager,
+      onBeforeInstall: createOnBeforeInstall(framework, customization),
+    })
   } catch (error) {
     console.error(error)
+    throw error
   }
 }

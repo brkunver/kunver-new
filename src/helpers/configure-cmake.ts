@@ -30,8 +30,7 @@ export async function configureCmakeProject(projectPath: string) {
   console.log(chalk.white("Configuring CMake project in " + chalk.blue(projectPath)))
 
   try {
-    await execa("cmake -S . -B build", {
-      shell: true,
+    await execa("cmake", ["-S", ".", "-B", "build"], {
       cwd: projectPath,
       stdout: "inherit",
       stderr: "inherit",

@@ -29,4 +29,4 @@ Opinionated C++ project starter with CMake build system.
 - Build: `cmake --build build`
 - Run: use the executable generated inside `build/` by your chosen CMake generator.
 
-Note: The project name inside `CMakeLists.txt` is static for now and can be made dynamic later.
+Note: `kunver` rewrites the CMake project name to the folder name you enter during creation, and `manager.ts` reads that same name from `CMakeLists.txt`.

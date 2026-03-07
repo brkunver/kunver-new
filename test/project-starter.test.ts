@@ -71,4 +71,17 @@ describe("projectStarter", () => {
     expect(helpers.configureCmakeProject).toHaveBeenCalledWith("/tmp/cmake-app")
     expect(helpers.openInEditor).toHaveBeenCalledWith("Cpp App", process.cwd(), "code")
   })
+
+  it("routes uv notebook projects to the notebook starter", async () => {
+    await projectStarter({
+      projectType: "uv-notebook",
+      packageManager: "bun",
+      openInEditor: "no",
+      name: "data-lab",
+    })
+
+    expect(helpers.createPythonNotebookProject).toHaveBeenCalledWith({ name: "data-lab" })
+    expect(helpers.createTemplateProject).not.toHaveBeenCalled()
+    expect(helpers.openInEditor).not.toHaveBeenCalled()
+  })
 })

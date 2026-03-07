@@ -19,7 +19,7 @@ The CLI asks for a project name, starter type, package manager when needed, and 
   - Vanilla
   - Solid
 - Electron + Svelte
-- Python Jupyter Notebook
+- UV Notebook
 - C++ + CMake
 
 ## Notes

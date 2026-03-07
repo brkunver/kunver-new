@@ -34,17 +34,6 @@ export default async function projectStarter(options: options) {
       await createWxtProject({ name: options.name, packageManager: options.packageManager })
       break
 
-    case "electron-svelte":
-      await createTemplateProject({
-        templateName: "electron-svelte",
-        name: options.name,
-        packageManager: options.packageManager,
-        installDependency: false,
-        approveBuild: false,
-      })
-      console.log(chalk.yellow("Dependencies not installed. Please install dependencies manually"))
-      break
-
     case "uv-notebook":
       await createPythonNotebookProject({ name: options.name })
       break

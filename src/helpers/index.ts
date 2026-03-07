@@ -6,6 +6,7 @@ import { openInEditor } from "./open-in-editor"
 import { createTemplateProject } from "./create-template"
 import { changeProjectName } from "./postinstall"
 import { configureCmakeProject } from "./configure-cmake"
+import { changeCmakeProjectName } from "./change-cmake-project-name"
 
 export {
   installDependencies,
@@ -16,4 +17,5 @@ export {
   createTemplateProject,
   changeProjectName,
   configureCmakeProject,
+  changeCmakeProjectName,
 }

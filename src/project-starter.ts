@@ -1,6 +1,6 @@
 import { createWxtProject, createPythonNotebookProject } from "@/starters"
 
-import { openInEditor, createTemplateProject } from "@/helpers"
+import { openInEditor, createTemplateProject, configureCmakeProject } from "@/helpers"
 
 import * as constant from "./constant"
 import chalk from "chalk"
@@ -68,6 +68,9 @@ export default async function projectStarter(options: options) {
         addManager: false,
         approveBuild: false,
         installDependency: false,
+        onBeforeInstall: async projectPath => {
+          await configureCmakeProject(projectPath)
+        },
       })
       break
 

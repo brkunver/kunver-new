@@ -13,5 +13,5 @@
     }
   },
   "include": ["src", "test", "vitest.config.ts"],
-  "exclude": ["node_modules", "dist", "public", "src/public/templates"]
+  "exclude": ["node_modules", "dist", "public", "src/public/templates/**/*.ts"]
 }

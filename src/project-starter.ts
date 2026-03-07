@@ -1,6 +1,6 @@
 import { createWxtProject, createPythonNotebookProject } from "@/starters"
 
-import { openInEditor, createTemplateProject } from "@/helpers"
+import { openInEditor, createTemplateProject, configureCmakeProject, changeCmakeProjectName } from "@/helpers"
 
 import * as constant from "./constant"
 import chalk from "chalk"
@@ -45,18 +45,23 @@ export default async function projectStarter(options: options) {
       console.log(chalk.yellow("Dependencies not installed. Please install dependencies manually"))
       break
 
-    case "python-notebook":
+    case "uv-notebook":
       await createPythonNotebookProject({ name: options.name })
       break
 
-    case "cpp-makefile":
+    case "cmake-cpp":
       await createTemplateProject({
-        templateName: "make-cpp",
+        templateName: "cmake-cpp",
         name: options.name,
         packageManager: "bun",
         addManager: false,
         approveBuild: false,
         installDependency: false,
+        changeName: false,
+        onBeforeInstall: async projectPath => {
+          await changeCmakeProjectName(projectPath, options.name)
+          await configureCmakeProject(projectPath)
+        },
       })
       break
 

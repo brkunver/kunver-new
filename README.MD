@@ -1,35 +1,45 @@
 # Opiniated Project Starter
 
-Cli tool for creating new projects with pre-configured settings.
+CLI tool for creating new projects with pre-configured settings.
 
-[![npm v](https://img.shields.io/npm/v/@kunver/new)](https://www.npmjs.com/package/@kunver/new)
-[![npm downloads](https://img.shields.io/npm/dm/@kunver/new)](https://www.npmjs.com/package/@kunver/new)
-
-## Using
+## Usage
 
 ```bash
 pnpx | npx | bunx @kunver/new
 ```
 
-## Starters
+The CLI asks for a project name, starter type, package manager when needed, and whether the project should be opened in your editor.
 
-### Ready to use
+## Current starters
 
-✅ React
+- React + TypeScript + Tailwind
+- Next.js + Prisma
+- WXT
+  - Svelte
+  - Vanilla
+  - Solid
+- Electron + Svelte
+- UV Notebook
+- C++ + CMake
 
-✅ Wxt + Svelte
+## Notes
 
-✅ Wxt + Vanilla
+- C++ + CMake projects include a `manager.ts` bridge for commands like `bun manager.ts dev` and `bun manager.ts build`.
+- The C++ + CMake starter automatically updates the CMake project name to the folder name you enter.
+- Electron + Svelte is created without auto-installing dependencies.
 
-✅ Next.js + Prisma
+## Package managers
 
-✅ Python Jupyter Notebook
+- Bun
+- pnpm
+- npm
 
-### Work in progress
+Some starters intentionally skip package manager selection because they do not need JS dependencies.
 
-### Will be added
+## Output
 
-🟡 Wxt Solid
-🟡 C++ CMake
-🟡 Rust
-🟡 Rust Tauri
+Generated templates live under [src/public/templates](src/public/templates) in this repository.
+
+## Status
+
+This project is intentionally opinionated and focused on a small set of starters.

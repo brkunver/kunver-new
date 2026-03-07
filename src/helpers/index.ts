@@ -5,6 +5,7 @@ import { addManagerScript } from "./add-manager-script"
 import { openInEditor } from "./open-in-editor"
 import { createTemplateProject } from "./create-template"
 import { changeProjectName } from "./postinstall"
+import { configureCmakeProject, changeCmakeProjectName } from "./configure-cmake"
 
 export {
   installDependencies,
@@ -13,5 +14,7 @@ export {
   addManagerScript,
   openInEditor,
   createTemplateProject,
-  changeProjectName
+  changeProjectName,
+  configureCmakeProject,
+  changeCmakeProjectName,
 }

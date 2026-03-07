@@ -1,6 +1,6 @@
 import { render } from "solid-js/web"
 import "~/assets/tailwind.css"
 
-import App from "./App"
+import Options from "./Options"
 
-render(() => <App />, document.getElementById("root")!)
+render(() => <Options />, document.getElementById("root")!)

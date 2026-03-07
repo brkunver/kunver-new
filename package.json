@@ -17,6 +17,8 @@
     "build": "tsup",
     "start": "bun dist/index.js",
     "dev": "bun run build && bun run start",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "format": "bunx prettier --write .",
     "prepublishOnly": "bun run build",
     "local": "bun run build && bun link",
@@ -47,6 +49,7 @@
     "@types/node": "^24.11.0",
     "prettier": "3.8.1",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }

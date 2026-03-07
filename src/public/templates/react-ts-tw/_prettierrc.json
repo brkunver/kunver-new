@@ -7,5 +7,6 @@
   "useTabs": false,
   "jsxSingleQuote": false,
   "jsxBracketSameLine": false,
-  "arrowParens": "avoid"
+  "arrowParens": "avoid",
+  "plugins": ["prettier-plugin-tailwindcss"]
 }

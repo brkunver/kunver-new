@@ -45,7 +45,7 @@ export default async function projectStarter(options: options) {
       console.log(chalk.yellow("Dependencies not installed. Please install dependencies manually"))
       break
 
-    case "python-notebook":
+    case "uv-notebook":
       await createPythonNotebookProject({ name: options.name })
       break
 

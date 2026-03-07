@@ -18,7 +18,6 @@ The CLI asks for a project name, starter type, package manager when needed, and 
   - Svelte
   - Vanilla
   - Solid
-- Electron + Svelte
 - UV Notebook
 - C++ + CMake
 
@@ -26,7 +25,6 @@ The CLI asks for a project name, starter type, package manager when needed, and 
 
 - C++ + CMake projects include a `manager.ts` bridge for commands like `bun manager.ts dev` and `bun manager.ts build`.
 - The C++ + CMake starter automatically updates the CMake project name to the folder name you enter.
-- Electron + Svelte is created without auto-installing dependencies.
 
 ## Package managers
 

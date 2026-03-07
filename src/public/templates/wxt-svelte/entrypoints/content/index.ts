@@ -1,5 +1,5 @@
 import { mount, unmount } from "svelte"
-import App from "./App.svelte"
+import Content from "./Content.svelte"
 import "~/assets/tailwind.css"
 
 export default defineContentScript({
@@ -13,10 +13,10 @@ export default defineContentScript({
       position: "inline",
       anchor: "body",
       onMount: container => {
-        return mount(App, { target: container })
+        return mount(Content, { target: container })
       },
-      onRemove: app => {
-        unmount(app as any)
+      onRemove: content => {
+        unmount(content as any)
       },
     })
 

@@ -35,6 +35,21 @@ type projectOptions = {
   onBeforeInstall?: (projectPath: string) => Promise<void>
 }
 
+async function runStep(stepName: string, step: () => Promise<boolean | void>) {
+  const result = await step()
+
+  if (result === false) {
+    throw new Error(`Failed to ${stepName}`)
+  }
+}
+
+function resolveTemplatePath(templateName: string) {
+  const devTemplatePath = join(currentDir, "../public/templates", templateName)
+  const prodTemplatePath = join(currentDir, "templates", templateName)
+
+  return existsSync(devTemplatePath) ? devTemplatePath : prodTemplatePath
+}
+
 // A generic function to create a project
 export async function createTemplateProject(options: projectOptions) {
   const {
@@ -49,41 +64,30 @@ export async function createTemplateProject(options: projectOptions) {
     onBeforeInstall,
   } = options
 
-  const devTemplatePath = join(currentDir, "../public/templates", templateName)
-  const prodTemplatePath = join(currentDir, "templates", templateName)
-  const templatePath = existsSync(devTemplatePath) ? devTemplatePath : prodTemplatePath
+  const projectPath = join(cwd, name)
+  const templatePath = resolveTemplatePath(templateName)
 
   try {
-    // copy template folder
-    const isTemplateCopied = await copyTemplateFolder(templatePath, join(cwd, name))
-    if (!isTemplateCopied) {
-      throw new Error("Failed to copy template folder")
-    }
+    await runStep("copy template folder", () => copyTemplateFolder(templatePath, projectPath))
 
-    // Call onBeforeInstall hook before installing dependencies
     if (onBeforeInstall) {
-      await onBeforeInstall(join(cwd, name))
+      await runStep("run pre-install hook", () => onBeforeInstall(projectPath))
     }
 
-    // Install dependencies
     if (installDependency) {
-      const isDepsInstalled = await installDependencies(packageManager, name, cwd)
-      if (!isDepsInstalled) {
-        throw new Error("Failed to install dependencies")
-      }
+      await runStep("install dependencies", () => installDependencies(packageManager, name, cwd))
     }
 
-    // add manager script
     if (addManager) {
-      await addManagerScript(packageManager, name, cwd)
+      await runStep("add manager script", () => addManagerScript(packageManager, name, cwd))
     }
 
     if (approveBuild) {
-      await approveBuilds(packageManager, name, cwd)
+      await runStep("approve builds", () => approveBuilds(packageManager, name, cwd))
     }
 
     if (changeName) {
-      await changeProjectName(join(cwd, name), name)
+      await runStep("change project name", () => changeProjectName(projectPath, name))
     }
 
     return true

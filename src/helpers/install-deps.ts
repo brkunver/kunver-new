@@ -1,15 +1,20 @@
 import { execa } from "execa"
 import chalk from "chalk"
+import { join } from "path"
 
 export async function installDependencies(packageManager: string, name: string, cwd: string): Promise<boolean> {
-  let command: string = `cd ${name} && ${packageManager} install`
+  const projectPath = join(cwd, name)
 
   console.log("Installing dependencies with " + chalk.cyan(packageManager) + "\n")
 
   try {
-    await execa(command, { shell: true, cwd: cwd, stdout: "inherit", stderr: "inherit" })
+    await execa(packageManager, ["install"], {
+      cwd: projectPath,
+      stdout: "inherit",
+      stderr: "inherit",
+    })
     return true
-  } catch (error) {
+  } catch {
     return false
   }
 }

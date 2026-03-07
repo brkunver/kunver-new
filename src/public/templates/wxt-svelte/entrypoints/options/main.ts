@@ -1,8 +1,8 @@
 import { mount } from "svelte"
-import App from "./App.svelte"
+import Options from "./Options.svelte"
 import "~/assets/tailwind.css"
 
-const app = mount(App, {
+const app = mount(Options, {
   target: document.getElementById("app")!,
 })
 

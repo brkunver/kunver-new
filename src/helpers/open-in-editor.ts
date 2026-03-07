@@ -8,7 +8,7 @@ type editorName = constant.TopenInEditor
 export async function openInEditor(projectName: string, cwd: string, editorName: editorName) {
   console.log(chalk.white("Opening " + chalk.blue(projectName) + " in " + chalk.green(editorName)))
   try {
-    await execa(`${editorName} ${projectName}`, { shell: true, cwd: cwd })
+    await execa(editorName, [projectName], { cwd: cwd })
     return true
   } catch (error) {
     console.error(chalk.red("Failed to open project in editor:"), error)

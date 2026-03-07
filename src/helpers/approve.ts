@@ -1,4 +1,5 @@
 import { spawn } from "child_process"
+import { join } from "path"
 
 import ora from "ora"
 import chalk from "chalk"
@@ -23,21 +24,20 @@ export default async function approveBuilds(
 
 export async function pnpmApproveBuilds(projectName: string, cwd: string) {
   const spinner = ora("Approving builds for " + chalk.blue(projectName)).start()
+  const projectPath = join(cwd, projectName)
 
   try {
-    // Use spawn instead of execa for better control over stdio
     return new Promise<boolean>(resolve => {
       const child = spawn("pnpm", ["approve-builds"], {
-        cwd: `${cwd}/${projectName}`,
+        cwd: projectPath,
         stdio: ["pipe", "inherit", "inherit"],
         shell: true,
       })
 
-      // Wait a bit for the prompt to appear, then send responses
       setTimeout(() => {
-        child.stdin?.write("a\n") // 'a' for approve all
+        child.stdin?.write("a\n")
         setTimeout(() => {
-          child.stdin?.write("y\n") // 'y' for yes/confirm
+          child.stdin?.write("y\n")
           child.stdin?.end()
         }, 1000)
       }, 2000)
@@ -66,14 +66,14 @@ export async function pnpmApproveBuilds(projectName: string, cwd: string) {
 }
 
 async function bunApproveBuilds(projectName: string, cwd: string) {
-  const command = `cd ${projectName} && bun pm trust --all`
   const spinner = ora("Approving builds for " + chalk.blue(projectName)).start()
+  const projectPath = join(cwd, projectName)
 
   try {
-    await execa(command, { shell: true, cwd: cwd })
+    await execa("bun", ["pm", "trust", "--all"], { cwd: projectPath })
     spinner.succeed("Approved builds for " + chalk.blue(projectName))
     return true
-  } catch (error) {
+  } catch {
     spinner.fail("Failed to approve builds for " + chalk.blue(projectName))
     return false
   }

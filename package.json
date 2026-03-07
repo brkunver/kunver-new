@@ -26,9 +26,9 @@
     "patch": "bun pm version patch && git push",
     "minor": "bun pm version minor && git push",
     "major": "bun pm version major && git push",
-    "patchPublish": "bun run patch && bun run manager publish",
-    "minorPublish": "bun run minor && bun run manager publish",
-    "majorPublish": "bun run major && bun run manager publish"
+    "patch-publish": "bun run patch && bun run manager publish",
+    "minor-publish": "bun run minor && bun run manager publish",
+    "major-publish": "bun run major && bun run manager publish"
   },
   "keywords": [
     "project starter",

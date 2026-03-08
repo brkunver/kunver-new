@@ -33,7 +33,7 @@ async function publishAndPushOperations(packageManager, command) {
   if (!(await runCommand("git pull origin main"))) process.exit(1)
 
   console.log("\n🔀 Merging dev branch into main...")
-  if (!(await runCommand("git merge dev"))) {
+  if (!(await runCommand("git merge dev --no-edit"))) {
     console.log("❌ Merge conflict occurred. Please resolve it manually.")
     process.exit(1)
   }

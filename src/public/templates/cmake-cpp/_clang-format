@@ -1,1 +1,16 @@
 BasedOnStyle: Google
+
+# Keep opening braces attached to the preceding line, while still preventing short blocks from collapsing
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+BraceWrapping:
+  AfterFunction: false
+  AfterControlStatement: false
+  AfterClass: false
+  AfterNamespace: false
+  BeforeCatch: true
+  BeforeElse: true

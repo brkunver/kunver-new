@@ -6,3 +6,4 @@
 - Prefer using `bun manager.ts dev` for configure + build + run during development.
 - Other common commands are `bun manager.ts build`, `bun manager.ts run`, and `bun manager.ts clean`.
 - If you change project structure, keep `CMakeLists.txt` in sync.
+- Please follow .clang-format for code style consistency.

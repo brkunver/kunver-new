@@ -6,7 +6,6 @@ export default defineConfig({
   manifest: {
     name: "wxt-solid-starter",
     description: "manifest.json description",
-   
   },
   modules: ["@wxt-dev/module-solid"],
   vite: () => ({

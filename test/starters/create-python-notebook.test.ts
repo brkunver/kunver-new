@@ -1,85 +1,54 @@
-import { mkdir, writeFile } from "fs/promises"
-
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const execaMock = vi.fn()
+const helperMocks = vi.hoisted(() => ({
+  copyTemplateFolder: vi.fn(),
+}))
 
 vi.mock("execa", () => ({
   execa: execaMock,
 }))
 
-vi.mock("fs/promises", async importOriginal => {
-  const actual = await importOriginal<typeof import("fs/promises")>()
-
-  return {
-    ...actual,
-    mkdir: vi.fn(),
-    writeFile: vi.fn(),
-  }
-})
+vi.mock("@/helpers", () => ({
+  copyTemplateFolder: helperMocks.copyTemplateFolder,
+}))
 
 import { createPythonNotebookProject } from "@/starters/create-python-notebook"
 
 describe("createPythonNotebookProject", () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    helperMocks.copyTemplateFolder.mockResolvedValue(true)
     execaMock.mockResolvedValue({})
   })
 
-  it("initializes a uv project, installs numpy, and writes a valid notebook", async () => {
+  it("copies the uv notebook template and runs uv sync", async () => {
     await createPythonNotebookProject({
       name: "uv-notebook-app",
       cwd: "/workspace",
     })
 
-    expect(mkdir).toHaveBeenCalledWith("/workspace/uv-notebook-app", { recursive: true })
-    expect(execaMock).toHaveBeenNthCalledWith(1, "uv", ["init", "--python", "3.12"], {
+    expect(helperMocks.copyTemplateFolder).toHaveBeenCalledWith(
+      expect.stringContaining("uv-notebook"),
+      "/workspace/uv-notebook-app",
+    )
+    expect(execaMock).toHaveBeenCalledWith("uv", ["sync"], {
       cwd: "/workspace/uv-notebook-app",
       stdout: "inherit",
       stderr: "inherit",
     })
-    expect(execaMock).toHaveBeenNthCalledWith(2, "uv", ["add", "numpy"], {
-      cwd: "/workspace/uv-notebook-app",
-      stdout: "inherit",
-      stderr: "inherit",
-    })
+  })
 
-    expect(writeFile).toHaveBeenCalledTimes(1)
+  it("throws when the uv notebook template cannot be copied", async () => {
+    helperMocks.copyTemplateFolder.mockResolvedValue(false)
 
-    const [filePath, notebookContent, encoding] = vi.mocked(writeFile).mock.calls[0]
+    await expect(
+      createPythonNotebookProject({
+        name: "uv-notebook-app",
+        cwd: "/workspace",
+      }),
+    ).rejects.toThrow("Failed to copy uv notebook template")
 
-    expect(filePath).toBe("/workspace/uv-notebook-app/main.ipynb")
-    expect(encoding).toBe("utf8")
-
-    const notebook = JSON.parse(notebookContent as string)
-
-    expect(notebook).toMatchObject({
-      nbformat: 4,
-      nbformat_minor: 5,
-      metadata: {
-        kernelspec: {
-          display_name: "Python 3.12",
-        },
-        language_info: {
-          version: "3.12",
-        },
-      },
-    })
-
-    expect(notebook.cells).toHaveLength(2)
-    expect(notebook.cells[0]).toMatchObject({
-      cell_type: "markdown",
-      metadata: {
-        language: "markdown",
-      },
-    })
-    expect(notebook.cells[1]).toMatchObject({
-      cell_type: "code",
-      metadata: {
-        language: "python",
-      },
-      outputs: [],
-    })
-    expect(notebook.cells[1].source).toContain("import numpy as np\n")
+    expect(execaMock).not.toHaveBeenCalled()
   })
 })

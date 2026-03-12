@@ -1,70 +1,50 @@
-import { join } from "path"
-import { mkdir, writeFile } from "fs/promises"
+import { join, dirname } from "path"
+import { existsSync } from "fs"
+import { fileURLToPath } from "url"
 import { execa } from "execa"
+
+import { copyTemplateFolder } from "@/helpers"
 
 type ProjectOptions = {
   name: string
   cwd?: string
 }
 
+function getDirname() {
+  if (typeof __dirname !== "undefined") {
+    return __dirname
+  }
+
+  if (typeof import.meta !== "undefined" && import.meta.url) {
+    return dirname(fileURLToPath(import.meta.url))
+  }
+
+  return process.cwd()
+}
+
+const currentDir = getDirname()
+
+function resolveTemplatePath(templateName: string) {
+  const devTemplatePath = join(currentDir, "../public/templates", templateName)
+  const prodTemplatePath = join(currentDir, "templates", templateName)
+
+  return existsSync(devTemplatePath) ? devTemplatePath : prodTemplatePath
+}
+
 export async function createPythonNotebookProject(options: ProjectOptions) {
   const { name, cwd = process.cwd() } = options
   const projectPath = join(cwd, name)
-  const mainPath = join(projectPath, "main.ipynb")
+  const templatePath = resolveTemplatePath("uv-notebook")
 
-  await mkdir(projectPath, { recursive: true })
+  const copied = await copyTemplateFolder(templatePath, projectPath)
 
-  await execa("uv", ["init", "--python", "3.12"], {
+  if (!copied) {
+    throw new Error("Failed to copy uv notebook template")
+  }
+
+  await execa("uv", ["sync"], {
     cwd: projectPath,
     stdout: "inherit",
     stderr: "inherit",
   })
-
-  await execa("uv", ["add", "numpy"], {
-    cwd: projectPath,
-    stdout: "inherit",
-    stderr: "inherit",
-  })
-
-  await writeFile(mainPath, createNotebookContent(name), "utf8")
-}
-
-function createNotebookContent(projectName: string) {
-  return `${JSON.stringify(
-    {
-      cells: [
-        {
-          cell_type: "markdown",
-          metadata: {
-            language: "markdown",
-          },
-          source: [`# ${projectName}\n`, "\n", "Starter notebook with NumPy ready to use.\n"],
-        },
-        {
-          cell_type: "code",
-          execution_count: null,
-          metadata: {
-            language: "python",
-          },
-          outputs: [],
-          source: ["import numpy as np\n", "np.arange(5)"],
-        },
-      ],
-      metadata: {
-        kernelspec: {
-          display_name: "Python 3.12",
-          language: "python",
-          name: "python3",
-        },
-        language_info: {
-          name: "python",
-          version: "3.12",
-        },
-      },
-      nbformat: 4,
-      nbformat_minor: 5,
-    },
-    null,
-    2,
-  )}\n`
 }

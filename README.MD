@@ -25,6 +25,8 @@ The CLI asks for a project name, starter type, package manager when needed, and 
 
 - C++ + CMake projects include a `manager.ts` bridge for commands like `bun manager.ts dev` and `bun manager.ts build`.
 - The C++ + CMake starter automatically updates the CMake project name to the folder name you enter.
+- UV Notebook projects are copied from a template and install Python dependencies with `uv sync`.
+- The UV Notebook template keeps Torch-related `pyproject.toml` entries commented out so users can opt in manually.
 
 ## Package managers
 

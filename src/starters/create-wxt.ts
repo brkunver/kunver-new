@@ -16,6 +16,7 @@ type projectOptions = {
 type WxtCustomizationOptions = {
   useI18n: boolean
   useContentUI: boolean
+  useWxtStorage: boolean
 }
 
 const WXT_TEMPLATE_MAP: Record<constant.TwxtTemplatesType, string> = {
@@ -53,9 +54,15 @@ async function resolveCustomizationOptions(framework: constant.TwxtTemplatesType
       })
     : false
 
+  const useWxtStorage = await confirm({
+    message: chalk.bold.cyan("Do you want to use wxt-storage?"),
+    default: false,
+  })
+
   return {
     useI18n,
     useContentUI,
+    useWxtStorage,
   }
 }
 
@@ -110,6 +117,43 @@ async function applyI18n(projectPath: string) {
   await writeFile(join(localesPath, "en.yml"), "hello: Hello!\n", "utf-8")
 }
 
+async function applyWxtStorage(projectPath: string) {
+  const wxtConfigPath = join(projectPath, "wxt.config.ts")
+  const utilsPath = join(projectPath, "utils")
+  const storageExamplePath = join(utilsPath, "storage.ts")
+  let wxtConfig = await readFile(wxtConfigPath, "utf-8")
+
+  if (!wxtConfig.includes('permissions: ["storage"]')) {
+    const updatedWxtConfig = wxtConfig.replace(/(manifest:\s*{[\s\S]*?)(\n\s*},)/, (match, manifestBody, closing) => {
+      if (manifestBody.includes('permissions: ["storage"]')) {
+        return match
+      }
+
+      return `${manifestBody}\n    permissions: ["storage"],${closing}`
+    })
+
+    if (updatedWxtConfig === wxtConfig) {
+      throw new Error("Could not add storage permission to wxt.config.ts")
+    }
+
+    wxtConfig = updatedWxtConfig
+    await writeFile(wxtConfigPath, wxtConfig, "utf-8")
+  }
+
+  await mkdir(utilsPath, { recursive: true })
+  await writeFile(
+    storageExamplePath,
+    `// Example WXT Storage usage:
+// import { storage } from "#imports"
+//
+// const showChangelogOnUpdate = storage.defineItem<boolean>("local:showChangelogOnUpdate", {
+//   fallback: true,
+// })
+`,
+    "utf-8",
+  )
+}
+
 function createOnBeforeInstall(framework: constant.TwxtTemplatesType, customization: WxtCustomizationOptions) {
   return async (projectPath: string) => {
     const shouldReplaceContentUi = (framework === "svelte" || framework === "solid") && !customization.useContentUI
@@ -120,6 +164,10 @@ function createOnBeforeInstall(framework: constant.TwxtTemplatesType, customizat
 
     if (customization.useI18n) {
       await applyI18n(projectPath)
+    }
+
+    if (customization.useWxtStorage) {
+      await applyWxtStorage(projectPath)
     }
   }
 }

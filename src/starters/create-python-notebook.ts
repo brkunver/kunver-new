@@ -47,7 +47,7 @@ function createNotebookContent(projectName: string) {
             language: "python",
           },
           outputs: [],
-          source: ["import numpy as np\n", "np.arange(5)\n"],
+          source: ["import numpy as np\n", "np.arange(5)"],
         },
       ],
       metadata: {

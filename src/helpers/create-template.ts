@@ -1,5 +1,4 @@
-import { join, dirname } from "path"
-import { fileURLToPath } from "url"
+import { join } from "path"
 import { existsSync } from "fs"
 
 import {
@@ -10,23 +9,8 @@ import {
   configurePackageManager,
   changeProjectName,
 } from "@/helpers"
+import { getDirname } from "@/helpers/utils"
 import * as constant from "@/constant"
-
-// A cross-runtime and cross-module-format compatible way to get the current directory
-function getDirname() {
-  if (typeof __dirname !== "undefined") {
-    // In CJS or runtimes that provide __dirname
-    return __dirname
-  }
-
-  if (typeof import.meta !== "undefined" && import.meta.url) {
-    // In ESM
-    return dirname(fileURLToPath(import.meta.url))
-  }
-
-  // Fallback, usually process.cwd() or similar, but typically the above covers all bases
-  return process.cwd()
-}
 
 const currentDir = getDirname()
 

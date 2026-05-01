@@ -1,4 +1,4 @@
-# Opiniated Project Starter
+# Opinionated Project Starter
 
 CLI tool for creating new projects with pre-configured settings.
 

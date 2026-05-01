@@ -1,25 +1,14 @@
-import { join, dirname } from "path"
+import { join } from "path"
 import { existsSync } from "fs"
-import { fileURLToPath } from "url"
 import { execa } from "execa"
+import chalk from "chalk"
 
 import { copyTemplateFolder } from "@/helpers"
+import { getDirname } from "@/helpers/utils"
 
 type ProjectOptions = {
   name: string
   cwd?: string
-}
-
-function getDirname() {
-  if (typeof __dirname !== "undefined") {
-    return __dirname
-  }
-
-  if (typeof import.meta !== "undefined" && import.meta.url) {
-    return dirname(fileURLToPath(import.meta.url))
-  }
-
-  return process.cwd()
 }
 
 const currentDir = getDirname()
@@ -42,9 +31,17 @@ export async function createPythonNotebookProject(options: ProjectOptions) {
     throw new Error("Failed to copy uv notebook template")
   }
 
-  await execa("uv", ["sync"], {
-    cwd: projectPath,
-    stdout: "inherit",
-    stderr: "inherit",
-  })
+  try {
+    await execa("uv", ["sync"], {
+      cwd: projectPath,
+      stdout: "inherit",
+      stderr: "inherit",
+    })
+  } catch (error) {
+    console.error(chalk.red("Failed to sync uv dependencies."))
+    console.error(
+      chalk.yellow("Please ensure 'uv' is installed: https://docs.astral.sh/uv/getting-started/installation/"),
+    )
+    throw error
+  }
 }

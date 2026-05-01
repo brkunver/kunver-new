@@ -1,7 +1,11 @@
 import { access, mkdtemp, mkdir, readFile, rm, writeFile } from "fs/promises"
 import { tmpdir } from "os"
 import { join } from "path"
-import { afterEach, describe, expect, it } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
+
+vi.mock("@/helpers/utils", () => ({
+  getDirname: vi.fn(() => "/mock/templates"),
+}))
 
 import { addManagerScript, configurePackageManager } from "@/helpers"
 

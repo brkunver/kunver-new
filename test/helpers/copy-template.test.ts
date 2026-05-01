@@ -17,6 +17,10 @@ vi.mock("ora", () => {
   }
 })
 
+vi.mock("@/helpers/utils", () => ({
+  getDirname: vi.fn(() => "/mock/templates"),
+}))
+
 import { copyTemplateFolder } from "@/helpers"
 
 const createdPaths: string[] = []

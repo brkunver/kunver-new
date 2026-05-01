@@ -1,5 +1,4 @@
 import fs, { readFileSync } from "fs"
-import path from "path"
 
 import { input, select } from "@inquirer/prompts"
 import chalk from "chalk"
@@ -8,7 +7,7 @@ import projectStarter from "@/project-starter"
 import * as constant from "@/constant"
 
 import { fileURLToPath } from "url"
-import { dirname, join } from "path"
+import { dirname, join, resolve } from "path"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -31,7 +30,7 @@ const projectName = await input({
       return chalk.red("Only lowercase letters, numbers, and single hyphens allowed. No spaces or special characters.")
     }
 
-    if (fs.existsSync(path.resolve(process.cwd(), value))) {
+    if (fs.existsSync(resolve(process.cwd(), value))) {
       return chalk.red("A folder with that name already exists")
     }
 

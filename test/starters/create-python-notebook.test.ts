@@ -14,6 +14,10 @@ vi.mock("@/helpers", () => ({
   copyTemplateFolder: mocks.copyTemplateFolder,
 }))
 
+vi.mock("@/helpers/utils", () => ({
+  getDirname: vi.fn(() => "/mock/templates"),
+}))
+
 import { createPythonNotebookProject } from "@/starters/create-python-notebook"
 
 describe("createPythonNotebookProject", () => {

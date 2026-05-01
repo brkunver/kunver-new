@@ -3,6 +3,10 @@ import { tmpdir } from "os"
 import { join } from "path"
 import { afterEach, describe, expect, it, vi } from "vitest"
 
+vi.mock("@/helpers/utils", () => ({
+  getDirname: vi.fn(() => "/mock/templates"),
+}))
+
 import { changeProjectName } from "@/helpers"
 
 const createdPaths: string[] = []

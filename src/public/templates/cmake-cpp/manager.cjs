@@ -1,23 +1,17 @@
-import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs"
-import { join } from "node:path"
-import { platform } from "node:os"
-import { spawn } from "node:child_process"
-
-type CommandName = "help" | "doctor" | "configure" | "build" | "run" | "dev" | "rebuild" | "clean"
-
-type ManagerOptions = {
-  config?: string
-}
+const { existsSync, readdirSync, readFileSync, rmSync } = require("node:fs")
+const { join } = require("node:path")
+const { platform } = require("node:os")
+const { spawn } = require("node:child_process")
 
 const ROOT_DIR = process.cwd()
 const BUILD_DIR = join(ROOT_DIR, "build")
 const IS_WINDOWS = platform() === "win32"
 
-function print(message: string) {
+function print(message) {
   process.stdout.write(`${message}\n`)
 }
 
-function printError(message: string) {
+function printError(message) {
   process.stderr.write(`${message}\n`)
 }
 
@@ -34,10 +28,10 @@ function getProjectName() {
   return match?.[1] ?? match?.[2] ?? null
 }
 
-function parseArgs(argv: string[]) {
+function parseArgs(argv) {
   const [commandArg, ...rest] = argv
-  const command = (commandArg ?? "help") as CommandName
-  const options: ManagerOptions = {}
+  const command = commandArg ?? "help"
+  const options = {}
 
   for (let index = 0; index < rest.length; index += 1) {
     const arg = rest[index]
@@ -51,8 +45,8 @@ function parseArgs(argv: string[]) {
   return { command, options }
 }
 
-function runCommand(command: string, args: string[], cwd = ROOT_DIR) {
-  return new Promise<boolean>(resolve => {
+function runCommand(command, args, cwd = ROOT_DIR) {
+  return new Promise(resolve => {
     const child = spawn(command, args, {
       cwd,
       stdio: "inherit",
@@ -82,7 +76,7 @@ async function configure() {
   return runCommand("cmake", ["-S", ".", "-B", "build"])
 }
 
-async function build(config?: string) {
+async function build(config) {
   print("Building project...")
   const args = ["--build", "build"]
 
@@ -93,7 +87,7 @@ async function build(config?: string) {
   return runCommand("cmake", args)
 }
 
-function getCandidateExecutablePaths(config?: string) {
+function getCandidateExecutablePaths(config) {
   const projectName = getProjectName()
   if (!projectName) {
     return []
@@ -108,7 +102,7 @@ function getCandidateExecutablePaths(config?: string) {
   return [join(BUILD_DIR, executableName), ...uniqueConfigDirs.map(dir => join(BUILD_DIR, dir, executableName))]
 }
 
-function findBuiltExecutable(config?: string) {
+function findBuiltExecutable(config) {
   const projectName = getProjectName()
   if (!projectName) {
     return null
@@ -140,11 +134,11 @@ function findBuiltExecutable(config?: string) {
   return null
 }
 
-async function runBuiltApp(config?: string) {
+async function runBuiltApp(config) {
   const executablePath = findBuiltExecutable(config)
 
   if (!executablePath) {
-    printError("Built executable not found. Run `bun manager.ts build` first.")
+    printError("Built executable not found. Run `node manager.cjs build` first.")
     return false
   }
 
@@ -188,7 +182,7 @@ function printHelp() {
   print("CMake C++ manager")
   print("")
   print("Usage:")
-  print("  bun manager.ts <command> [--config Debug]")
+  print("  node manager.cjs <command> [--config Debug]")
   print("")
   print("Commands:")
   print("  help       Show this help message")
@@ -203,7 +197,7 @@ function printHelp() {
 
 async function main() {
   const { command, options } = parseArgs(process.argv.slice(2))
-  const validCommands: CommandName[] = ["help", "doctor", "configure", "build", "run", "dev", "rebuild", "clean"]
+  const validCommands = ["help", "doctor", "configure", "build", "run", "dev", "rebuild", "clean"]
 
   if (!validCommands.includes(command)) {
     printError(`Unknown command: ${command}`)
@@ -273,4 +267,7 @@ async function main() {
   }
 }
 
-await main()
+main().catch(error => {
+  printError(error instanceof Error ? error.message : String(error))
+  process.exit(1)
+})

@@ -31,7 +31,7 @@ describe("projectStarter", () => {
   it("creates a React template project without opening an editor when disabled", async () => {
     await projectStarter({
       projectType: "react-ts-tw",
-      packageManager: "bun",
+      packageManager: "pnpm",
       openInEditor: "no",
       name: "sample-app",
     })
@@ -39,7 +39,7 @@ describe("projectStarter", () => {
     expect(helpers.createTemplateProject).toHaveBeenCalledWith({
       templateName: "react-ts-tw",
       name: "sample-app",
-      packageManager: "bun",
+      packageManager: "pnpm",
     })
     expect(helpers.openInEditor).not.toHaveBeenCalled()
   })
@@ -47,7 +47,7 @@ describe("projectStarter", () => {
   it("wires cmake project hooks and editor opening", async () => {
     await projectStarter({
       projectType: "cmake-cpp",
-      packageManager: "npm",
+      packageManager: "pnpm",
       openInEditor: "code",
       name: "Cpp App",
     })
@@ -58,7 +58,7 @@ describe("projectStarter", () => {
     expect(templateOptions).toMatchObject({
       templateName: "cmake-cpp",
       name: "Cpp App",
-      packageManager: "bun",
+      packageManager: "pnpm",
       addManager: false,
       approveBuild: false,
       installDependency: false,
@@ -75,7 +75,7 @@ describe("projectStarter", () => {
   it("routes uv notebook projects to the notebook starter", async () => {
     await projectStarter({
       projectType: "uv-notebook",
-      packageManager: "bun",
+      packageManager: "pnpm",
       openInEditor: "no",
       name: "data-lab",
     })

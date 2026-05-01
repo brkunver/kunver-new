@@ -1,18 +1,18 @@
 const { spawn } = require("child_process")
 
 function runCommand(command) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     console.log(`\n> Running: ${command}`)
     const child = spawn(command, { shell: true, stdio: "inherit" })
 
-    child.on("close", (code) => {
+    child.on("close", code => {
       resolve(code === 0)
     })
   })
 }
 
 async function isGitClean() {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const { exec } = require("child_process")
     exec("git status --porcelain", (error, stdout) => {
       resolve(stdout.trim() === "")
@@ -49,7 +49,7 @@ async function publishAndPushOperations(packageManager, command) {
   if (command === "publish") {
     console.log(`\n🚀 Publishing package (${packageManager} publish)...`)
     console.log("⚠️ Important Note: Ensure your package.json version is bumped and NPM_TOKEN is set if needed.\n")
-    
+
     if (!(await runCommand(`${packageManager} publish`))) {
       console.log(`❌ ${packageManager} publish command failed.`)
     } else {
@@ -69,7 +69,7 @@ async function publishAndPushOperations(packageManager, command) {
 const packageManagerArg = process.argv[2]
 const commandArg = process.argv[3]
 
-const validManagers = ["pnpm", "npm", "yarn", "bun"]
+const validManagers = ["pnpm"]
 const validCommands = ["push", "publish"]
 
 if (!validManagers.includes(packageManagerArg) || !validCommands.includes(commandArg)) {

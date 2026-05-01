@@ -4,8 +4,8 @@
 - User should select a project type and a package manager. Then it will create a new project with pre-configured settings.
 
 - This project uses typescript for development.
-- This project itself uses Bun for package management.
-- Always use BUN for runtime and package management when working on this project. Do not use npm or yarn for this project.
+- This project itself uses pnpm for package management.
+- Always use pnpm for runtime scripts and package management when working on this project. Do not use Bun, npm, or yarn for this project.
 - This project uses tsup for building and bundling.
 - This project uses ora for cli loading indicators.
 - This project uses chalk for cli colors.

@@ -2,7 +2,14 @@ import { join, dirname } from "path"
 import { fileURLToPath } from "url"
 import { existsSync } from "fs"
 
-import { copyTemplateFolder, installDependencies, approveBuilds, addManagerScript, changeProjectName } from "@/helpers"
+import {
+  copyTemplateFolder,
+  installDependencies,
+  approveBuilds,
+  addManagerScript,
+  configurePackageManager,
+  changeProjectName,
+} from "@/helpers"
 import * as constant from "@/constant"
 
 // A cross-runtime and cross-module-format compatible way to get the current directory
@@ -72,6 +79,10 @@ export async function createTemplateProject(options: projectOptions) {
 
     if (onBeforeInstall) {
       await runStep("run pre-install hook", () => onBeforeInstall(projectPath))
+    }
+
+    if (addManager) {
+      await runStep("configure package manager", () => configurePackageManager(packageManager, projectPath))
     }
 
     if (installDependency) {

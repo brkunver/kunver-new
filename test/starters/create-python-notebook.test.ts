@@ -1,16 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
+import { join } from "path"
 
-const execaMock = vi.fn()
-const helperMocks = vi.hoisted(() => ({
+const mocks = vi.hoisted(() => ({
+  execa: vi.fn(),
   copyTemplateFolder: vi.fn(),
 }))
 
 vi.mock("execa", () => ({
-  execa: execaMock,
+  execa: mocks.execa,
 }))
 
 vi.mock("@/helpers", () => ({
-  copyTemplateFolder: helperMocks.copyTemplateFolder,
+  copyTemplateFolder: mocks.copyTemplateFolder,
 }))
 
 import { createPythonNotebookProject } from "@/starters/create-python-notebook"
@@ -18,8 +19,8 @@ import { createPythonNotebookProject } from "@/starters/create-python-notebook"
 describe("createPythonNotebookProject", () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    helperMocks.copyTemplateFolder.mockResolvedValue(true)
-    execaMock.mockResolvedValue({})
+    mocks.copyTemplateFolder.mockResolvedValue(true)
+    mocks.execa.mockResolvedValue({})
   })
 
   it("copies the uv notebook template and runs uv sync", async () => {
@@ -28,19 +29,19 @@ describe("createPythonNotebookProject", () => {
       cwd: "/workspace",
     })
 
-    expect(helperMocks.copyTemplateFolder).toHaveBeenCalledWith(
+    expect(mocks.copyTemplateFolder).toHaveBeenCalledWith(
       expect.stringContaining("uv-notebook"),
-      "/workspace/uv-notebook-app",
+      join("/workspace", "uv-notebook-app"),
     )
-    expect(execaMock).toHaveBeenCalledWith("uv", ["sync"], {
-      cwd: "/workspace/uv-notebook-app",
+    expect(mocks.execa).toHaveBeenCalledWith("uv", ["sync"], {
+      cwd: join("/workspace", "uv-notebook-app"),
       stdout: "inherit",
       stderr: "inherit",
     })
   })
 
   it("throws when the uv notebook template cannot be copied", async () => {
-    helperMocks.copyTemplateFolder.mockResolvedValue(false)
+    mocks.copyTemplateFolder.mockResolvedValue(false)
 
     await expect(
       createPythonNotebookProject({
@@ -49,6 +50,6 @@ describe("createPythonNotebookProject", () => {
       }),
     ).rejects.toThrow("Failed to copy uv notebook template")
 
-    expect(execaMock).not.toHaveBeenCalled()
+    expect(mocks.execa).not.toHaveBeenCalled()
   })
 })

@@ -22,12 +22,5 @@
     "@types/react-dom": "^19",
     "@tailwindcss/postcss": "^4",
     "tailwindcss": "^4"
-  },
-  "trustedDependencies": [
-    "@prisma/client",
-    "@prisma/engines",
-    "@tailwindcss/oxide",
-    "prisma",
-    "sharp"
-  ]
+  }
 }

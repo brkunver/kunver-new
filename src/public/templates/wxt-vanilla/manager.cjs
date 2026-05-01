@@ -58,7 +58,7 @@ async function publishAndPushOperations(packageManager, command) {
 const packageManagerArg = process.argv[2]
 const commandArg = process.argv[3]
 
-const validManagers = ["pnpm", "npm", "yarn", "bun"]
+const validManagers = ["pnpm", "npm", "bun"]
 const validCommands = ["push", "publish"]
 
 if (!validManagers.includes(packageManagerArg) || !validCommands.includes(commandArg)) {

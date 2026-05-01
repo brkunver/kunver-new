@@ -10,12 +10,12 @@
     "build": "wxt build",
     "build:firefox": "wxt build -b firefox",
     "zip": "wxt zip",
-    "zip:all": "bun --parallel zip zip:firefox",
+    "zip:all": "pnpm run zip && pnpm run zip:firefox",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
     "postinstall": "wxt prepare",
-    "resize": "bunx @kunver/resize",
-    "manager": "bun manager.cjs bun"
+    "resize": "pnpm dlx @kunver/resize",
+    "manager": "node manager.cjs pnpm"
   },
   "dependencies": {
     "solid-js": "^1.9.11"
@@ -26,8 +26,5 @@
     "@wxt-dev/module-solid": "^1.1.4",
     "typescript": "^5.9.3",
     "wxt": "^0.20.18"
-  },
-  "trustedDependencies": [
-    "spawn-sync"
-  ]
+  }
 }

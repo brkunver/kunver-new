@@ -26,7 +26,7 @@ Your extension's manifest.json will be output to .output/{target}/manifest.json 
 - this project uses typescript for development.
 - this project uses prettier for code formatting.
 - this project uses vite.
-- this project uses bun package manager, not npm.
+- this project uses pnpm package manager, not Bun or npm.
 - I should have a .prettierrc.json file in the root directory. please also follow rules on that.
 
 - entrypoints are in src/entrypoints directory

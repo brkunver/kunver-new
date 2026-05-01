@@ -5,7 +5,7 @@ Opinionated C++ project starter with CMake build system.
 ## Requirements
 
 - CMake 3.20+
-- Bun
+- Node.js
 - GCC, Clang, or MSVC
 - VS Code C/C++ or CMake Tools extension
 
@@ -16,12 +16,12 @@ Opinionated C++ project starter with CMake build system.
 
 ## Manager bridge
 
-- `bun manager.ts dev` configures, builds, and runs the app.
-- `bun manager.ts build` configures if needed, then builds.
-- `bun manager.ts run` runs the latest built executable.
-- `bun manager.ts rebuild` deletes `build/`, then configures and builds again.
-- `bun manager.ts clean` deletes `build/`.
-- `bun manager.ts doctor` checks required files.
+- `node manager.cjs dev` configures, builds, and runs the app.
+- `node manager.cjs build` configures if needed, then builds.
+- `node manager.cjs run` runs the latest built executable.
+- `node manager.cjs rebuild` deletes `build/`, then configures and builds again.
+- `node manager.cjs clean` deletes `build/`.
+- `node manager.cjs doctor` checks required files.
 
 ## Raw CMake usage
 
@@ -29,4 +29,4 @@ Opinionated C++ project starter with CMake build system.
 - Build: `cmake --build build`
 - Run: use the executable generated inside `build/` by your chosen CMake generator.
 
-Note: `kunver` rewrites the CMake project name to the folder name you enter during creation, and `manager.ts` reads that same name from `CMakeLists.txt`.
+Note: `kunver` rewrites the CMake project name to the folder name you enter during creation, and `manager.cjs` reads that same name from `CMakeLists.txt`.

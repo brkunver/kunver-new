@@ -69,7 +69,7 @@ export default defineConfig({
 
     await createWxtProject({
       name: "demo-extension",
-      packageManager: "bun",
+      packageManager: "pnpm",
       selectedFramework: "vanilla",
     })
 
@@ -117,7 +117,7 @@ export default defineConfig({
 
     await createWxtProject({
       name: "demo-extension",
-      packageManager: "bun",
+      packageManager: "pnpm",
       selectedFramework: "vanilla",
     })
 

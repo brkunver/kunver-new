@@ -8,6 +8,13 @@ export default defineConfig({
     description: "manifest.json description",
   },
   modules: ["@wxt-dev/module-solid"],
+  hooks: {
+    "build:manifestGenerated": (wxt, manifest) => {
+      if (wxt.config.mode === "development") {
+        manifest.name = "(DEV) " + manifest.name
+      }
+    },
+  },
   vite: () => ({
     plugins: [tailwindcss()],
   }),

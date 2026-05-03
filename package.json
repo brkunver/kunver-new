@@ -1,6 +1,6 @@
 {
   "name": "@kunver/new",
-  "version": "3.7.0",
+  "version": "3.8.0",
   "description": "Opinionated project starter",
   "type": "module",
   "packageManager": "pnpm@10.29.3",

@@ -9,4 +9,7 @@ export default defineConfig({
   minify: true,
   treeshake: true,
   publicDir: "src/public",
+  banner: {
+    js: "#!/usr/bin/env node",
+  },
 })

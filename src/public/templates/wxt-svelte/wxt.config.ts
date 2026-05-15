@@ -6,6 +6,13 @@ export default defineConfig({
   manifest: {
     name: "wxt-svelte-starter",
     description: "manifest.json description",
+    browser_specific_settings: {
+      gecko: {
+        data_collection_permissions: {
+          required: ["none"],
+        },
+      },
+    },
   },
   modules: ["@wxt-dev/module-svelte"],
   vite: () => ({

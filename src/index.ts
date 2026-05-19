@@ -5,7 +5,7 @@ import chalk from "chalk"
 
 import projectStarter from "@/project-starter"
 import * as constant from "@/constant"
-import { checkForUpdates, runBackgroundCheck } from "@/helpers"
+import { checkForUpdates, runBackgroundCheck, commandExists } from "@/helpers"
 
 import { fileURLToPath } from "url"
 import { dirname, join, resolve } from "path"
@@ -64,11 +64,16 @@ if (projectType !== "uv-notebook" && projectType !== "cmake-cpp" && packageManag
 }
 
 // open in editor ?
-const openInEditor: constant.TopenInEditor = await select({
-  message: chalk.bold.cyan("Open in editor?"),
-  choices: constant.openInEditorOptions,
-  default: "no",
-})
+const availableEditorChoices = constant.openInEditorOptions.filter(editor => editor === "no" || commandExists(editor))
+
+let openInEditor: constant.TopenInEditor = "no"
+if (availableEditorChoices.length > 1) {
+  openInEditor = await select({
+    message: chalk.bold.cyan("Open in editor?"),
+    choices: availableEditorChoices,
+    default: "no",
+  })
+}
 
 // create project
 const options = {

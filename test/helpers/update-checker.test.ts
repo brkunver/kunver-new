@@ -1,19 +1,26 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
-import { mkdtemp, rm, writeFile, readFile } from "fs/promises"
-import { tmpdir } from "os"
+import { describe, it, expect, vi, beforeEach, afterEach, afterAll } from "vitest"
+import { rm, writeFile, readFile } from "fs/promises"
+import { existsSync } from "fs"
 import { join } from "path"
-import fs from "fs"
-
-const tempDirs: string[] = []
-let mockHomeDir = ""
+import os from "os"
 
 vi.mock("os", async importOriginal => {
   const actual = await importOriginal<typeof import("os")>()
-  return {
+  const fs = await import("fs")
+  const path = await import("path")
+  const mockHome = fs.mkdtempSync(path.join(actual.tmpdir(), "kunver-update-test-"))
+  const mockOs = {
     ...actual,
-    homedir: () => mockHomeDir,
+    homedir: () => mockHome,
+  }
+  return {
+    ...mockOs,
+    default: mockOs,
   }
 })
+
+const cachePath = join(os.homedir(), ".kunver-update-cache.json")
+const mockHomeDir = os.homedir()
 
 // Mock child_process spawn
 const spawnMock = vi.fn().mockReturnValue({ unref: vi.fn() })
@@ -25,13 +32,20 @@ import { checkForUpdates, runBackgroundCheck } from "@/helpers/update-checker"
 
 describe("update-checker", () => {
   beforeEach(async () => {
-    mockHomeDir = await mkdtemp(join(tmpdir(), "kunver-update-test-"))
-    tempDirs.push(mockHomeDir)
     spawnMock.mockClear()
+    if (existsSync(cachePath)) {
+      await rm(cachePath, { force: true })
+    }
   })
 
   afterEach(async () => {
-    await Promise.all(tempDirs.splice(0).map(dir => rm(dir, { recursive: true, force: true })))
+    if (existsSync(cachePath)) {
+      await rm(cachePath, { force: true })
+    }
+  })
+
+  afterAll(async () => {
+    await rm(os.homedir(), { recursive: true, force: true })
   })
 
   it("returns null and spawns background check if cache does not exist", () => {
@@ -98,7 +112,7 @@ describe("update-checker", () => {
     await runBackgroundCheck()
 
     const cachePath = join(mockHomeDir, ".kunver-update-cache.json")
-    expect(fs.existsSync(cachePath)).toBe(true)
+    expect(existsSync(cachePath)).toBe(true)
 
     const cacheData = JSON.parse(await readFile(cachePath, "utf-8"))
     expect(cacheData.latestVersion).toBe("3.10.0")

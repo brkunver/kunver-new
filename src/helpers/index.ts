@@ -7,6 +7,7 @@ import { createTemplateProject } from "./create-template"
 import { changeProjectName } from "./postinstall"
 import { configureCmakeProject, changeCmakeProjectName } from "./configure-cmake"
 import { checkForUpdates, runBackgroundCheck } from "./update-checker"
+import { commandExists } from "./utils"
 
 export {
   installDependencies,
@@ -21,4 +22,5 @@ export {
   changeCmakeProjectName,
   checkForUpdates,
   runBackgroundCheck,
+  commandExists,
 }

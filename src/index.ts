@@ -5,9 +5,15 @@ import chalk from "chalk"
 
 import projectStarter from "@/project-starter"
 import * as constant from "@/constant"
+import { checkForUpdates, runBackgroundCheck } from "@/helpers"
 
 import { fileURLToPath } from "url"
 import { dirname, join, resolve } from "path"
+
+if (process.argv.includes("--background-update-check")) {
+  await runBackgroundCheck()
+  process.exit(0)
+}
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -15,6 +21,8 @@ const __dirname = dirname(__filename)
 const packagePath = join(__dirname, "../package.json")
 const packageJson = JSON.parse(readFileSync(packagePath, "utf8"))
 const version = packageJson.version
+
+const updateMessage = checkForUpdates(version)
 
 console.log(chalk.green("Kunver v" + chalk.bold(version) + "\n"))
 
@@ -71,3 +79,7 @@ const options = {
 }
 
 await projectStarter(options)
+
+if (updateMessage) {
+  console.log(updateMessage)
+}

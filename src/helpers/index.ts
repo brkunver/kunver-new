@@ -6,6 +6,7 @@ import { openInEditor } from "./open-in-editor"
 import { createTemplateProject } from "./create-template"
 import { changeProjectName } from "./postinstall"
 import { configureCmakeProject, changeCmakeProjectName } from "./configure-cmake"
+import { checkForUpdates, runBackgroundCheck } from "./update-checker"
 
 export {
   installDependencies,
@@ -18,4 +19,6 @@ export {
   changeProjectName,
   configureCmakeProject,
   changeCmakeProjectName,
+  checkForUpdates,
+  runBackgroundCheck,
 }

@@ -30,7 +30,7 @@ function createTemplateStarter(
 
 const projectStarters: Record<constant.TprojectType, ProjectStarterHandler> = {
   "react-ts-tw": createTemplateStarter("react-ts-tw"),
-  "next-ts-prisma": createTemplateStarter("next-prisma"),
+  "next-prisma": createTemplateStarter("next-prisma"),
   wxt: async options => {
     await createWxtProject({ name: options.name, packageManager: options.packageManager })
   },

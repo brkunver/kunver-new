@@ -1,0 +1,54 @@
+- Next.js app starter
+- Vite React starter
+- Vite Vue starter
+- SvelteKit starter
+- Astro content site starter
+- Remix app starter
+- Express API starter
+- Fastify API starter
+- NestJS API starter
+- Hono edge API starter
+- Electron desktop app starter
+- Tauri desktop app starter
+- React Native starter
+- Expo mobile app starter
+- Node.js CLI starter
+- TypeScript library starter
+- Monorepo starter with pnpm workspaces
+- Full-stack app starter with Next.js and Prisma
+- SaaS starter with auth, billing, and dashboard
+- Chrome extension starter
+- Go REST API starter
+- Go CLI starter
+- Go microservice starter
+- Go gRPC service starter
+- Rust CLI starter
+- Rust web API starter with Axum
+- Rust desktop app starter with Tauri
+- Rust WebAssembly starter
+- C++ console app starter
+- C++ CMake library starter
+- C++ game starter with SDL
+- C++ OpenGL starter
+- Python CLI starter
+- Python FastAPI starter
+- Python data science starter
+- Python automation script starter
+- Java Spring Boot API starter
+- Kotlin Android app starter
+- Swift iOS app starter
+- C# .NET API starter
+- C# Unity game starter
+- PHP Laravel app starter
+- Ruby on Rails app starter
+- Elixir Phoenix app starter
+- Flutter mobile app starter
+- Dockerized service starter
+- Kubernetes deployment starter
+- Terraform infrastructure starter
+- GitHub Actions workflow starter
+- Static HTML/CSS site starter
+- WordPress plugin starter
+- VS Code extension starter
+- Machine learning experiment starter
+- Game jam starter

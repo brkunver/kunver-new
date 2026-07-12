@@ -50,10 +50,10 @@
     "ora": "^8.2.0"
   },
   "devDependencies": {
-    "@types/node": "^24.11.0",
+    "@types/node": "^24.13.3",
     "prettier": "3.8.1",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "typescript": "^7.0.0",
+    "vitest": "^4.1.10"
   }
 }

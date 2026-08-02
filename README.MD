@@ -8,8 +8,6 @@ CLI tool for creating new projects with pre-configured settings.
 bunx @kunver/new
 # or
 npx @kunver/new
-# or
-pnpm dlx @kunver/new
 ```
 
 The CLI asks for a project name, starter type, package manager when needed, and whether the project should be opened in your editor.

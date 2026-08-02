@@ -41,7 +41,7 @@ const projectStarters: Record<constant.TprojectType, ProjectStarterHandler> = {
     await createTemplateProject({
       templateName: "cmake-cpp",
       name: options.name,
-      packageManager: "pnpm",
+      packageManager: "bun",
       addManager: false,
       approveBuild: false,
       installDependency: false,

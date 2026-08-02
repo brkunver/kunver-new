@@ -61,7 +61,7 @@ export function checkForUpdates(currentVersion: string): string | null {
       `\n┌────────────────────────────────────────────────────────┐\n` +
         `│  A new version of ${chalk.bold("@kunver/new")} is available: ${chalk.green(cache.latestVersion)}  │\n` +
         `│  Current version: ${chalk.gray(currentVersion)}                            │\n` +
-        `│  Run ${chalk.cyan("npm i -g @kunver/new")} or use ${chalk.cyan("pnpm dlx @kunver/new")}   │\n` +
+        `│  Run ${chalk.cyan("npm i -g @kunver/new")} or use ${chalk.cyan("bunx @kunver/new")}       │\n` +
         `└────────────────────────────────────────────────────────┘\n`,
     )
   }

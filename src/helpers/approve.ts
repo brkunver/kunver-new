@@ -1,4 +1,3 @@
-import { spawn } from "child_process"
 import { join } from "path"
 
 import ora from "ora"
@@ -17,8 +16,10 @@ export default async function approveBuilds(
       return await pnpmApproveBuilds(projectName, cwd)
     case "bun":
       return await bunApproveBuilds(projectName, cwd)
+    case "npm":
+      return true
     default:
-      return false
+      return true
   }
 }
 
@@ -27,40 +28,11 @@ export async function pnpmApproveBuilds(projectName: string, cwd: string) {
   const projectPath = join(cwd, projectName)
 
   try {
-    return new Promise<boolean>(resolve => {
-      const child = spawn("pnpm", ["approve-builds"], {
-        cwd: projectPath,
-        stdio: ["pipe", "inherit", "inherit"],
-        shell: true,
-      })
-
-      setTimeout(() => {
-        child.stdin?.write("a\n")
-        setTimeout(() => {
-          child.stdin?.write("y\n")
-          child.stdin?.end()
-        }, 1000)
-      }, 2000)
-
-      child.on("close", code => {
-        if (code === 0) {
-          spinner.succeed("Approved builds for " + chalk.blue(projectName))
-          resolve(true)
-        } else {
-          spinner.fail("Failed to approve builds for " + chalk.blue(projectName))
-          resolve(false)
-        }
-      })
-
-      child.on("error", error => {
-        spinner.fail("Failed to approve builds for " + chalk.blue(projectName))
-        console.error(error)
-        resolve(false)
-      })
-    })
-  } catch (error) {
+    await execa("pnpm", ["approve-builds", "--all"], { cwd: projectPath })
+    spinner.succeed("Approved builds for " + chalk.blue(projectName))
+    return true
+  } catch {
     spinner.fail("Failed to approve builds for " + chalk.blue(projectName))
-    console.error(error)
     return false
   }
 }

@@ -5,9 +5,15 @@ import chalk from "chalk"
 
 import projectStarter from "@/project-starter"
 import * as constant from "@/constant"
+import { checkForUpdates, runBackgroundCheck, commandExists } from "@/helpers"
 
 import { fileURLToPath } from "url"
 import { dirname, join, resolve } from "path"
+
+if (process.argv.includes("--background-update-check")) {
+  await runBackgroundCheck()
+  process.exit(0)
+}
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -15,6 +21,8 @@ const __dirname = dirname(__filename)
 const packagePath = join(__dirname, "../package.json")
 const packageJson = JSON.parse(readFileSync(packagePath, "utf8"))
 const version = packageJson.version
+
+const updateMessage = checkForUpdates(version)
 
 console.log(chalk.green("Kunver v" + chalk.bold(version) + "\n"))
 
@@ -45,22 +53,26 @@ const projectType: constant.TprojectType = await select({
   choices: constant.projects,
 })
 
-let packageManager: constant.TpackageManager = "pnpm"
-const packageManagerChoices: readonly constant.TpackageManager[] = constant.packageManagers
-if (projectType !== "uv-notebook" && projectType !== "cmake-cpp" && packageManagerChoices.length > 1) {
+let packageManager: constant.TpackageManager = "bun"
+if (projectType !== "uv-notebook" && projectType !== "cmake-cpp") {
   packageManager = await select({
     message: chalk.bold.green("Select a package manager"),
-    choices: packageManagerChoices,
-    default: "pnpm",
+    choices: constant.packageManagers,
+    default: "bun",
   })
 }
 
 // open in editor ?
-const openInEditor: constant.TopenInEditor = await select({
-  message: chalk.bold.cyan("Open in editor?"),
-  choices: constant.openInEditorOptions,
-  default: "no",
-})
+const availableEditorChoices = constant.openInEditorOptions.filter(editor => editor === "no" || commandExists(editor))
+
+let openInEditor: constant.TopenInEditor = "no"
+if (availableEditorChoices.length > 1) {
+  openInEditor = await select({
+    message: chalk.bold.cyan("Open in editor?"),
+    choices: availableEditorChoices,
+    default: "no",
+  })
+}
 
 // create project
 const options = {
@@ -71,3 +83,7 @@ const options = {
 }
 
 await projectStarter(options)
+
+if (updateMessage) {
+  console.log(updateMessage)
+}

@@ -58,7 +58,7 @@ describe("projectStarter", () => {
     expect(templateOptions).toMatchObject({
       templateName: "cmake-cpp",
       name: "Cpp App",
-      packageManager: "pnpm",
+      packageManager: "bun",
       addManager: false,
       approveBuild: false,
       installDependency: false,

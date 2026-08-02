@@ -160,7 +160,7 @@ function clean() {
 function doctor() {
   print("Checking project structure...")
 
-  const requiredPaths = ["CMakeLists.txt", "src/main.cpp", "src/example.cpp", "include/example.hpp"]
+  const requiredPaths = ["CMakeLists.txt", "src/main.cpp"]
   let ok = true
 
   for (const requiredPath of requiredPaths) {

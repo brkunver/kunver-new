@@ -69,12 +69,12 @@ async function publishAndPushOperations(packageManager, command) {
 const packageManagerArg = process.argv[2]
 const commandArg = process.argv[3]
 
-const validManagers = ["pnpm"]
+const validManagers = ["bun"]
 const validCommands = ["push", "publish"]
 
 if (!validManagers.includes(packageManagerArg) || !validCommands.includes(commandArg)) {
   console.log(
-    `❌ Invalid or missing arguments. \nUsage: node manager.cjs <package-manager> <push|publish>\nValid package managers: ${validManagers.join(
+    `❌ Invalid or missing arguments. \nUsage: bun manager.cjs <package-manager> <push|publish>\nValid package managers: ${validManagers.join(
       ", ",
     )}`,
   )

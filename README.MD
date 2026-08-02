@@ -5,11 +5,9 @@ CLI tool for creating new projects with pre-configured settings.
 ## Usage
 
 ```bash
-pnpm dlx @kunver/new
+bunx @kunver/new
 # or
 npx @kunver/new
-# or
-bunx @kunver/new
 ```
 
 The CLI asks for a project name, starter type, package manager when needed, and whether the project should be opened in your editor.

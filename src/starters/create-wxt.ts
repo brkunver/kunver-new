@@ -87,7 +87,7 @@ async function applyI18n(projectPath: string) {
   const pkg = JSON.parse(pkgContent)
 
   pkg.devDependencies = pkg.devDependencies || {}
-  pkg.devDependencies["@wxt-dev/i18n"] = "0.2.5"
+  pkg.devDependencies["@wxt-dev/i18n"] = "^0.2.7"
 
   await writeFile(pkgPath, JSON.stringify(pkg, null, 2), "utf-8")
 

@@ -63,9 +63,3 @@ export async function configurePackageManager(packageManager: string, projectPat
     await fs.promises.rm(pnpmWorkspacePath, { force: true })
   }
 }
-
-export async function addManagerScript(packageManager: string, name: string, cwd: string) {
-  const packageJsonPath = join(cwd, name, "package.json")
-  const packageJson = await configurePackageJson(packageManager, packageJsonPath)
-  await fs.promises.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2))
-}

@@ -5,11 +5,10 @@ import {
   copyTemplateFolder,
   installDependencies,
   approveBuilds,
-  addManagerScript,
   configurePackageManager,
   changeProjectName,
 } from "@/helpers"
-import { getDirname } from "@/helpers/utils"
+import { getDirname, cleanupProjectFolder } from "@/helpers/utils"
 import * as constant from "@/constant"
 
 const currentDir = getDirname()
@@ -57,6 +56,7 @@ export async function createTemplateProject(options: projectOptions) {
 
   const projectPath = join(cwd, name)
   const templatePath = resolveTemplatePath(templateName)
+  const projectExistedBefore = existsSync(projectPath)
 
   try {
     await runStep("copy template folder", () => copyTemplateFolder(templatePath, projectPath))
@@ -73,10 +73,6 @@ export async function createTemplateProject(options: projectOptions) {
       await runStep("install dependencies", () => installDependencies(packageManager, name, cwd))
     }
 
-    if (addManager) {
-      await runStep("add manager script", () => addManagerScript(packageManager, name, cwd))
-    }
-
     if (approveBuild) {
       await runStep("approve builds", () => approveBuilds(packageManager, name, cwd))
     }
@@ -88,6 +84,7 @@ export async function createTemplateProject(options: projectOptions) {
     return true
   } catch (error) {
     console.error("Error creating project:", error)
+    await cleanupProjectFolder(projectPath, name, projectExistedBefore)
     throw error
   }
 }

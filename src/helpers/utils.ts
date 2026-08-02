@@ -1,6 +1,7 @@
 import fs from "fs"
 import path, { dirname } from "path"
 import { fileURLToPath } from "url"
+import chalk from "chalk"
 
 /**
  * A cross-runtime and cross-module-format compatible way to get the current directory
@@ -57,4 +58,21 @@ export function commandExists(command: string): boolean {
     }
   }
   return false
+}
+
+/**
+ * Remove a partially created project folder on failure.
+ * Never touches folders that already existed before the operation.
+ */
+export async function cleanupProjectFolder(projectPath: string, projectName: string, existedBefore: boolean) {
+  if (existedBefore) {
+    return
+  }
+
+  try {
+    await fs.promises.rm(projectPath, { recursive: true, force: true })
+    console.log(chalk.yellow(`Removed partially created project folder "${projectName}"`))
+  } catch {
+    // Ignore cleanup errors so the original failure is not masked.
+  }
 }

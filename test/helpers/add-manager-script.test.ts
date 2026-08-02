@@ -7,7 +7,7 @@ vi.mock("@/helpers/utils", () => ({
   getDirname: vi.fn(() => "/mock/templates"),
 }))
 
-import { addManagerScript, configurePackageManager } from "@/helpers"
+import { configurePackageManager } from "@/helpers"
 
 const createdPaths: string[] = []
 
@@ -32,11 +32,11 @@ afterEach(async () => {
   await Promise.all(createdPaths.splice(0).map(directoryPath => rm(directoryPath, { recursive: true, force: true })))
 })
 
-describe("addManagerScript", () => {
+describe("configurePackageManager", () => {
   it("writes a pnpm manager script", async () => {
-    const { cwd, projectName, projectPath } = await makeProject("pnpm")
+    const { projectPath } = await makeProject("pnpm")
 
-    await addManagerScript("pnpm", projectName, cwd)
+    await configurePackageManager("pnpm", projectPath)
 
     const packageJson = JSON.parse(await readFile(join(projectPath, "package.json"), "utf-8"))
     expect(packageJson.scripts).toMatchObject({
@@ -46,16 +46,14 @@ describe("addManagerScript", () => {
   })
 
   it("writes a bun manager script for bun projects", async () => {
-    const { cwd, projectName, projectPath } = await makeProject("bun")
+    const { projectPath } = await makeProject("bun")
 
-    await addManagerScript("bun", projectName, cwd)
+    await configurePackageManager("bun", projectPath)
 
     const packageJson = JSON.parse(await readFile(join(projectPath, "package.json"), "utf-8"))
     expect(packageJson.scripts.manager).toBe("bun manager.cjs bun")
   })
-})
 
-describe("configurePackageManager", () => {
   it("keeps pnpm workspace config for pnpm projects", async () => {
     const { projectPath } = await makeProject("pnpm")
     await writeFile(join(projectPath, "pnpm-workspace.yaml"), "allowBuilds:\n  esbuild: true\n", "utf-8")

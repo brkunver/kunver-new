@@ -42,7 +42,19 @@ async function bunApproveBuilds(projectName: string, cwd: string) {
   const projectPath = join(cwd, projectName)
 
   try {
-    await execa("bun", ["pm", "trust", "--all"], { cwd: projectPath })
+    const result = await execa("bun", ["pm", "trust", "--all"], {
+      cwd: projectPath,
+      reject: false,
+    })
+
+    // bun exits with code 1 when the dependencies were already trusted
+    // (e.g. via trustedDependencies pre-set during package manager config).
+    const alreadyTrusted = /already trusted|0 scripts ran/i.test(result.stderr ?? "")
+
+    if (result.exitCode !== 0 && !alreadyTrusted) {
+      throw new Error(result.stderr || `bun pm trust exited with code ${result.exitCode}`)
+    }
+
     spinner.succeed("Approved builds for " + chalk.blue(projectName))
     return true
   } catch {

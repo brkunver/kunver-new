@@ -20,12 +20,28 @@ describe("approveBuilds", () => {
   })
 
   it("approves builds via bun trust for bun", async () => {
-    execaMock.mockResolvedValue({})
+    execaMock.mockResolvedValue({ exitCode: 0, stderr: "" })
 
     await expect(approveBuilds("bun", "sample-app", "/cwd")).resolves.toBe(true)
     expect(execaMock).toHaveBeenCalledWith("bun", ["pm", "trust", "--all"], {
       cwd: join("/cwd", "sample-app"),
+      reject: false,
     })
+  })
+
+  it("treats already-trusted exit code 1 as success for bun", async () => {
+    execaMock.mockResolvedValue({
+      exitCode: 1,
+      stderr: "error: 0 scripts ran. This means all dependencies are already trusted or none have scripts.",
+    })
+
+    await expect(approveBuilds("bun", "sample-app", "/cwd")).resolves.toBe(true)
+  })
+
+  it("fails for bun when trust errors for another reason", async () => {
+    execaMock.mockResolvedValue({ exitCode: 1, stderr: "error: something went wrong" })
+
+    await expect(approveBuilds("bun", "sample-app", "/cwd")).resolves.toBe(false)
   })
 
   it("approves all pending builds non-interactively for pnpm", async () => {
